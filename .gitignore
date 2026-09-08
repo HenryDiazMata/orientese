@@ -47,3 +47,11 @@ dist-ssr
 *.mov
 *.wmv
 *.pdf
+
+# Archivos de diseño de CorelDRAW
+*.CDR
+*.cdr
+
+# EXCLUIR ARCHIVOS PESADOS DE DISEÑO COREL DRAW
+*.CDR
+*.cdr
