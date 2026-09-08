@@ -1,0 +1,23 @@
+:root{
+
+    --color-primary:#0A4F8F;
+
+    --color-secondary:#F6B100;
+
+    --color-accent:#FFFFFF;
+
+    --color-dark:#1F2937;
+
+    --color-light:#F8FAFC;
+
+    --color-border:#D7DCE3;
+
+    --shadow:0 10px 25px rgba(0,0,0,.10);
+
+    --radius:14px;
+
+    --transition:.30s;
+
+    --max-width:1280px;
+
+}

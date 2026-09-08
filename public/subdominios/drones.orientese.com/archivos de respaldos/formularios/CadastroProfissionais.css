@@ -1,0 +1,406 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS: CADASTRO DE PROFISSIONAIS
+   (Encapsulados para evitar conflictos globales con el Simulador u otros temas)
+   ========================================================================== */
+
+.cadastro-pro-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto 32px auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.cadastro-pro-card .cadastro-pro-header {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.cadastro-pro-card .cadastro-pro-header h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+.cadastro-pro-card .cadastro-pro-header p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+/* SECCIONES DEL FORMULARIO EN PRO */
+.cadastro-pro-card .form-section {
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.cadastro-pro-card .form-section h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  color: #0f172a;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+/* FILAS Y GRUPOS EN PRO */
+.cadastro-pro-card .form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cadastro-pro-card .form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.cadastro-pro-card .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.cadastro-pro-card .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.cadastro-pro-card .form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.cadastro-pro-card .form-group input[type="text"],
+.cadastro-pro-card .form-group input[type="url"],
+.cadastro-pro-card .form-group input[type="file"],
+.cadastro-pro-card .form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.cadastro-pro-card .form-group input[type="text"]:focus,
+.cadastro-pro-card .form-group input[type="url"]:focus,
+.cadastro-pro-card .form-group select:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+.cadastro-pro-card .form-group input[type="file"] {
+  padding: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.cadastro-pro-card .form-group input.input-disabled {
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* RADIOS Y CHECKBOXES EN PRO */
+.cadastro-pro-card .radio-group,
+.cadastro-pro-card .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cadastro-pro-card .radio-label,
+.cadastro-pro-card .checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: #334155;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.cadastro-pro-card .radio-label input[type="radio"],
+.cadastro-pro-card .checkbox-label input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: #16a34a;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* BOTONES DE ACCIÓN EN PRO */
+.cadastro-pro-card .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cadastro-pro-card .btn-salvar {
+  flex: 1;
+  background-color: #16a34a;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro-pro-card .btn-salvar:hover {
+  background-color: #15803d;
+}
+
+.cadastro-pro-card .btn-cancelar {
+  background-color: #e2e8f0;
+  color: #475569;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro-pro-card .btn-cancelar:hover {
+  background-color: #cbd5e1;
+}
+
+/* ZONA DE PELIGRO EN PRO */
+.cadastro-pro-card .danger-zone {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px dashed #fca5a5;
+  background-color: #fef2f2;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.cadastro-pro-card .danger-zone h4 {
+  margin: 0 0 6px 0;
+  color: #991b1b;
+  font-size: 1rem;
+}
+
+.cadastro-pro-card .danger-zone p {
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: #7f1d1d;
+}
+
+.cadastro-pro-card .btn-excluir {
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro-pro-card .btn-excluir:hover {
+  background-color: #b91c1c;
+}
+
+/* ==========================================================================
+   ESTILOS ENCAPSULADOS: CADASTRO CONTAINER GENERAL
+   ========================================================================== */
+
+.cadastro-container {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333333;
+}
+
+.cadastro-container .cadastro-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 15px;
+}
+
+.cadastro-container .cadastro-header h2 {
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.cadastro-container .cadastro-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.cadastro-container .form-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.cadastro-container .form-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #0f172a;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 8px;
+}
+
+.cadastro-container .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+}
+
+.cadastro-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-container .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.cadastro-container .form-group label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #475569;
+}
+
+.cadastro-container .form-group input,
+.cadastro-container .form-group select,
+.cadastro-container .form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  color: #1e293b;
+  background-color: #ffffff;
+}
+
+.cadastro-container .form-group input:focus,
+.cadastro-container .form-group select:focus,
+.cadastro-container .form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.cadastro-container .checkbox-group,
+.cadastro-container .radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.cadastro-container .checkbox-item,
+.cadastro-container .radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #334155;
+  cursor: pointer;
+}
+
+.cadastro-container .checkbox-item input,
+.cadastro-container .radio-item input {
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.cadastro-container .help-text {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.cadastro-container .preview-photo {
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px dashed #cbd5e1;
+  margin-top: 10px;
+}
+
+.cadastro-container .btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cadastro-container .btn-submit:hover {
+  background-color: #1d4ed8;
+}
+
+.cadastro-container .success-card {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.cadastro-container .code-badge {
+  display: inline-block;
+  background: #15803d;
+  color: #ffffff;
+  padding: 6px 16px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 20px;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 640px) {
+  .cadastro-pro-card .form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cadastro-pro-card .form-actions {
+    flex-direction: column;
+  }
+}

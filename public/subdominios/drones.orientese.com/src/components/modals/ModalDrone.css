@@ -1,0 +1,190 @@
+/* Overlay principal */
+.modal-drone-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+/* Tarjeta del Modal */
+.modal-drone-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Botón X superior */
+.btn-close-x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-close-x:hover {
+  color: #4a5568;
+}
+
+/* Encabezado */
+.modal-header {
+  margin-bottom: 16px;
+}
+
+.badge-especialidade {
+  display: inline-block;
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.modal-nome-prof {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 10px 0 6px 0;
+}
+
+.modal-sub {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Detalles del profesional */
+.modal-details {
+  background-color: #f7fafc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #2d3748;
+}
+
+/* Botones de acción */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.btn-whatsapp {
+  flex: 1;
+  background-color: #25d366;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1eb857;
+}
+
+.btn-email {
+  flex: 1;
+  background-color: #3182ce;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-email:hover {
+  background-color: #2b6cb0;
+}
+
+.btn-fechar {
+  width: 100%;
+  background-color: #edf2f7;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-fechar:hover {
+  background-color: #e2e8f0;
+}
+
+/* Animaciones */
+.drone-fly-in {
+  animation: flyIn 0.3s ease-out forwards;
+}
+
+.drone-fly-out {
+  animation: flyOut 0.3s ease-in forwards;
+}
+
+@keyframes flyIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flyOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* Compatibilidad con tema oscuro */
+body.dark .modal-drone-card,
+body.dark-mode .modal-drone-card,
+[data-theme="dark"] .modal-drone-card {
+  background-color: #1a202c;
+}
+
+body.dark .modal-nome-prof,
+body.dark-mode .modal-nome-prof,
+[data-theme="dark"] .modal-nome-prof {
+  color: #ffffff !important;
+}
+
+body.dark .modal-details,
+body.dark-mode .modal-details,
+[data-theme="dark"] .modal-details {
+  background-color: #2d3748;
+  color: #e2e8f0;
+}

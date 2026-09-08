@@ -1,0 +1,321 @@
+/* ==========================================================
+   ESTILOS BASE / CONTENEDOR PRINCIPAL
+   ========================================================== */
+.simulador-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #1e293b;
+}
+
+/* ==========================================================
+   HEADER Y PESTAÑAS (TABS)
+   ========================================================== */
+.simulador-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.simulador-title-group h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #1e293b;
+  font-weight: 800;
+}
+
+.simulador-subtitle {
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.simulador-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.simulador-tab-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.simulador-tab-btn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.simulador-tab-btn.active {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+/* ==========================================================
+   GRID LAYOUT Y TARJETAS
+   ========================================================== */
+.simulador-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .simulador-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.simulador-form-card,
+.simulador-result-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  color: #1e293b;
+}
+
+/* Textos e Inputs en Modo Light */
+.simulador-form-card h2,
+.simulador-form-card h3,
+.simulador-result-card h2,
+.simulador-result-card h3 {
+  color: #0f172a;
+}
+
+.simulador-form-card label,
+.simulador-result-card label {
+  color: #334155;
+  font-weight: 600;
+}
+
+.simulador-form-card input,
+.simulador-form-card select,
+.simulador-form-card textarea,
+.simulador-result-card input,
+.simulador-result-card select,
+.simulador-result-card textarea {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+/* Checkboxes Grid Layout */
+.simulador-grid-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .simulador-grid-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+  font-weight: 600;
+}
+
+.checkbox-item:hover {
+  background-color: #f1f5f9;
+}
+
+.checkbox-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* ==========================================================
+   🌙 MODO OSCURO (DARK MODE)
+   ========================================================== */
+body.dark,
+body.dark-theme,
+.dark .simulador-container,
+.dark-theme .simulador-container,
+[data-theme="dark"] .simulador-container {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+body.dark .simulador-header,
+body.dark-theme .simulador-header,
+.dark .simulador-header,
+.dark-theme .simulador-header,
+[data-theme="dark"] .simulador-header {
+  border-bottom-color: #334155;
+}
+
+body.dark .simulador-title-group h2,
+body.dark-theme .simulador-title-group h2,
+.dark .simulador-title-group h2,
+.dark-theme .simulador-title-group h2,
+[data-theme="dark"] .simulador-title-group h2 {
+  color: #f8fafc !important;
+}
+
+body.dark .simulador-subtitle,
+body.dark-theme .simulador-subtitle,
+.dark .simulador-subtitle,
+.dark-theme .simulador-subtitle,
+[data-theme="dark"] .simulador-subtitle {
+  color: #cbd5e1 !important;
+}
+
+body.dark .simulador-form-card,
+body.dark .simulador-result-card,
+body.dark-theme .simulador-form-card,
+body.dark-theme .simulador-result-card,
+.dark .simulador-form-card,
+.dark .simulador-result-card,
+.dark-theme .simulador-form-card,
+.dark-theme .simulador-result-card,
+[data-theme="dark"] .simulador-form-card,
+[data-theme="dark"] .simulador-result-card {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #f8fafc;
+}
+
+body.dark .simulador-form-card h2,
+body.dark .simulador-form-card h3,
+body.dark .simulador-result-card h2,
+body.dark .simulador-result-card h3,
+.dark .simulador-form-card h2,
+.dark .simulador-form-card h3,
+.dark .simulador-result-card h2,
+.dark .simulador-result-card h3,
+[data-theme="dark"] .simulador-form-card h2,
+[data-theme="dark"] .simulador-form-card h3,
+[data-theme="dark"] .simulador-result-card h2,
+[data-theme="dark"] .simulador-result-card h3 {
+  color: #f8fafc !important;
+}
+
+body.dark .simulador-form-card label,
+body.dark .simulador-result-card label,
+.dark .simulador-form-card label,
+.dark .simulador-result-card label,
+[data-theme="dark"] .simulador-form-card label,
+[data-theme="dark"] .simulador-result-card label {
+  color: #cbd5e1 !important;
+}
+
+body.dark .simulador-form-card input,
+body.dark .simulador-form-card select,
+body.dark .simulador-form-card textarea,
+body.dark .simulador-result-card input,
+body.dark .simulador-result-card select,
+body.dark .simulador-result-card textarea,
+.dark input,
+.dark select,
+.dark textarea,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+body.dark .checkbox-item,
+body.dark-theme .checkbox-item,
+.dark .checkbox-item,
+.dark-theme .checkbox-item,
+[data-theme="dark"] .checkbox-item {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #f8fafc !important;
+}
+
+body.dark .checkbox-item:hover,
+body.dark-theme .checkbox-item:hover,
+.dark .checkbox-item:hover,
+.dark-theme .checkbox-item:hover,
+[data-theme="dark"] .checkbox-item:hover {
+  background-color: #334155;
+}
+
+body.dark .simulador-tab-btn,
+body.dark-theme .simulador-tab-btn,
+.dark .simulador-tab-btn,
+.dark-theme .simulador-tab-btn,
+[data-theme="dark"] .simulador-tab-btn {
+  background-color: #334155;
+  border-color: #475569;
+  color: #f8fafc !important;
+}
+
+body.dark .simulador-tab-btn.active,
+body.dark-theme .simulador-tab-btn.active,
+.dark .simulador-tab-btn.active,
+.dark-theme .simulador-tab-btn.active,
+[data-theme="dark"] .simulador-tab-btn.active {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+/* ==========================================================
+   ☀️ FORZADO PARA MODO LIGHT (Anula inline styles del JSX)
+   ========================================================== */
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container h2,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container h3,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container h4,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container p,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container label,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-container span:not(.code-badge) {
+  color: #1e293b !important;
+}
+
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-title-group h2 {
+  color: #0f172a !important;
+}
+
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-subtitle {
+  color: #64748b !important;
+}
+
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-form-card label,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-result-card label {
+  color: #475569 !important;
+}
+
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-result-card p,
+:not(.dark):not(.dark-theme):not([data-theme="dark"]) .simulador-result-card span {
+  color: #64748b !important;
+}snpm.cmd run :-moz-drag-over

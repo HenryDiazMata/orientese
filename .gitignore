@@ -22,3 +22,28 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Archivos de proyecto de Audacity
+*.aup
+*.aup3
+*_data/
+
+# Excluir archivos pesados y multimedia masiva
+*.zip
+*.rar
+*.exe
+*.mp4
+*.mov
+*.avi
+
+# EXCLUIR ARCHIVOS MULTIMEDIA PESADOS Y COMPRIMIDOS
+*.zip
+*.rar
+*.7z
+*.mp3
+*.wav
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.pdf

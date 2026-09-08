@@ -1,0 +1,133 @@
+/* ==========================================
+   VARIABLES DE TEMA (LIGHT / DARK)
+   ========================================== */
+:root {
+  /* MODO CLARO (Default) */
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --bg-footer: #0b132b;
+  --bg-nav: #f1f5f9;
+  
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-footer: #94a3b8;
+  --border-color: #e2e8f0;
+}
+
+html.dark {
+  /* MODO OSCURO */
+  --bg-main: #0f172a;      /* Fondo global oscuro */
+  --bg-card: #ffffff;      /* Fondo de tarjetas */
+  --bg-header: #ffffff;    /* Header fijo siempre blanco */
+  --bg-footer: #030712;    /* Footer ultra oscuro */
+  --bg-nav: #e2e8f0;       
+  
+  --text-main: #1e293b;    /* Mantenemos texto oscuro para contenedores de lectura */
+  --text-muted: #64748b;
+  --text-footer: #94a3b8;
+  --border-color: #334155;
+}
+
+/* ==========================================
+   ESTILOS GENERALES
+   ========================================== */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main) !important;
+  color: #1e293b;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Contenedor raíz */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+}
+
+/* Header Fijo con Fondo Blanco Siempre */
+.header-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Tarjetas reactivas al modo oscuro */
+.card-theme {
+  background-color: #ffffff !important;
+  border: 1px solid var(--border-color);
+  color: #1e293b !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Footer reactivo */
+.footer-theme {
+  background-color: var(--bg-footer);
+  color: var(--text-footer);
+  transition: background-color 0.3s ease;
+}
+
+/* Botón Dark/Light */
+.theme-btn {
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.theme-btn:hover {
+  background-color: #f1f5f9;
+  transform: scale(1.03);
+}
+
+/* ==========================================
+   FORZAR TEXTOS VISIBLES EN CUALQUIER BLOQUE/CONTENEDOR
+   ========================================== */
+
+/* 1. Títulos de encabezado principales (fuera de tarjetas, sobre el fondo oscuro) */
+.app-container > h1,
+.app-container > header h1,
+.header-fixed h1,
+.header-fixed h2 {
+  color: #0f172a !important;
+}
+
+/* Título principal "Rede de Profissionais..." sobre fondo oscuro */
+html.dark .app-container > h1,
+html.dark .app-container > div > h1:first-child {
+  color: #ffffff !important;
+}
+
+/* 2. CUALQUIER TÍTULO O TEXTO DENTRO DE TARJETAS / DIBUJOS BLANCOS */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #0f172a !important;
+}
+
+/* Excepción: solo el título superior gigante sobre el fondo oscuro de la app */
+html.dark body > div > h1,
+html.dark .app-container > h1 {
+  color: #ffffff !important;
+}
+
+/* 3. Textos secundarios e instrucciones */
+p, span, label {
+  color: #475569;
+}

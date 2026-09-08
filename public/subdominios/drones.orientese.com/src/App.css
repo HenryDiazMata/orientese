@@ -1,0 +1,591 @@
+/* ==========================================
+   App.css - Estilos globales
+   drones.orientese.com
+   ========================================== */
+
+:root {
+  --azul-principal: #0077C8;
+  --azul-escuro: #005A9E;
+  --azul-claro: #E6F3FC;
+  --aquamarine: #40E0D0;
+
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --bg-footer: #0b132b;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-card: #334155;
+  --text-footer: #94a3b8;
+
+  --border-color: #e2e8f0;
+  --shadow: 0 2px 8px rgba(0, 119, 200, 0.08);
+
+  --sidebar-bg: #bceff8;
+  --sidebar-width: 16rem;
+  --sidebar-width-collapsed: 4.5rem;
+}
+
+html.dark {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-header: #ffffff;
+  --bg-footer: #030712;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-card: #e2e8f0;
+  --text-footer: #94a3b8;
+
+  --border-color: #334155;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
+}
+
+/* Layout: columna en móvil, fila en desktop */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.header-fixed {
+  /* ya no se usa como franja superior a ancho completo */
+}
+
+/* ========== BOTONES BASE ========== */
+.btn-menu {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.btn-menu-inactive {
+  background-color: #ffffff;
+  color: #1e293b;
+  border: 1px solid #d0e6f5;
+  box-shadow: 0 1px 3px rgba(0, 119, 200, 0.1);
+}
+
+.btn-menu-inactive:hover {
+  background-color: var(--aquamarine);
+  color: #0f172a;
+  border-color: var(--aquamarine);
+}
+
+.btn-menu-active {
+  background-color: var(--azul-principal);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 119, 200, 0.3);
+}
+
+.theme-btn {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover {
+  transform: scale(1.03);
+}
+
+html.dark .theme-btn {
+  background-color: #334155;
+  color: #f8fafc;
+  border-color: #475569;
+}
+
+/* ========== SIDEBAR ========== */
+.app-sidebar {
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Móvil: panel oculto a la izquierda, cubre casi toda la pantalla */
+@media (max-width: 767px) {
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: min(18rem, 86vw);
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    box-shadow: none;
+  }
+
+  .app-sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* En móvil nunca usamos el modo iconos */
+  .app-sidebar.is-collapsed {
+    width: min(18rem, 86vw);
+  }
+
+  .sidebar-collapse-btn {
+    display: none;
+  }
+}
+
+/* Desktop: columna fija a la izquierda */
+@media (min-width: 768px) {
+  .app-sidebar {
+    position: sticky;
+    top: 0;
+    left: auto;
+    height: 100vh;
+    width: var(--sidebar-width, 16rem);
+    flex-shrink: 0;
+    transform: none;
+    transition: width 0.2s ease;
+  }
+
+  .app-sidebar.is-collapsed {
+    width: var(--sidebar-width-collapsed);
+  }
+
+  .mobile-drawer-head,
+  .mobile-topbar,
+  .mobile-overlay {
+    display: none !important;
+  }
+}
+
+/* Barra superior solo móvil */
+.mobile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: var(--sidebar-bg);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid #9ad7e4;
+}
+
+.mobile-topbar.is-hidden {
+  display: none;
+}
+
+.mobile-topbar-logo {
+  height: 54px;
+  max-width: 270px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.mobile-icon-btn {
+  width: 45px;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 40;
+}
+
+.mobile-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px 0;
+}
+
+@media (min-width: 768px) {
+  .mobile-drawer-head {
+    display: none;
+  }
+}
+
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  padding: 12px 10px 8px;
+  cursor: pointer;
+}
+
+.sidebar-logo img {
+  height: 64px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.sidebar-logo.is-collapsed img {
+  height: 36px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 16px;
+  flex: 1;
+}
+
+.sidebar-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.sidebar-item.is-collapsed {
+  justify-content: center;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.sidebar-item-cta {
+  background-color: var(--azul-principal);
+  color: #ffffff;
+  border-color: var(--azul-principal);
+}
+
+.sidebar-subwrap {
+  position: relative;
+}
+
+.sidebar-submenu {
+  margin-left: 8px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--azul-principal);
+  border-radius: 8px;
+  background: #c2f1f5;
+  overflow: hidden;
+}
+
+.sidebar-submenu.is-flyout {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 0;
+  margin-left: 0;
+  min-width: 220px;
+  z-index: 60;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-subitem {
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 0;
+  background: transparent;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.sidebar-subitem.is-active,
+.sidebar-subitem:hover {
+  background: var(--azul-principal);
+  color: #fff;
+}
+
+.sidebar-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #9ad7e4;
+}
+
+.sidebar-tools.is-collapsed {
+  align-items: center;
+}
+
+.sidebar-lang {
+  font-size: 11px;
+  color: #334155;
+}
+
+.sidebar-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sidebar-collapse-btn {
+  margin: 8px 10px 14px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: calc(100% - 20px);
+  padding: 8px;
+  border: 1px solid #7ec8d8;
+  background: #ffffff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .sidebar-collapse-btn {
+    display: inline-flex;
+  }
+}
+
+/* ========== FOOTER ========== */
+.footer-theme {
+  background-color: var(--bg-footer);
+  color: var(--text-footer);
+  padding: 40px 20px 20px;
+  margin-top: auto;
+  border-top: 1px solid #1e293b;
+}
+
+.footer-theme h4 {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.footer-theme a {
+  color: #38bdf8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-theme a:hover {
+  color: #ffffff;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  color: var(--azul-principal);
+  transition: color 0.2s ease;
+}
+
+html.dark a {
+  color: #60a5fa;
+}
+
+@media (max-width: 767px) {
+  .btn-menu {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ========== FOOTER LAYOUT ========== */
+.footer-cols {
+  display: grid;
+  grid-template-columns: 1fr; /* móvil: una columna */
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .footer-cols {
+    grid-template-columns: 1.2fr 1.5fr 1fr; /* desktop: las 3 */
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+}
+
+.footer-line {
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-ico {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.footer-mail {
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-wa {
+  background-color: #22c55e;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-theme a.footer-wa {
+  background-color: #22c55e;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-theme a.footer-wa:hover {
+  background-color: #16a34a;
+  color: #ffffff;
+}
+
+.footer-tg {
+  color: #38bdf8;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.footer-nav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.footer-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.footer-info-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-link {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  border-top: 1px solid #1e293b;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column; /* móvil: copyright y créditos en vertical */
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.footer-theme {
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .footer-theme {
+    padding: 28px 16px 20px;
+  }
+
+  .footer-theme h4 {
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: normal;
+  }
+}
+

@@ -1,0 +1,18 @@
+{
+  "precosPorHectareUSD": {
+    "Pulverização / Agrícola": 11.0,
+    "Mapeamento Aéreo / Fotogrametria": 9.0,
+    "Levantamento Topográfico / Ortomosaico": 10.0,
+    "Monitoramento de Saúde da Lavoura (NDVI)": 7.0,
+    "Mapeamento de Áreas de Pastagem": 6.0,
+    "Contagem de Gado / Rebanho": 5.5,
+    "Contagem de Ovinos / Caprinos": 5.5,
+    "Contagem de Frutos / Pomares": 6.5,
+    "DEFAULT": 8.0
+  },
+  "taxaBaseVooUSD": 90,
+  "valorFotoUSD": 0.30,
+  "taxaDiagnosticoUSD": 36,
+  "ultimaAtualizacao": "2026-08-31",
+  "fonte": "Referências de mercado Brasil 2026 (mediana mapeamento R$35/ha, pulverização R$25-80/ha)"
+}

@@ -1,0 +1,261 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.profissionais-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-secao {
+  margin-bottom: 25px;
+}
+
+.header-secao h2 {
+  font-size: 1.5rem;
+  color: #1a202c;
+  margin-bottom: 15px;
+}
+
+/* --- BOTONES DE NAVEGACIÓN PRINCIPALES --- */
+.acoes-principais {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Estado neutro por defecto */
+.acoes-principais button {
+  padding: 8px 16px;
+  border: 1px solid #cbd5e0;
+  background-color: #f7fafc;
+  color: #4a5568;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.acoes-principais button:hover {
+  background-color: #edf2f7;
+}
+
+/* Estados activos por opción */
+.acoes-principais button.active-catalogo,
+.acoes-principais button.active-vagas {
+  background-color: #2b6cb0 !important;
+  color: #ffffff !important;
+  border-color: #2b6cb0 !important;
+}
+
+.acoes-principais button.active-perfil {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+  border-color: #2e7d32 !important;
+}
+
+.acoes-principais button.active-vaga {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+}
+
+/* --- FILTROS AVANZADOS (ABA BUSCAR PROFISSIONAIS) --- */
+.filtro-painel-avancado {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filtro-grupo {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo input,
+.filtro-grupo select {
+  flex: 1;
+  min-width: 180px;
+  padding: 9px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #ffffff;
+}
+
+.contador-resultados {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+/* --- BARRA DE FILTRO SIMPLE (ABA MURAL DE VAGAS) --- */
+.filtro-bar {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+.filtro-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* --- REJILLA Y TARJETAS (CARDS) --- */
+.grid-profissionais {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card-profissional {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 18px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.badge-especialidade {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.card-profissional h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.card-profissional p {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin: 3px 0;
+}
+
+/* Botón en tarjetas de profesionales (Azul) */
+.btn-contato {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-contato:hover {
+  background-color: #0056b3;
+}
+
+/* Botón en tarjetas de vacantes (Verde) */
+.btn-vaga-contato {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-vaga-contato:hover {
+  background-color: #236327;
+}
+
+/* --- ESTILOS PARA FORMULARIOS (+ CRIAR PERFIL Y + PUBLICAR VAGA) --- */
+.formulario-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-card h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2d3748;
+  font-size: 1.25rem;
+}
+
+.formulario-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario-card input,
+.formulario-card select,
+.formulario-card textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.formulario-card textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.acoes-form {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-salvar {
+  flex: 1;
+  padding: 10px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-salvar:hover {
+  background-color: #236327;
+}
+
+.btn-cancelar {
+  padding: 10px 20px;
+  background-color: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #cbd5e0;
+}

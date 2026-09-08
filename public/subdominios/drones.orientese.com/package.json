@@ -1,0 +1,25 @@
+{
+  "name": "droneservicos",
+  "version": "1.0.0",
+  "description": "Projeto didático para HTML, CSS e JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@vitejs/plugin-react": "^6.0.3",
+    "i18next": "^26.4.2",
+    "lucide-react": "^1.30.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.13",
+    "react-router-dom": "^7.18.3",
+    "vite": "^8.1.4"
+  }
+}

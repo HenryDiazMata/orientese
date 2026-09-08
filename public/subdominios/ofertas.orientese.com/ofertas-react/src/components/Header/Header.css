@@ -1,0 +1,65 @@
+.header{
+
+    width:100%;
+
+    background:var(--color-primary);
+
+    color:white;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+    box-shadow:var(--shadow);
+
+}
+
+.header-container{
+
+    max-width:1280px;
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 32px;
+
+}
+
+.logo h1{
+
+    margin:0;
+
+    font-size:1.9rem;
+
+    font-weight:700;
+
+}
+
+.logo span{
+
+    display:block;
+
+    font-size:.85rem;
+
+    opacity:.90;
+
+}
+
+@media(max-width:900px){
+
+.header-container{
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+}
