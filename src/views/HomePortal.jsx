@@ -1,14 +1,23 @@
 import React from 'react';
 
 // VISTA PRINCIPAL QUE FUNCIONA COMO DIRECTORIO O HUB CENTRAL DE ORIÉNTESE
-export default function HomePortal() {
-  // LISTA DE SUBDOMINIOS REGISTRADOS CON SU INFORMACIÓN BÁSICA
+export default function HomePortal({ onNavigate }) {
+  // LISTA DE SUBDOMINIOS REGISTRADOS
   const subdominios = [
     { id: 'drones', nombre: 'Drones', desc: 'TECNOLOGÍA, NOTICIAS Y NORMATIVA DE VEHÍCULOS AÉREOS NO TRIPULADOS.' },
     { id: 'fundaval', nombre: 'Fundaval', desc: 'CONTENIDO DINÁMICO, PODCASTS, BLOGS Y VIDEOS AUTÓNOMOS.' },
     { id: 'ofertas', nombre: 'Ofertas', desc: 'OPORTUNIDADES, CLASIFICADOS Y COMERCIO LOCAL.' },
     { id: 'masoneria', nombre: 'Masonería', desc: 'SECCIONES HISTÓRICAS E INFORMACIÓN INSTITUCIONAL.' },
   ];
+
+  // MANEJO SEGURO DEL CLIC EN LAS TARJETAS
+  const handleCardClick = (subdominioId) => {
+    if (typeof onNavigate === 'function') {
+      onNavigate(subdominioId);
+    } else {
+      console.warn('LA FUNCIÓN ONAVIGATE NO FUE PASADA CORRECTAMENTE DESDE APP.JSX');
+    }
+  };
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
@@ -24,7 +33,7 @@ export default function HomePortal() {
 
       {/* SECCIÓN DE TARJETAS PARA EXPLORAR SUBDOMINIOS */}
       <main>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#1f2937' }}>
+        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#1f2937', textAlign: 'center' }}>
           Explorar Subdominios
         </h2>
 
@@ -33,10 +42,11 @@ export default function HomePortal() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           gap: '1.5rem'
         }}>
-          {/* RECORRIDO DINÁMICO DEL ARREGLO DE SUBDOMINIOS */}
+          {/* RECORRIDO DINÁMICO DE LA LISTA DE SUBDOMINIOS */}
           {subdominios.map((sub) => (
             <div 
               key={sub.id} 
+              onClick={() => handleCardClick(sub.id)}
               style={{
                 padding: '1.5rem',
                 borderRadius: '8px',
@@ -45,7 +55,10 @@ export default function HomePortal() {
                 boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                userSelect: 'none',
+                transition: 'transform 0.1s ease-in-out'
               }}
             >
               <div>

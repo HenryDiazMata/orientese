@@ -1,44 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// IMPORTACIÓN DE LAS VISTAS DESDE LA CARPETA SRC/VIEWS/
+// IMPORTACIÓN DE LAS VISTAS INDEPENDIENTES DESDE LA CARPETA SRC/VIEWS/
 import HomePortal from './views/HomePortal';
 import DronesView from './views/DronesView';
 import FundavalView from './views/FundavalView';
 
 export default function App() {
-  // OBTIENE EL NOMBRE DE HOST COMPLETO DESDE LA BARRA DE DIRECCIONES DEL NAVEGADOR
+  // ESTADO LOCAL PARA CONTROLAR Y SIMULAR EL CAMBIO DE VISTA EN ENTORNO LOCAL (LOCALHOST)
+  const [currentView, setCurrentView] = useState('main');
+
+  // OBTIENE EL NOMBRE DE HOST DE LA BARRA DE DIRECCIONES DEL NAVEGADOR
   const hostname = window.location.hostname;
 
-  // FUNCIÓN PARA IDENTIFICAR EL SUBDOMINIO DE LA URL
+  // FUNCIÓN QUE DETECTA EL SUBDOMINIO DE LA URL O PERMITE NAVEGAR EN DESARROLLO LOCAL
   const getSubdomain = () => {
-    // EN ENTORNO LOCAL (LOCALHOST), DEVOLVEMOS 'MAIN' POR DEFECTO.
-    // PARA PROBAR FUNDAVAL EN TU PC, CAMBIA TEMPORALMENTE 'MAIN' POR 'FUNDAVAL'
+    // SI ESTAMOS TRABAJANDO EN LOCALHOST O EN 127.0.0.1, RETORNAMOS EL ESTADO LOCAL
     if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
-      return 'main'; // CAMBIAR A 'fundaval' O 'drones' PARA PROBAR EN LOCAL
+      return currentView;
     }
 
-    // DIVIDE LA URL POR PUNTOS (EJEMPLO: fundaval.orientese.com -> ['fundaval', 'orientese', 'com'])
+    // PARA PRODUCCIÓN EN EL SERVIDOR REAL: EXTRAE EL SUBDOMINIO DE LA URL
+    // EJEMPLO: fundaval.orientese.com -> EXTRAE 'fundaval'
     const parts = hostname.split('.');
-    
-    // SI TIENE AL MENOS TRES PARTES, SIGNIFICA QUE EXISTE UN SUBDOMINIO
     if (parts.length >= 3) {
       return parts[0].toLowerCase();
     }
-    
+
     return 'main';
   };
 
-  // ALMACENA EL SUBDOMINIO DETECTADO
+  // ALMACENA EL SUBDOMINIO ACTIVO
   const subdomain = getSubdomain();
 
-  // CONMUTADOR QUE RENDERIZA LA VISTA CORRESPONDIENTE SEGÚN EL SUBDOMINIO
+  // CONMUTADOR (SWITCH) QUE ENRUTA Y RENDERIZA LA VISTA CORRESPONDIENTE
+  // PASANDO LA FUNCIÓN ONAVIGATE PARA PERMITIR LA INTERACCIÓN ENTRE VISTAS
   switch (subdomain) {
     case 'drones':
-      return <DronesView />;
+      return <DronesView onNavigate={setCurrentView} />;
     case 'fundaval':
-      return <FundavalView />;
+      return <FundavalView onNavigate={setCurrentView} />;
     case 'main':
     default:
-      return <HomePortal />;
+      return <HomePortal onNavigate={setCurrentView} />;
   }
 }
