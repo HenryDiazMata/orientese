@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './App.css';
+import FundavalView from './views/FundavalView';
 
 function App() {
   const { t, i18n } = useTranslation('orientese');
-  const [view, setView] = useState('home'); // 'home' o 'auth'
+  const [view, setView] = useState('home'); // 'home', 'auth', 'fundaval'
   const [authMode, setAuthMode] = useState('login'); // 'login' o 'register'
 
   const changeLanguage = (e) => {
@@ -49,7 +50,7 @@ function App() {
 
       {/* 2. CONTENIDO PRINCIPAL */}
       <main>
-        {view === 'home' ? (
+        {view === 'home' && (
           <>
             {/* HERO SECTION */}
             <section className="hero-section">
@@ -76,7 +77,7 @@ function App() {
                 </div>
               </div>
 
-              {/* FUNDAVAL */}
+              {/* FUNDAVAL (REDIRECCIONA A LA VISTA REACT INTERNA) */}
               <div className="service-card">
                 <div className="card-image-container">
                   <img 
@@ -89,7 +90,13 @@ function App() {
                 <div className="card-body">
                   <h3>Fundaval</h3>
                   <p>{t('subdomains.fundaval.description', 'Contenido dinámico, podcasts, blogs y videos autónomos.')}</p>
-                  <a href="https://fundaval.orientese.com" className="subdomain-link">fundaval.orientese.com →</a>
+                  <button 
+                    className="btn-link-inline subdomain-link" 
+                    onClick={() => setView('fundaval')}
+                    style={{ padding: 0, textAlign: 'left', cursor: 'pointer' }}
+                  >
+                    fundaval.orientese.com →
+                  </button>
                 </div>
               </div>
 
@@ -162,8 +169,20 @@ function App() {
               </div>
             </section>
           </>
-        ) : (
-          /* 3. FORMULARIO AUTH (LOGIN / REGISTRO) */
+        )}
+
+        {/* VISTA INTERNA DE FUNDAVAL */}
+        {view === 'fundaval' && (
+          <div className="fundaval-container">
+            <button className="btn-back-home" onClick={() => setView('home')}>
+              {t('common.backHome', '← Volver al inicio')}
+            </button>
+            <FundavalView />
+          </div>
+        )}
+
+        {/* VISTA AUTH (LOGIN / REGISTRO) */}
+        {view === 'auth' && (
           <div className="auth-container">
             <button className="btn-back-home" onClick={() => setView('home')}>
               {t('common.backHome', '← Volver al inicio')}
