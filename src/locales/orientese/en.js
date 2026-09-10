@@ -1,0 +1,63 @@
+// EXPORTACIÓN DE TRADUCCIONES EN INGLÉS PARA EL SUBDOMINIO ORIENTESE
+export default {
+  "hero": {
+    "title": "Orientese Portal",
+    "subtitle": "Connecting people and projects through our specialized subdomains."
+  },
+  "subdomains": {
+    "accessButton": "Access site",
+    "drones": {
+      "description": "Aerial services, photography, technical inspection, and pilot training."
+    },
+    "ofertas": {
+      "description": "Exclusive promotions, discount coupons, and special opportunities."
+    },
+    "aquaviarios": {
+      "description": "Information, services, and interaction for the maritime sector."
+    },
+    "organizacoes": {
+      "title": "organizacoes.orientese.com",
+      "description": "Institutional management, partnerships, and associated network."
+    },
+    "turismo": {
+      "description": "Travel guides, cultural events, and featured tourist routes."
+    },
+    "artes": {
+      "title": "artes.orientese.com",
+      "description": "Cultural space for artists, exhibitions, and event promotion."
+    }
+  },
+  "common": {
+    "back": "Back to home",
+    "backHome": "← Back to home"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "Content of the Orientese Portal about page..."
+  },
+  "auth": {
+    "info": {
+      "title": "Join the Orientese platform",
+      "subtitle": "Create your account to access all our services.",
+      "ofertas": "Access to exclusive promotions and coupons.",
+      "drones": "Aerial services and inspection management.",
+      "aquaviarios": "Interaction with the maritime sector.",
+      "panelTitle": "Unified Panel",
+      "panelDesc": "Manage your projects from a single place."
+    },
+    "form": {
+      "registerTitle": "Create Account",
+      "registerSubtitle": "Enter your details below",
+      "fullNameLabel": "Full name",
+      "fullNamePlaceholder": "Your name",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm password",
+      "registerButton": "Register"
+    },
+    "switch": {
+      "hasAccount": "Already have an account?",
+      "loginBtn": "Log in"
+    }
+  }
+};

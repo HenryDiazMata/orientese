@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// OBTENCIÓN DE LA RUTA ABSOLUTA DEL ARCHIVO EN ES MODULES
+// OBTENCIÓN DE LA RUTA ABSOLUTA EN ES MODULES
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -11,7 +11,7 @@ const rutaPublic = path.join(__dirname, 'public');
 const rutaBase = path.join(rutaPublic, 'subdominios', 'fundaval.orientese.com', 'publicaciones');
 const rutaSalida = path.join(__dirname, 'src', 'data', 'fundavalData.json');
 
-// LIMPIEZA DE ETIQUETAS HTML Y CARACTERES DE FRONTPAGE
+// LIMPIEZA DE ETIQUETAS HTML Y ENTIDADES
 function limpiarTextoHTML(html) {
   return html
     .replace(/<style[\s\S]*?<\/style>/gi, '')
@@ -25,15 +25,17 @@ function limpiarTextoHTML(html) {
     .trim();
 }
 
-// LECTURA DE ARCHIVOS HTML CON SOPORTE PARA LATIN1 / UTF8
-function leerArchivoConCodificacionCorrecta(rutaAbsoluta) {
-  const buffer = fs.readFileSync(rutaAbsoluta);
-  const textoPrueba = buffer.toString('binary');
-  const esUtf8 = textoPrueba.includes('charset=utf-8') || textoPrueba.includes('charset=UTF-8');
-  return buffer.toString(esUtf8 ? 'utf-8' : 'latin1');
+// FORMATO PARA CONVERTIR BYTES A TAMAÑO LEGIBLE
+function obtenerTamanoArchivo(bytes) {
+  if (bytes === 0) return '0 KB';
+  const k = 1024;
+  const dm = 1;
+  const tamanos = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + tamanos[i];
 }
 
-// ESCANEO RECURSIVO DE DIRECTORIOS Y CONSTRUCCIÓN DE RUTAS PÚBLICAS LIMPIAS
+// ESCANEO RECURSIVO CON AÑO DE CREACIÓN Y PESO DE ARCHIVO
 function escanearDirectorio(dir, lista = []) {
   if (!fs.existsSync(dir)) return lista;
 
@@ -47,40 +49,33 @@ function escanearDirectorio(dir, lista = []) {
       escanearDirectorio(rutaAbsoluta, lista);
     } else {
       const ext = path.extname(archivo).toLowerCase();
-      const lote = dir.includes('1er_lote') ? '1er Lote' : dir.includes('2do_lote') ? '2do Lote' : 'General / Raíz';
       const tituloLimpio = path.basename(archivo, ext).replace(/[-_]/g, ' ');
-
-      // CONVIERTE LA RUTA ABSOLUTA EN RUTA PÚBLICA DESDE LA CARPETA PUBLIC
-      // CORRIGE BARRAS INVERTIDAS Y REEMPLAZA CARACTERES
       const rutaRelativa = path.relative(rutaPublic, rutaAbsoluta).replace(/\\/g, '/');
       const urlWebLimpia = '/' + encodeURI(rutaRelativa);
+      
+      // EXTRAE EL AÑO DE LA FECHA DE MODIFICACIÓN/CREACIÓN
+      const anoCreacion = stat.mtime.getFullYear().toString();
+      const pesoLegible = obtenerTamanoArchivo(stat.size);
 
       if (ext === '.htm' || ext === '.html') {
-        try {
-          const contenidoBruto = leerArchivoConCodificacionCorrecta(rutaAbsoluta);
-          const textoLimpio = limpiarTextoHTML(contenidoBruto);
-
-          lista.push({
-            id: Buffer.from(rutaAbsoluta).toString('base64').substring(0, 10),
-            titulo: tituloLimpio.toUpperCase(),
-            categoria: 'Formación y Documentos',
-            lote: lote,
-            tipo: 'documento',
-            contenido: textoLimpio.substring(0, 4000),
-            urlHtml: urlWebLimpia
-          });
-        } catch (err) {
-          console.error(`ERROR AL LEER ARCHIVO: ${archivo}`, err.message);
-        }
+        lista.push({
+          id: Buffer.from(rutaAbsoluta).toString('base64').substring(0, 10),
+          titulo: tituloLimpio.toUpperCase(),
+          categoria: 'Formación y Documentos',
+          ano: anoCreacion,
+          peso: pesoLegible,
+          tipo: 'documento',
+          urlHtml: urlWebLimpia
+        });
       } else if (ext === '.pdf') {
         lista.push({
           id: Buffer.from(rutaAbsoluta).toString('base64').substring(0, 10),
-          titulo: `[PDF] ${tituloLimpio.toUpperCase()}`,
+          titulo: tituloLimpio.toUpperCase(),
           categoria: 'Documentos PDF',
-          lote: lote,
+          ano: anoCreacion,
+          peso: pesoLegible,
           tipo: 'pdf',
-          urlPdf: urlWebLimpia,
-          contenido: 'DOCUMENTO EN FORMATO PDF DISPONIBLE PARA SU LECTURA DIRECTA O DESCARGA.'
+          urlPdf: urlWebLimpia
         });
       }
     }
@@ -89,7 +84,7 @@ function escanearDirectorio(dir, lista = []) {
   return lista;
 }
 
-console.log('--- REGENERANDO RUTAS PÚBLICAS LIMPIAS PARA VITE ---');
+console.log('--- REGENERANDO RUTAS Y METADATOS (AÑO Y PESO) PARA VITE ---');
 const resultados = escanearDirectorio(rutaBase);
 
 if (resultados.length > 0) {
@@ -98,5 +93,5 @@ if (resultados.length > 0) {
     fs.mkdirSync(carpetaData, { recursive: true });
   }
   fs.writeFileSync(rutaSalida, JSON.stringify(resultados, null, 2), 'utf-8');
-  console.log(`✅ ¡ÉXITO! SE REGENERARON ${resultados.length} PUBLICACIONES CON RUTAS PÚBLICAS VÁLIDAS.`);
+  console.log(`✅ ¡ÉXITO! SE REGENERARON ${resultados.length} PUBLICACIONES CON AÑO Y PESO.`);
 }
