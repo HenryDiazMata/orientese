@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 
-// IMPORTACIÓN DE COMPONENTES DESDE LA SUBCARPERTA MODULAR AdminEditar
+// IMPORTACIÓN DE COMPONENTES MODULARES DESDE AdminEditar
 import SubirDocumentoTab from './AdminEditar/SubirDocumentoTab';
-import EditarDocumentoTab from './AdminEditar/EditarDocumentoTab';
-import EnlacesExternosTab from './AdminEditar/EnlacesExternosTab';
 import MultimediaTab from './AdminEditar/MultimediaTab';
 import ServiciosTab from './AdminEditar/ServiciosTab';
 import ContactoTab from './AdminEditar/ContactoTab';
 
 const MAX_ADMINS = 3;
 
-// COMPONENTE PRINCIPAL ORQUESTADOR DEL PANEL
+// COMPONENTE PRINCIPAL ORQUESTADOR DEL PANEL ADMINISTRATIVO
 export default function AdminPage({ 
   esMovil, 
   documentos, 
@@ -242,7 +240,7 @@ export default function AdminPage({
           fontWeight: 'BOLD',
           fontSize: '0.85rem',
           display: 'flex',
-          justifyContent: 'space-between',
+          justify: 'space-between',
           alignItems: 'center'
         }}>
           <span>{mensajeNotificacion.texto}</span>
@@ -284,12 +282,10 @@ export default function AdminPage({
         </div>
       )}
 
-      {/* MENÚ DE SECCIONES DE NAVEGACIÓN */}
+      {/* MENÚ SIMPLIFICADO DE 4 SECCIONES UNIFICADAS */}
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
         {[
           { id: 'subir_doc', label: '📤 SUBIR NUEVO DOCUMENTO' },
-          { id: 'editar_doc', label: '✏️ EDITAR DOCUMENTOS' },
-          { id: 'enlaces_ext', label: '🔗 SUBIR Y EDITAR ENLACES' },
           { id: 'multimedia', label: '🎙️ PODCAST / VIDEO / BLOGS' },
           { id: 'servicios', label: '💼 MODIFICAR SERVICIOS' },
           { id: 'contacto', label: '📞 SEDE Y CONTACTO' }
@@ -314,10 +310,8 @@ export default function AdminPage({
         ))}
       </div>
 
-      {/* RENDERIZADO CONDICIONAL DE SUBCOMPONENTES */}
+      {/* RENDERIZADO CONDICIONAL DE SUBCOMPONENTES UNIFICADOS */}
       {seccionAdmin === 'subir_doc' && <SubirDocumentoTab adminLogueado={adminLogueado} documentos={documentos} setDocumentos={setDocumentos} mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}
-      {seccionAdmin === 'editar_doc' && <EditarDocumentoTab adminLogueado={adminLogueado} documentos={documentos} setDocumentos={setDocumentos} mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}
-      {seccionAdmin === 'enlaces_ext' && <EnlacesExternosTab adminLogueado={adminLogueado} documentos={documentos} setDocumentos={setDocumentos} mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}
       {seccionAdmin === 'multimedia' && <MultimediaTab mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}
       {seccionAdmin === 'servicios' && <ServiciosTab serviciosFundaval={serviciosFundaval} setServiciosFundaval={setServiciosFundaval} mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}
       {seccionAdmin === 'contacto' && <ContactoTab datosContacto={datosContacto} setDatosContacto={setDatosContacto} mostrarNotificacion={mostrarNotificacion} esMovil={esMovil} />}

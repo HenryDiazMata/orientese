@@ -1,36 +1,37 @@
 import React, { useState } from 'react';
 
-// COMPONENTE PARA LA CARGA DE NUEVOS DOCUMENTOS AL SUBDOMINIO
+// ============================================================================
+// COMPONENTE: CARGA DE NUEVOS DOCUMENTOS (RUTA POR DEFECTO AUTOMÁTICA)
+// ============================================================================
 export default function SubirDocumentoTab({ adminLogueado, documentos, setDocumentos, mostrarNotificacion, esMovil }) {
   const [subirTitulo, setSubirTitulo] = useState('');
   const [subirFecha, setSubirFecha] = useState(new Date().toISOString().split('T')[0]);
   const [subirFormato, setSubirFormato] = useState('pdf');
   const [subirOrigenPeso, setSubirOrigenPeso] = useState('');
   const [subirResumen, setSubirResumen] = useState('');
-  const [subirRutaManual, setSubirRutaManual] = useState('');
   const [subirArchivoLocal, setSubirArchivoLocal] = useState(null);
+  const [rutaGenerada, setRutaGenerada] = useState('');
 
-  // MANEJAR LA SELECCIÓN DE ARCHIVOS Y GENERAR LA RUTA POR DEFECTO
+  // SELECCIONAR ARCHIVO Y FIJAR LA RUTA POR DEFECTO EN LA CARPETA PUBLIC DE FUNDAVAL
   const handleSeleccionarArchivo = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSubirArchivoLocal(file);
       setSubirOrigenPeso(`LOCAL (${(file.size / (1024 * 1024)).toFixed(2)} MB)`);
-      // GENERA LA RUTA RELATIVA EXACTA PARA EVITAR REDIRECCIONES AL DOMINIO PRINCIPAL
-      setSubirRutaManual(`/subdominios/fundaval.orientese.com/publicaciones/${file.name}`);
+      
+      // RUTA ESTÁTICA FIXA ASIGNADA AUTOMÁTICAMENTE
+      const rutaDefecto = `/subdominios/fundaval.orientese.com/Publicaciones/${file.name}`;
+      setRutaGenerada(rutaDefecto);
     }
   };
 
-  // REGISTRAR Y GUARDAR EL DOCUMENTO EN LA LISTA
+  // REGISTRAR DOCUMENTO CON LA RUTA POR DEFECTO
   const handleGuardarNuevoDocumento = (e) => {
     e.preventDefault();
     if (!subirTitulo.trim()) return;
 
     const fechaActual = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
-    
-    // DEFINIR RUTA DEFINITIVA DEL ARCHIVO
-    const rutaDefinitiva = subirRutaManual.trim() || 
-      (subirArchivoLocal ? `/subdominios/fundaval.orientese.com/publicaciones/${subirArchivoLocal.name}` : '');
+    const rutaFinal = rutaGenerada || `/subdominios/fundaval.orientese.com/Publicaciones/documento_${Date.now()}.pdf`;
 
     const nuevoDoc = {
       id: Date.now().toString(),
@@ -40,15 +41,12 @@ export default function SubirDocumentoTab({ adminLogueado, documentos, setDocume
       fechaCarga: subirFecha,
       peso: subirOrigenPeso || 'ARCHIVO SUBIDO',
       tipo: subirFormato,
-      
-      // MANTENER LA URL HOMOGÉNEA EN TODOS LOS CAMPOS POSIBLES
-      url: rutaDefinitiva,
-      urlPdf: rutaDefinitiva,
-      urlHtml: rutaDefinitiva,
-      
+      url: rutaFinal,
+      urlPdf: rutaFinal,
+      urlHtml: rutaFinal,
       resumen: subirResumen.trim(),
       contenido: subirResumen.trim(),
-      creadoPor: adminLogueado.usuario,
+      creadoPor: adminLogueado ? (adminLogueado.usuario || adminLogueado.nombre) : 'ADMIN',
       fechaCreacion: fechaActual
     };
 
@@ -56,43 +54,40 @@ export default function SubirDocumentoTab({ adminLogueado, documentos, setDocume
     setDocumentos(listaNueva);
     localStorage.setItem('fundaval_docs_custom', JSON.stringify(listaNueva));
     
-    mostrarNotificacion('✅ DOCUMENTO REGISTRADO CORRECTAMENTE EN EL SUBDOMINIO.');
+    mostrarNotificacion('✅ DOCUMENTO REGISTRADO CORRECTAMENTE CON SU RUTA POR DEFECTO.');
     setSubirTitulo('');
     setSubirResumen('');
     setSubirOrigenPeso('');
-    setSubirRutaManual('');
+    setRutaGenerada('');
     setSubirArchivoLocal(null);
   };
 
   return (
-    <form onSubmit={handleGuardarNuevoDocumento} style={{ display: 'grid', gap: '1.25rem', maxWidth: '800px', backgroundColor: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+    <form onSubmit={handleGuardarNuevoDocumento} style={{ display: 'grid', gap: '1.25rem', maxWidth: '850px', backgroundColor: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
       <h3 style={{ margin: 0, color: '#047857', fontSize: '1.05rem', borderLeft: '4px solid #059669', paddingLeft: '0.5rem' }}>
-        📤 CARGAR NUEVO DOCUMENTO AL SUBDOMINIO (1 ARCHIVO POR VEZ)
+        📤 CARGAR NUEVO DOCUMENTO AL SUBDOMINIO
       </h3>
 
-      <div style={{ backgroundColor: '#ecfdf5', border: '1px solid #6ee7b7', padding: '0.75rem 1rem', borderRadius: '6px', fontSize: '0.8rem', color: '#065f46' }}>
-        📌 <strong>IMPORTANTE:</strong> ASEGÚRESE DE QUE LA RUTA COINCIDA CON LA UBICACIÓN EN EL SUBDOMINIO PARA QUE EL BOTÓN "LEER" NO REDIRIJA AL DOMINIO PRINCIPAL.
+      <div style={{ backgroundColor: '#fffbe8', border: '1px solid #ffe58f', padding: '0.85rem 1rem', borderRadius: '6px', fontSize: '0.82rem', color: '#856404', lineHeight: '1.5' }}>
+        💡 <strong>POLÍTICA DE GESTIÓN DE DOCUMENTOS:</strong><br />
+        Si requiere realizar correcciones de ortografía, fechas o bibliografía a un documento publicado, <u>edítelo en su procesador de texto (Word)</u>, elimine el registro previo y suba el archivo corregido.
       </div>
 
       <div>
         <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 'BOLD', color: '#334155', marginBottom: '0.3rem' }}>
-          SELECCIONAR ARCHIVO DESDE SU DISPOSITIVO:
+          SELECCIONAR ARCHIVO (PDF / DOCX):
         </label>
-        <input type="file" accept=".pdf,.docx,.txt" onChange={handleSeleccionarArchivo} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#ffffff', fontSize: '0.85rem', boxSizing: 'border-box' }} />
+        <input type="file" accept=".pdf,.docx,.txt" onChange={handleSeleccionarArchivo} required style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #cbd5e1', backgroundColor: '#ffffff', fontSize: '0.85rem', boxSizing: 'border-box' }} />
       </div>
 
-      <div>
-        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 'BOLD', color: '#334155', marginBottom: '0.3rem' }}>
-          RUTA INTERNA EN EL SUBDOMINIO O URL DIRECTA:
-        </label>
-        <input 
-          type="text" 
-          placeholder="/subdominios/fundaval.orientese.com/publicaciones/mi_archivo.pdf" 
-          value={subirRutaManual} 
-          onChange={(e) => setSubirRutaManual(e.target.value)} 
-          required
-          style={{ width: '100%', padding: '0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.9rem', boxSizing: 'border-box' }} 
-        />
+      {/* DESTINO AUTOMÁTICO ASIGNADO POR DEFECTO */}
+      <div style={{ backgroundColor: '#f0f9ff', border: '1px solid #bae6fd', padding: '0.75rem 1rem', borderRadius: '6px' }}>
+        <span style={{ fontSize: '0.8rem', fontWeight: 'BOLD', color: '#0369a1', display: 'block' }}>
+          📁 DESTINO ASIGNADO AUTOMÁTICAMENTE EN SERVIDOR:
+        </span>
+        <code style={{ fontSize: '0.85rem', color: '#0f172a', wordBreak: 'break-all' }}>
+          {rutaGenerada || '/subdominios/fundaval.orientese.com/Publicaciones/[nombre_archivo]'}
+        </code>
       </div>
 
       <div>
@@ -126,7 +121,7 @@ export default function SubirDocumentoTab({ adminLogueado, documentos, setDocume
       </div>
 
       <button type="submit" style={{ padding: '0.85rem', backgroundColor: '#059669', color: '#ffffff', border: 'none', borderRadius: '8px', fontWeight: 'BOLD', cursor: 'pointer', fontSize: '0.9rem' }}>
-        💾 PUBLICAR EN SUBDOMINIO
+        💾 PUBLICAR DOCUMENTO EN EL SUBDOMINIO
       </button>
     </form>
   );
