@@ -1,297 +1,255 @@
 import React, { useState } from 'react';
 
-// LÍMITE DE DESCARGAS DIARIAS PERMITIDAS
-const LIMITE_DESCARGAS_DIARIAS = 5;
-
-export default function DocumentosPage({ esMovil, documentos }) {
-  // ESTADOS DE FILTRADO Y BÚSQUEDA
+// ============================================================================
+// COMPONENTE PÚBLICO: SECCIÓN DE DOCUMENTOS FUNDAVAL (VISTA SPLIT / ASIDE)
+// ESTE DISEÑO DE 2 COLUMNAS APLICA ÚNICAMENTE PARA ESTA VISTA DE DOCUMENTOS
+// ============================================================================
+export default function DocumentosPage({ esMovil, documentos = [] }) {
+  
+  // --------------------------------------------------------------------------
+  // ESTADOS LOCALES PARA BÚSQUEDA, FILTROS Y SELECCIÓN DE DOCUMENTO ACTIVO
+  // --------------------------------------------------------------------------
   const [busqueda, setBusqueda] = useState('');
-  const [filtroAnoInput, setFiltroAnoInput] = useState('');
-  const [todosLosAnos, setTodosLosAnos] = useState(true);
+  const [anoFiltro, setAnoFiltro] = useState('');
+  
+  // ALMACENA EL DOCUMENTO QUE SE ESTÁ LEYENDO EN EL VISOR DE LA DERECHA (POR DEFECTO EL PRIMERO SI EXISTE)
+  const [docSeleccionado, setDocSeleccionado] = useState(documentos.length > 0 ? documentos[0] : null);
 
-  // ESTADOS DE PAGINACIÓN
-  const [paginaActual, setPaginaActual] = useState(1);
-  const [itemsPorPagina, setItemsPorPagina] = useState(10);
+  // --------------------------------------------------------------------------
+  // HELPER: CONSTRUYE LA RUTA ESTÁTICA LOCAL EXACTA DENTRO DE LA CARPETA PUBLIC
+  // CORRIGE LA MAYÚSCULA EN 'Publicaciones' Y CODIFICA ESPACIOS/CARACTERES
+  // --------------------------------------------------------------------------
+  const resolverRutaLocal = (rutaOriginal) => {
+    if (!rutaOriginal || typeof rutaOriginal !== 'string') return null;
+    let limpia = rutaOriginal.trim();
 
-  // CONTROL LOCAL DE DESCARGAS REALIZADAS EN EL DÍA
-  const [descargasHoy, setDescargasHoy] = useState(() => {
-    const guardadas = localStorage.getItem('fundaval_descargas_hoy');
-    return guardadas ? parseInt(guardadas, 10) : 0;
-  });
+    // SI YA VIENE COMO URL ABSOLUTA HTTP/HTTPS SE MANTIENE
+    if (limpia.startsWith('http://') || limpia.startsWith('https://')) return limpia;
 
-  // MANEJADOR DE DESCARGAS
-  const handleDescargar = (e) => {
-    if (descargasHoy >= LIMITE_DESCARGAS_DIARIAS) {
-      e.preventDefault();
-      alert(`⚠️ HA ALCANZADO EL LÍMITE MÁXIMO DE ${LIMITE_DESCARGAS_DIARIAS} DESCARGAS DIARIAS PERMITIDAS. VUELVA A INTENTARLO MAÑANA.`);
-      return;
+    // CORREGIMOS CASOS DE MINÚSCULA 'publicaciones' A MAYÚSCULA 'Publicaciones' SEGÚN ESTRUCTURA EN PUBLIC
+    limpia = limpia.replace('/publicaciones/', '/Publicaciones/');
+
+    // ASEGURAMOS QUE LA RUTA COMIENCE CON SLASH / PARA APUNTAR A LA RAÍZ DE LA CARPETA PUBLIC
+    if (!limpia.startsWith('/')) {
+      limpia = '/' + limpia;
     }
 
-    const nuevoTotal = descargasHoy + 1;
-    setDescargasHoy(nuevoTotal);
-    localStorage.setItem('fundaval_descargas_hoy', nuevoTotal.toString());
-  };
-
-  // MANEJADOR PARA SELECCIONAR "TODOS LOS AÑOS"
-  const handleTodosLosAnos = () => {
-    setTodosLosAnos(true);
-    setFiltroAnoInput('');
-    setPaginaActual(1);
-  };
-
-  // MANEJADOR PARA CAMBIO EN EL INPUT DE AÑO
-  const handleAnoInputChange = (e) => {
-    const valor = e.target.value;
-    setFiltroAnoInput(valor);
-    if (valor.trim() !== '') {
-      setTodosLosAnos(false);
-    } else {
-      setTodosLosAnos(true);
+    try {
+      // DECODIFICAMOS Y RE-CODIFICAMOS PARA SANTEAR ESPACIOS Y CARACTERES ESPECIALES EN CADA ARCHIVO
+      const decodificada = decodeURIComponent(limpia);
+      return encodeURI(decodificada);
+    } catch (e) {
+      return limpia;
     }
-    setPaginaActual(1);
   };
 
-  // LÓGICA DE FILTRADO DE DOCUMENTOS
+  // --------------------------------------------------------------------------
+  // LÓGICA DE FILTRADO DINÁMICO POR PALABRA CLAVE Y AÑO PARA EL ASIDE
+  // --------------------------------------------------------------------------
   const documentosFiltrados = documentos.filter((doc) => {
-    const textoBusqueda = busqueda.toLowerCase().trim();
-    const coincideTexto = !textoBusqueda || (doc.titulo || '').toLowerCase().includes(textoBusqueda);
-    const coincideAno = todosLosAnos || (doc.ano || '').includes(filtroAnoInput.trim());
-
+    const coincideTexto = doc.titulo.toLowerCase().includes(busqueda.toLowerCase().trim());
+    const coincideAno = anoFiltro === '' || (doc.ano && doc.ano.toString() === anoFiltro.trim());
     return coincideTexto && coincideAno;
   });
 
-  // LÓGICA DE PAGINACIÓN
-  const totalPaginas = Math.ceil(documentosFiltrados.length / itemsPorPagina) || 1;
-  const indiceInicio = (paginaActual - 1) * itemsPorPagina;
-  const documentosPaginados = documentosFiltrados.slice(indiceInicio, indiceInicio + itemsPorPagina);
-
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      
-      {/* SECCIÓN 1: CONTROLES SUPERIORES DE BÚSQUEDA Y FILTRADO EN UNA LÍNEA */}
-      <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-        <div style={{ display: 'flex', gap: '0.75rem', flexDirection: esMovil ? 'column' : 'row', alignItems: 'center', flexWrap: 'wrap' }}>
-          
-          {/* BUSCADOR DE TEXTO */}
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: esMovil ? '1fr' : '360px 1fr', // 2 COLUMNAS: ASIDE IZQUIERDO Y VISOR DERECHO
+      gap: '1.5rem',
+      alignItems: 'start',
+      minHeight: '75vh'
+    }}>
+
+      {/* ====================================================================
+          PANEL LATERAL IZQUIERDO (ASIDE): BUSCADOR, FILTROS Y CATÁLOGO DE DOCS
+          ==================================================================== */}
+      <aside style={{
+        backgroundColor: '#ffffff',
+        borderRadius: '10px',
+        border: '1px solid #cbd5e1',
+        padding: '1rem',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        maxHeight: esMovil ? 'auto' : '80vh',
+        overflowY: esMovil ? 'visible' : 'auto'
+      }}>
+        <div style={{ borderBottom: '2px solid #059669', paddingBottom: '0.75rem' }}>
+          <h3 style={{ margin: 0, fontSize: '1.05rem', color: '#0f172a' }}>
+            📚 CATÁLOGO DE DOCUMENTOS
+          </h3>
+          <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+            TOTAL REGISTROS: {documentosFiltrados.length}
+          </span>
+        </div>
+
+        {/* BÚSQUEDA Y FILTRO POR AÑO */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <input 
-            type="text"
-            placeholder="🔍 BUSCAR DOCUMENTO POR TÍTULO O PALABRA CLAVE..."
-            value={busqueda}
-            onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1); }}
-            style={{ padding: '0.7rem 1rem', borderRadius: '8px', border: '1px solid #cbd5e1', flex: 2, minWidth: esMovil ? '100%' : '280px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+            type="text" 
+            placeholder="🔍 BUSCAR TÍTULO..." 
+            value={busqueda} 
+            onChange={(e) => setBusqueda(e.target.value)} 
+            style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #059669', fontSize: '0.85rem', boxSizing: 'border-box' }} 
           />
-
-          {/* BOTÓN TODOS LOS AÑOS */}
-          <button
-            onClick={handleTodosLosAnos}
-            style={{
-              padding: '0.7rem 1.1rem',
-              border: '1px solid',
-              borderColor: todosLosAnos ? '#059669' : '#cbd5e1',
-              backgroundColor: todosLosAnos ? '#059669' : '#ffffff',
-              color: todosLosAnos ? '#ffffff' : '#475569',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              fontSize: '0.85rem',
-              whiteSpace: 'nowrap',
-              width: esMovil ? '100%' : 'auto'
-            }}
-          >
-            TODOS LOS AÑOS ({documentos.length})
-          </button>
-
-          {/* INPUT POR AÑO */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: esMovil ? '100%' : 'auto' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#64748b', whiteSpace: 'nowrap' }}>POR AÑO:</span>
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
             <input 
-              type="number"
-              placeholder="EJ: 2024"
-              value={filtroAnoInput}
-              onChange={handleAnoInputChange}
-              style={{ padding: '0.7rem', borderRadius: '8px', border: '1px solid #cbd5e1', width: esMovil ? '100%' : '110px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              type="text" 
+              placeholder="AÑO (EJ: 2026)" 
+              value={anoFiltro} 
+              onChange={(e) => setAnoFiltro(e.target.value)} 
+              style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.8rem', boxSizing: 'border-box' }} 
             />
+            {(busqueda || anoFiltro) && (
+              <button 
+                onClick={() => { setBusqueda(''); setAnoFiltro(''); }}
+                style={{ backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', padding: '0.5rem 0.75rem', fontSize: '0.75rem', fontWeight: 'BOLD', cursor: 'pointer' }}
+              >
+                LIMPIAR
+              </button>
+            )}
           </div>
-
-        </div>
-      </div>
-
-      {/* SECCIÓN 2: BARRA DE INFORMACIÓN DE RESULTADOS Y CONFIGURACIÓN DE PAGINACIÓN */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem', padding: '0 0.25rem' }}>
-        <div style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#1e293b' }}>
-          DOCUMENTOS ENCONTRADOS: <span style={{ color: '#059669', backgroundColor: '#ecfdf5', padding: '0.2rem 0.6rem', borderRadius: '6px', border: '1px solid #a7f3d0' }}>{documentosFiltrados.length}</span>
         </div>
 
-        {/* SELECTOR DE ÍTEMS POR PÁGINA (10, 25, 50) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#64748b' }}>
-          <span>MOSTRAR POR PÁGINA:</span>
-          {[10, 25, 50].map((cant) => (
-            <button
-              key={cant}
-              onClick={() => { setItemsPorPagina(cant); setPaginaActual(1); }}
-              style={{
-                padding: '0.35rem 0.65rem',
-                border: '1px solid',
-                borderColor: itemsPorPagina === cant ? '#0284c7' : '#cbd5e1',
-                backgroundColor: itemsPorPagina === cant ? '#0284c7' : '#ffffff',
-                color: itemsPorPagina === cant ? '#ffffff' : '#475569',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontWeight: itemsPorPagina === cant ? 'bold' : 'normal',
-                fontSize: '0.8rem'
-              }}
-            >
-              {cant}
-            </button>
-          ))}
-        </div>
-      </div>
+        {/* LISTADO SELECCIONABLE DE TARJETAS */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {documentosFiltrados.map((doc, index) => {
+            const esActivo = docSeleccionado && (docSeleccionado.id === doc.id && docSeleccionado.titulo === doc.titulo);
+            
+            return (
+              <div 
+                key={doc.id || index}
+                onClick={() => setDocSeleccionado(doc)}
+                style={{
+                  padding: '0.85rem',
+                  borderRadius: '6px',
+                  border: esActivo ? '2px solid #0284c7' : '1px solid #e2e8f0',
+                  backgroundColor: esActivo ? '#f0f9ff' : '#ffffff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: esActivo ? '0 2px 4px rgba(2, 132, 199, 0.15)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.3rem' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 'BOLD', backgroundColor: esActivo ? '#0284c7' : '#f1f5f9', color: esActivo ? '#ffffff' : '#475569', padding: '0.1rem 0.4rem', borderRadius: '3px' }}>
+                    {doc.tipo ? doc.tipo.toUpperCase() : 'PDF'}
+                  </span>
+                  <span style={{ fontSize: '0.65rem', backgroundColor: '#e2e8f0', color: '#334155', padding: '0.1rem 0.4rem', borderRadius: '3px' }}>
+                    {doc.lote || 'General'}
+                  </span>
+                </div>
+                <h4 style={{ margin: 0, fontSize: '0.88rem', color: esActivo ? '#0369a1' : '#1e293b', fontWeight: esActivo ? '700' : '600', lineHeight: '1.3' }}>
+                  {doc.titulo}
+                </h4>
+              </div>
+            );
+          })}
 
-      {/* SECCIÓN 3: LISTA DE DOCUMENTOS CON ALINEACIÓN TOTAL A LA IZQUIERDA */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '1.5rem' }}>
-        {documentosPaginados.map((doc) => (
-          <div 
-            key={doc.id}
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '10px',
-              padding: '1.15rem 1.25rem',
+          {documentosFiltrados.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '1.5rem', color: '#94a3b8', fontSize: '0.85rem' }}>
+              ❌ SIN COINCIDENCIAS
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* ====================================================================
+          ÁREA CENTRAL / DERECHA (VISOR INTEGRADO DE DOCUMENTO)
+          ==================================================================== */}
+      <main style={{
+        backgroundColor: '#ffffff',
+        borderRadius: '10px',
+        border: '1px solid #cbd5e1',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+        minHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }}>
+        {docSeleccionado ? (
+          <>
+            {/* ENCABEZADO DEL VISOR DE LA DERECHA */}
+            <div style={{
+              padding: '1.25rem',
+              backgroundColor: '#f8fafc',
+              borderBottom: '1px solid #e2e8f0',
               display: 'flex',
-              flexDirection: esMovil ? 'column' : 'row',
               justifyContent: 'space-between',
-              alignItems: esMovil ? 'flex-start' : 'center',
-              gap: '1rem',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
-            }}
-          >
-            {/* INFORMACIÓN DEL DOCUMENTO - ALINEACIÓN A LA IZQUIERDA */}
-            <div style={{ flex: 1, textAlign: 'left', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
-                <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '0.2rem 0.55rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                  AÑO {doc.ano || '2024'}
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem'
+            }}>
+              <div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 'BOLD', color: '#059669', textTransform: 'UPPERCASE' }}>
+                  LECTURA EN PANTALLA ({docSeleccionado.ano || '2026'})
                 </span>
-                <span style={{ backgroundColor: '#f1f5f9', color: '#475569', padding: '0.2rem 0.55rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: '500' }}>
-                  PESO: {doc.peso || 'S/D'}
-                </span>
-                <span style={{ backgroundColor: '#ecfdf5', color: '#047857', padding: '0.2rem 0.55rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                  {doc.tipo.toUpperCase()}
-                </span>
+                <h2 style={{ margin: '0.2rem 0 0 0', fontSize: '1.2rem', color: '#0f172a' }}>
+                  {docSeleccionado.titulo}
+                </h2>
               </div>
 
-              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1rem', lineHeight: '1.4', fontWeight: '700', textAlign: 'left' }}>
-                {doc.titulo}
-              </h3>
+              {/* BOTÓN DE DESCARGA DIRECTA DEL ARCHIVO FÍSICO */}
+              {resolverRutaLocal(docSeleccionado.urlPdf || docSeleccionado.urlHtml || docSeleccionado.url) && (
+                <a
+                  href={resolverRutaLocal(docSeleccionado.urlPdf || docSeleccionado.urlHtml || docSeleccionado.url)}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '0.55rem 1.1rem',
+                    backgroundColor: '#047857',
+                    color: '#ffffff',
+                    borderRadius: '6px',
+                    textDecoration: 'none',
+                    fontWeight: 'BOLD',
+                    fontSize: '0.8rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem'
+                  }}
+                >
+                  ⬇️ DESCARGAR ARCHIVO
+                </a>
+              )}
             </div>
 
-            {/* BOTONES DE ACCIÓN DIRECTA */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', width: esMovil ? '100%' : 'auto' }}>
-              <a 
-                href={doc.urlPdf || doc.urlHtml} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ 
-                  flex: esMovil ? 1 : 'initial',
-                  textAlign: 'center',
-                  padding: '0.6rem 1rem', 
-                  backgroundColor: '#0284c7', 
-                  color: '#ffffff', 
-                  borderRadius: '6px', 
-                  textDecoration: 'none', 
-                  fontWeight: 'bold', 
-                  fontSize: '0.8rem',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                🔗 LEER EN VENTANA NUEVA
-              </a>
-
-              <a 
-                href={doc.urlPdf || doc.urlHtml} 
-                download
-                onClick={handleDescargar}
-                style={{ 
-                  flex: esMovil ? 1 : 'initial',
-                  textAlign: 'center',
-                  padding: '0.6rem 1rem', 
-                  backgroundColor: '#059669', 
-                  color: '#ffffff', 
-                  borderRadius: '6px', 
-                  textDecoration: 'none', 
-                  fontWeight: 'bold', 
-                  fontSize: '0.8rem',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                ⬇️ DESCARGAR ARCHIVO
-              </a>
+            {/* CUERPO CENTRAL DE VISUALIZACIÓN */}
+            <div style={{ flex: 1, backgroundColor: '#f1f5f9', position: 'relative' }}>
+              {docSeleccionado.tipo === 'pdf' ? (
+                /* EMBUTIDO DIRECTO PARA ARCHIVOS PDF */
+                <iframe
+                  src={resolverRutaLocal(docSeleccionado.urlPdf || docSeleccionado.url)}
+                  title={docSeleccionado.titulo}
+                  style={{ width: '100%', height: '100%', minHeight: '70vh', border: 'none' }}
+                ></iframe>
+              ) : docSeleccionado.contenido && !docSeleccionado.contenido.includes("DOCUMENTO EN FORMATO PDF DISPONIBLE") ? (
+                /* CONTENIDO HTML O TEXTUAL CARGADO EN EL SISTEMA */
+                <div style={{ padding: '2.5rem', backgroundColor: '#ffffff', minHeight: '100%', boxSizing: 'border-box', color: '#334155', lineHeight: '1.7' }}>
+                  <div dangerouslySetInnerHTML={{ __html: docSeleccionado.contenido }}></div>
+                </div>
+              ) : (
+                /* EMBUTIDO PARA ARCHIVOS WEB HTML */
+                <iframe
+                  src={resolverRutaLocal(docSeleccionado.urlHtml || docSeleccionado.url)}
+                  title={docSeleccionado.titulo}
+                  style={{ width: '100%', height: '100%', minHeight: '70vh', border: 'none' }}
+                ></iframe>
+              )}
             </div>
-          </div>
-        ))}
-
-        {documentosFiltrados.length === 0 && (
-          <div style={{ backgroundColor: '#ffffff', padding: '3rem 1rem', textAlign: 'center', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#94a3b8' }}>
-            <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.5rem' }}>🔍</span>
-            NO SE ENCONTRARON DOCUMENTOS QUE COINCIDAN CON LOS CRITERIOS DE BÚSQUEDA.
+          </>
+        ) : (
+          /* PANTALLA INICIAL CUANDO NO HAY DOCUMENTO SELECCIONADO */
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', padding: '4rem 2rem', textAlign: 'center', color: '#64748b' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>👈</div>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a' }}>SELECCIONE UN DOCUMENTO DEL MENÚ LATERAL</h3>
+            <p style={{ maxWidth: '400px', fontSize: '0.9rem', margin: 0 }}>
+              Haga clic sobre cualquiera de los documentos de la lista de la izquierda para visualizar su contenido en este panel.
+            </p>
           </div>
         )}
-      </div>
-
-      {/* SECCIÓN 4: CONTROLES DE PAGINACIÓN */}
-      {totalPaginas > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setPaginaActual(p => Math.max(p - 1, 1))}
-            disabled={paginaActual === 1}
-            style={{
-              padding: '0.5rem 0.85rem',
-              borderRadius: '6px',
-              border: '1px solid #cbd5e1',
-              backgroundColor: paginaActual === 1 ? '#f1f5f9' : '#ffffff',
-              color: paginaActual === 1 ? '#94a3b8' : '#334155',
-              cursor: paginaActual === 1 ? 'not-allowed' : 'pointer',
-              fontWeight: 'bold',
-              fontSize: '0.8rem'
-            }}
-          >
-            ← ANTERIOR
-          </button>
-
-          <span style={{ fontSize: '0.85rem', color: '#475569', padding: '0 0.5rem' }}>
-            PÁGINA {paginaActual} DE {totalPaginas}
-          </span>
-
-          <button
-            onClick={() => setPaginaActual(p => Math.min(p + 1, totalPaginas))}
-            disabled={paginaActual === totalPaginas}
-            style={{
-              padding: '0.5rem 0.85rem',
-              borderRadius: '6px',
-              border: '1px solid #cbd5e1',
-              backgroundColor: paginaActual === totalPaginas ? '#f1f5f9' : '#ffffff',
-              color: paginaActual === totalPaginas ? '#94a3b8' : '#334155',
-              cursor: paginaActual === totalPaginas ? 'not-allowed' : 'pointer',
-              fontWeight: 'bold',
-              fontSize: '0.8rem'
-            }}
-          >
-            SIGUIENTE →
-          </button>
-        </div>
-      )}
-
-      {/* SECCIÓN 5: LEYENDA OPCIONAL DE PERMISOS DE USO Y LÍMITE DE DESCARGAS (UBICADA ABAJO) */}
-      <div style={{ backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '10px', padding: '1rem 1.25rem', marginTop: '1.5rem', fontSize: '0.8rem', color: '#065f46', textAlign: 'left' }}>
-        <p style={{ margin: '0 0 0.3rem 0', fontWeight: 'bold', fontSize: '0.85rem' }}>
-          📜 PERMISO DE USO Y DESCARGA LIBRE COMUNITARIA
-        </p>
-        <p style={{ margin: '0 0 0.5rem 0', lineHeight: '1.4' }}>
-          Usted tiene autorización para consultar y descargar libremente este material con fines educativos, sociales y de formación comunitaria.
-        </p>
-        <div style={{ fontWeight: 'bold', color: '#047857', borderTop: '1px solid #a7f3d0', paddingTop: '0.4rem' }}>
-          Disponibilidad de descargas hoy: {LIMITE_DESCARGAS_DIARIAS - descargasHoy} de {LIMITE_DESCARGAS_DIARIAS} permitidas.
-        </div>
-      </div>
+      </main>
 
     </div>
   );

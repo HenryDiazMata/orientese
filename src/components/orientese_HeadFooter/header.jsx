@@ -15,7 +15,7 @@ function Header({ user, onLogout, setView }) {
         <div className="header-brand-section">
           <div className="logo-container" onClick={() => setView('home')}>
             <img src="/logos/orientese/logorientc2018Azul01.gif" alt="Logo Orientese" className="brand-logo" />
-            <span className="tagline">{t('header.tagline', 'Información útil y agradable')}</span>
+          {/* <span className="tagline">{t('header.tagline', 'Información útil y agradable')}</span>*/}
           </div>
         </div>
 

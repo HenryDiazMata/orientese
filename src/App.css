@@ -20,7 +20,7 @@ body {
 }
 
 /* ==========================================
-   HEADER
+   HEADER --- HEADER FIJO EN LA PARTE SUPERIOR (STICKY) --- NUEVAS PROPIEDADES PARA DEJARLO FIJO ARRIBA
    ========================================== */
 .header {
   width: 100%;
@@ -28,6 +28,10 @@ body {
   border-bottom: 1px solid #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   padding: 14px 0;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 
 /* ---------------------------------------------------------------------
@@ -35,7 +39,7 @@ body {
    --------------------------------------------------------------------- */
 .header-inner {
   width: 95% !important;
-  max-width: 1400px !important; /* <--- EDITA ESTE VALOR EN PX PARA AMPLIAR O REDUCIR */
+  max-width: 1500px !important; /* <--- EDITA ESTE VALOR EN PX PARA AMPLIAR O REDUCIR */
   margin: 0 auto !important;
   padding: 0 20px !important;
   display: flex !important;
@@ -58,7 +62,7 @@ body {
 }
 
 .brand-logo {
-  height: 58px;
+  height: 54px;
   width: auto;
   object-fit: contain;
 }
@@ -170,13 +174,18 @@ body {
 /* ==========================================
    MAIN CONTENT
    ========================================== */
+
 .main-content {
   flex: 1;
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  
+  /* MARGEN SUPERIOR PARA EVITAR QUE EL HEADER FIJO TAPE EL CONTENIDO */
+  margin-top: 90px !important; 
   padding: 36px 0;
 }
+
 
 .services-grid {
   display: grid;
@@ -331,7 +340,7 @@ body {
 
 .footer-credits {
   font-size: 0.8rem;
-  color: #94a3b8; /* COLOR MÁS CLARO PARA SER TOTALMENTE LEGIBLE */
+  color: #a6b4c8; /* COLOR MÁS CLARO PARA SER TOTALMENTE LEGIBLE */
 }
 
 @media (max-width: 991px) {

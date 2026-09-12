@@ -1,13 +1,14 @@
+// IMPORTACIONES PRINCIPALES DE REACT Y HOOKS
 import React, { useState, useEffect } from 'react';
 
-// IMPORTACIÓN AUTOMÁTICA DE DATOS
+// IMPORTACIÓN AUTOMÁTICA DE DATOS LOCALES
 import fundavalData from '../data/fundavalData.json';
 
-// IMPORTACIÓN DE COMPONENTES ESTRUCTURALES
-import FundavalHeader from '../components/FundavalHeader';
-import FundavalFooter from '../components/FundavalFooter';
+// IMPORTACIÓN DE COMPONENTES ESTRUCTURALES DESDE LA NUEVA CARPETA FUNDAVAL_HEADERFOOTER
+import FundavalHeader from '../components/fundaval_HeaderFooter/FundavalHeader';
+import FundavalFooter from '../components/fundaval_HeaderFooter/FundavalFooter';
 
-// IMPORTACIÓN DE VISTAS AUTÓNOMAS
+// IMPORTACIÓN DE VISTAS AUTÓNOMAS DE FUNDAVAL
 import InicioPage from './fundaval/InicioPage';
 import DocumentosPage from './fundaval/DocumentosPage';
 import PodcastPage from './fundaval/PodcastPage';
@@ -18,6 +19,7 @@ import AdminPage from './fundaval/AdminPage';
 
 export default function FundavalView({ onNavigate }) {
 
+  // ESTADO PARA MANEJAR EL DISEÑO RESPONSIVO (MÓVIL / ESCRITORIO)
   const [esMovil, setEsMovil] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -26,10 +28,12 @@ export default function FundavalView({ onNavigate }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // ESTADOS GLOBALES DE LA VISTA FUNDAVAL
   const [pestanaActiva, setPestanaActiva] = useState('inicio');
   const [documentos, setDocumentos] = useState(fundavalData || []);
   const [modoAdmin, setModoAdmin] = useState(false);
 
+  // ESTADO DE SERVICIOS SOCIALES Y CAPACITACIONES
   const [serviciosFundaval, setServiciosFundaval] = useState([
     { id: 1, titulo: "CAPACITACIÓN AGRÍCOLA Y CAMPESINA", desc: "TALLERES EN TÉCNICAS SOSTENIBLES, MANEJO DE SUELOS, CULTIVOS ORGÁNICOS Y OPTIMIZACIÓN DE COSECHAS.", icono: "🌾" },
     { id: 2, titulo: "APOYO E IMPULSO AL PESCADOR ARTESANAL", desc: "ASESORÍA EN BUENAS PRÁCTICAS PESQUERAS, NORMATIVAS VIGENTES, CADENAS DE FRÍO Y ASOCIATIVIDAD COMUNITARIA.", icono: "🐟" },
@@ -37,6 +41,7 @@ export default function FundavalView({ onNavigate }) {
     { id: 4, titulo: "EMPRENDIMIENTO Y FORMACIÓN EN OFICIOS", desc: "ACOMPAÑAMIENTO EN EL DISEÑO DE PLANES DE NEGOCIO RURAL, FINANZAS BÁSICAS Y PROYECTOS PRODUCTIVOS.", icono: "💡" }
   ]);
 
+  // ESTADO DE DATOS INSTITUCIONALES DE CONTACTO
   const [datosContacto, setDatosContacto] = useState({
     direccion: "Av. Principal Comunitaria, Edificio Fundaval, Sede Central",
     telefono: "+58 (212) 555-0199 / +58 (414) 000-0000",
@@ -47,7 +52,7 @@ export default function FundavalView({ onNavigate }) {
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif', color: '#1e293b' }}>
       
-      {/* ENCABEZADO PRINCIPAL */}
+      {/* ENCABEZADO EXCLUSIVO DE FUNDAVAL DESDE FUNDAVAL_HEADERFOOTER */}
       <FundavalHeader 
         pestanaActiva={pestanaActiva}
         setPestanaActiva={setPestanaActiva}
@@ -56,10 +61,10 @@ export default function FundavalView({ onNavigate }) {
         totalDocumentos={documentos.length}
       />
 
-      {/* CONTENEDOR DE PÁGINAS */}
+      {/* CONTENEDOR CENTRAL DE PÁGINAS INTERNAS */}
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '1.5rem 1rem' }}>
         
-        {/* SI EL MODO ADMIN ESTÁ ACTIVO, SE MUESTRA ÚNICAMENTE EL PANEL DE ADMINISTRACIÓN */}
+        {/* VISTA CONDICIONAL: MODO ADMIN O PÁGINAS INTERNAS */}
         {modoAdmin ? (
           <AdminPage 
             esMovil={esMovil}
@@ -100,7 +105,7 @@ export default function FundavalView({ onNavigate }) {
 
       </div>
 
-      {/* PIE DE PÁGINA */}
+      {/* PIE DE PÁGINA EXCLUSIVO DE FUNDAVAL DESDE FUNDAVAL_HEADERFOOTER */}
       <FundavalFooter onNavigate={onNavigate} />
 
     </div>
