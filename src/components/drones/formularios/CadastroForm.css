@@ -1,0 +1,406 @@
+/* =========================================================
+   ARCHIVO UNICO DE ESTILO PARA TODOS LOS CADASTROS
+   SI UN FORMULARIO NO SE VE IGUAL, CASI SIEMPRE ES POR
+   STYLE={{ }} EN EL JSX O POR NO TENER ESTE IMPORT
+   ========================================================= */
+
+:root {
+  --cf-font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --cf-bg: #ffffff;
+  --cf-bg-soft: #f8fafc;
+  --cf-bg-muted: #f1f5f9;
+  --cf-text: #0f172a;
+  --cf-text-secondary: #334155;
+  --cf-text-muted: #64748b;
+  --cf-border: #e2e8f0;
+  --cf-border-strong: #cbd5e1;
+  --cf-primary: #1e3a5f;
+  --cf-primary-hover: #162d49;
+  --cf-focus: #2563eb;
+  --cf-success-bg: #f0fdf4;
+  --cf-success-border: #bbf7d0;
+  --cf-success-text: #166534;
+  --cf-error: #b91c1c;
+  --cf-danger-bg: #fef2f2;
+  --cf-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --cf-radius: 10px;
+}
+
+/* MODO OSCURO SI EL FORMULARIO TRAE data-theme="dark" */
+[data-theme="dark"] .cadastro-container,
+[data-theme="dark"].cadastro-container,
+[data-theme="dark"] .cadastro-pro-card,
+[data-theme="dark"] .formulario-card {
+  --cf-bg: #1e293b;
+  --cf-bg-soft: #0f172a;
+  --cf-bg-muted: #334155;
+  --cf-text: #f8fafc;
+  --cf-text-secondary: #e2e8f0;
+  --cf-text-muted: #94a3b8;
+  --cf-border: #334155;
+  --cf-border-strong: #475569;
+  --cf-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* CAJA PRINCIPAL DEL FORMULARIO */
+.cadastro-container,
+.cadastro-pro-card,
+.formulario-card {
+  max-width: 880px;
+  margin: 28px auto;
+  padding: 32px;
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  border: 1px solid var(--cf-border);
+  border-radius: var(--cf-radius);
+  box-shadow: var(--cf-shadow);
+  font-family: var(--cf-font);
+  line-height: 1.45;
+}
+
+/* TITULO SUPERIOR */
+.cadastro-header,
+.cadastro-pro-header {
+  text-align: left;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cf-border);
+}
+
+.cadastro-header h2,
+.cadastro-pro-header h2,
+.cadastro-container h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--cf-text);
+}
+
+.cadastro-header p,
+.cadastro-pro-header p {
+  margin: 0;
+  color: var(--cf-text-muted);
+  font-size: 0.95rem;
+}
+
+/* BLOQUE / SECCION */
+.form-section {
+  background: var(--cf-bg-soft);
+  border: 1px solid var(--cf-border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-section h3 {
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cf-border-strong);
+  color: var(--cf-text);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* GRILLA DE CAMPOS */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--cf-text-secondary);
+}
+
+/* INPUTS COMUNES */
+.form-group input,
+.form-group select,
+.form-group textarea,
+.cadastro-container input,
+.cadastro-container select,
+.cadastro-container textarea,
+.cadastro-pro-card input,
+.cadastro-pro-card select,
+.formulario-card input,
+.formulario-card select,
+.formulario-card textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--cf-border-strong);
+  border-radius: 6px;
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  font-size: 0.94rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.form-group textarea,
+.formulario-card textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.cadastro-container input:focus,
+.cadastro-container select:focus,
+.cadastro-container textarea:focus,
+.cadastro-pro-card input:focus,
+.cadastro-pro-card select:focus,
+.formulario-card input:focus,
+.formulario-card textarea:focus {
+  border-color: var(--cf-focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-group input[readonly],
+.form-group input:disabled,
+.input-disabled {
+  background: var(--cf-bg-muted);
+  color: var(--cf-text-muted);
+}
+
+/* CHECKBOX Y RADIO */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-item,
+.radio-item,
+.checkbox-label,
+.radio-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--cf-text-secondary);
+  cursor: pointer;
+}
+
+.checkbox-item input,
+.radio-item input,
+.checkbox-label input,
+.radio-label input {
+  width: auto;
+  margin-top: 3px;
+  accent-color: var(--cf-primary);
+}
+
+.help-text {
+  font-size: 0.78rem;
+  color: var(--cf-text-muted);
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 84px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--cf-text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* BOTONES */
+.btn-submit,
+.btn-salvar {
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px 16px;
+  background: var(--cf-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-submit:hover,
+.btn-salvar:hover {
+  background: var(--cf-primary-hover);
+}
+
+.btn-cancel,
+.btn-cancelar {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: #475569;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.form-actions .btn-salvar,
+.form-actions .btn-cancelar {
+  width: auto;
+  flex: 1;
+  margin-top: 0;
+}
+
+.success-card {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--cf-success-bg);
+  border: 1px solid var(--cf-success-border);
+  color: var(--cf-success-text);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.code-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: #166534;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.erro {
+  color: var(--cf-error);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 10px 0 14px;
+}
+
+.criterios-lista {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--cf-text-secondary);
+  font-size: 0.88rem;
+}
+
+.preview-photo {
+  width: 96px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px dashed var(--cf-border-strong);
+  margin-top: 8px;
+}
+
+.aviso-box {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--cf-border);
+  border-left: 4px solid #0284c7;
+  border-radius: 8px;
+  background: var(--cf-bg-soft);
+  font-size: 0.85rem;
+  color: var(--cf-text-muted);
+}
+
+.danger-zone {
+  margin-top: 28px;
+  padding: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: var(--cf-danger-bg);
+}
+
+.danger-zone h4 {
+  margin: 0 0 6px;
+  color: #991b1b;
+}
+
+.btn-excluir {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.formulario-card h3 {
+  margin: 0 0 18px;
+}
+
+.formulario-card form,
+.acoes-form {
+  display: grid;
+  gap: 12px;
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-caja {
+  background: var(--cf-bg);
+  color: var(--cf-text);
+  border: 1px solid var(--cf-border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  width: 90%;
+}
+
+@media (max-width: 640px) {
+  .cadastro-container,
+  .cadastro-pro-card,
+  .formulario-card {
+    margin: 12px;
+    padding: 18px;
+  }
+
+  .form-row,
+  .form-actions {
+    flex-direction: column;
+  }
+}

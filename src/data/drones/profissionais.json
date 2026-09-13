@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "tipo_cadastro": "piloto", 
+    "nome_completo": "Carlos Silva Santos",
+    "data_nascimento": "1992-05",
+    "nivel_experiencia": "avancado",
+    "categorias": ["agricola", "construcao"],
+    "formas_pagamento": ["Pix", "Parcelado", "PicPay"],
+    "residencia": {
+      "cidade": "Ribeirão Preto",
+      "estado": "SP"
+    },
+    "raio_atendimento_km": 150,
+    "contatos": {
+      "email": "carlos.drone@email.com",
+      "whatsapp": "+5516999999999",
+      "telegram": "@carlosdrone"
+    },
+    "foto_url": "https://link-da-imagem.com/foto3x4.jpg",
+    "avaliacao_estrelas": 4.8,
+    "disponibilidade": "desocupado",
+    "depoimentos": [
+      {"cliente": "Fazenda Boa Vista", "comentario": "Excelente mapeamento agrícola, muito profissional."}
+    ]
+  }
+]

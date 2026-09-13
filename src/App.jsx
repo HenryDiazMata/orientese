@@ -1,4 +1,8 @@
-// IMPORTACIONES PRINCIPALES DE REACT Y LIBRERÍAS
+// ==========================================
+// ARCHIVO COMPLETO: orientese/src/App.jsx
+// PORTAL CENTRAL Y ENRUTADOR DE SUBDOMINIOS
+// ==========================================
+
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './App.css';
@@ -10,6 +14,7 @@ import Header from './components/orientese_HeadFooter/Header';
 import Footer from './components/orientese_HeadFooter/Footer';
 import AuthPage from './components/AuthPage'; 
 import FundavalView from './views/FundavalView';
+import DronesView from './views/DronesView';
 
 function App() {
   const { t } = useTranslation('orientese');
@@ -17,32 +22,38 @@ function App() {
   // ESTADO DE NAVEGACIÓN DE VISTAS ('home', 'auth', 'drones', 'fundaval', etc.)
   const [view, setView] = useState('home');
 
-  // ESTADO DE SESIÓN DE USUARIO
+  // ESTADO DE SESIÓN DE USUARIO GLOBAL (PORTAL PRINCIPAL)
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('orientese_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('orientese_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
   });
 
-  // FUNCIÓN PARA CERRAR SESIÓN
+  // FUNCIÓN PARA CERRAR SESIÓN GLOBAL
   const handleLogout = () => {
     localStorage.removeItem('orientese_user');
     setUser(null);
     setView('home');
   };
 
-  // EVALÚA SI ESTAMOS EN EL SUBDOMINIO FUNDAVAL
+  // EVALÚA SI ESTAMOS EN SUBDOMINIOS QUE TIENEN NAVEGACIÓN PROPIA COMPLETA
   const esVistaFundaval = view.startsWith('fundaval');
+  const esVistaDrones = view.startsWith('drones');
+  const ocultarHeaderFooterGlobal = esVistaFundaval || esVistaDrones;
 
   return (
     <div className={`app-root ${esVistaFundaval ? 'fundaval-mode' : ''}`}>
       
-      {/* HEADER GENERAL DE ORIENTESE */}
-      {!esVistaFundaval && (
+      {/* HEADER GENERAL DE ORIENTESE (SE OCULTA EN FUNDAVAL Y DRONES) */}
+      {!ocultarHeaderFooterGlobal && (
         <Header user={user} onLogout={handleLogout} setView={setView} />
       )}
 
-      {/* CONTENEDOR PRINCIPAL */}
-      <main className={esVistaFundaval ? 'main-content-full' : 'main-content'}>
+      {/* CONTENEDOR PRINCIPAL: USA MAIN-CONTENT-FULL CUANDO SE OCULTA EL HEADER GLOBAL */}
+      <main className={ocultarHeaderFooterGlobal ? 'main-content-full' : 'main-content'}>
         
         {/* PORTADA PRINCIPAL / GRID DE TARJETAS DE SUBDOMINIOS */}
         {view === 'home' && (
@@ -135,19 +146,43 @@ function App() {
           </section>
         )}
 
-        {/* SUBDOMINIO FUNDAVAL: PASA LA FUNCIÓN PARA VOLVER AL PORTAL PRINCIPAL */}
+        {/* SUBDOMINIO FUNDAVAL */}
         {view === 'fundaval' && (
           <FundavalView onNavigate={(destino) => setView(destino || 'home')} />
         )}
 
-        {/* OTROS SUBDOMINIOS */}
-        {view === 'drones' && <div className="subdomain-view-container"><button onClick={() => setView('home')}>← Volver</button><h2>Módulo Drones</h2></div>}
-        {view === 'ofertas' && <div className="subdomain-view-container"><button onClick={() => setView('home')}>← Volver</button><h2>Módulo Ofertas</h2></div>}
-        {view === 'masoneria' && <div className="subdomain-view-container"><button onClick={() => setView('home')}>← Volver</button><h2>Módulo Masonería</h2></div>}
-        {view === 'aquaviarios' && <div className="subdomain-view-container"><button onClick={() => setView('home')}>← Volver</button><h2>Módulo Aquaviários</h2></div>}
-        {view === 'turismo' && <div className="subdomain-view-container"><button onClick={() => setView('home')}>← Volver</button><h2>Módulo Turismo</h2></div>}
+        {/* SUBDOMINIO DRONES */}
+        {view === 'drones' && (
+          <DronesView onNavigate={(destino) => setView(destino || 'home')} />
+        )}
 
-        {/* AUTENTICACIÓN */}
+        {/* OTROS SUBDOMINIOS */}
+        {view === 'ofertas' && (
+          <div className="subdomain-view-container">
+            <button onClick={() => setView('home')}>← Volver</button>
+            <h2>Módulo Ofertas</h2>
+          </div>
+        )}
+        {view === 'masoneria' && (
+          <div className="subdomain-view-container">
+            <button onClick={() => setView('home')}>← Volver</button>
+            <h2>Módulo Masonería</h2>
+          </div>
+        )}
+        {view === 'aquaviarios' && (
+          <div className="subdomain-view-container">
+            <button onClick={() => setView('home')}>← Volver</button>
+            <h2>Módulo Aquaviários</h2>
+          </div>
+        )}
+        {view === 'turismo' && (
+          <div className="subdomain-view-container">
+            <button onClick={() => setView('home')}>← Volver</button>
+            <h2>Módulo Turismo</h2>
+          </div>
+        )}
+
+        {/* AUTENTICACIÓN GLOBAL */}
         {view === 'auth' && (
           <AuthPage 
             onBackHome={() => setView('home')}
@@ -161,8 +196,8 @@ function App() {
 
       </main>
 
-      {/* FOOTER GENERAL DE ORIENTESE */}
-      {!esVistaFundaval && <Footer />}
+      {/* FOOTER GENERAL DE ORIENTESE (SE OCULTA EN FUNDAVAL Y DRONES) */}
+      {!ocultarHeaderFooterGlobal && <Footer />}
 
     </div>
   );

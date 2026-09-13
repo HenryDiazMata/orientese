@@ -1,0 +1,102 @@
+{
+  "ultimaAtualizacao": "2026-09-03",
+  "fonte": "Voos: máximos da faixa SP 2026. Manutenção: máximos da faixa Brasil 2026.",
+  "moedaBase": "BRL",
+  "taxaCambioReferencia": 5.10,
+  "BR": {
+    "SP": {
+      "Filmagem e Fotografia Profissional": {
+        "tipo": "diaria",
+        "referenciaBRL": 2500,
+        "unidade": "diária / evento",
+        "legenda": null
+      },
+      "Pulverização / Agrícola": {
+        "tipo": "hectare_variantes",
+        "variantes": {
+          "comAeronave": { "label": "Piloto com aeronave própria", "referenciaBRL": 120 },
+          "semAeronave": { "label": "Piloto sem aeronave própria", "referenciaBRL": 90 }
+        },
+        "unidade": "hectare",
+        "legenda": "O preço final depende do volume de produto aplicado e da complexidade da área."
+      },
+      "Mapeamento Aéreo / Fotogrametria": {
+        "tipo": "misto",
+        "diaria": { "referenciaBRL": 4000, "label": "Por diária de campo" },
+        "hectare": { "referenciaBRL": 40, "label": "Por hectare" },
+        "unidade": "diária ou hectare",
+        "legenda": null
+      },
+      "Inspeção Visual Predial/Industrial": {
+        "tipo": "diaria",
+        "referenciaBRL": 3500,
+        "unidade": "diária de trabalho",
+        "legenda": null
+      },
+      "Contagem de Gado / Rebanho": {
+        "tipo": "misto",
+        "diaria": { "referenciaBRL": 2500, "label": "Por voo / área" },
+        "hectare": { "referenciaBRL": 20, "label": "Por hectare" },
+        "unidade": "voo/área ou hectare",
+        "legenda": null
+      },
+      "Contagem de Ovinos / Caprinos": {
+        "tipo": "diaria",
+        "referenciaBRL": 2500,
+        "unidade": "voo / área",
+        "legenda": null
+      },
+      "Contagem de Frutos / Pomares": {
+        "tipo": "diaria",
+        "referenciaBRL": 3000,
+        "unidade": "área processada",
+        "legenda": "Valor referencial por área processada. Pode variar conforme densidade e complexidade do pomar."
+      },
+      "Monitoramento de Saúde da Lavoura (NDVI)": {
+        "tipo": "hectare",
+        "referenciaBRL": 50,
+        "unidade": "hectare",
+        "legenda": "Exige câmera multiespectral. Preço final pode variar conforme resolução e processamento solicitado."
+      },
+      "Mapeamento de Áreas de Pastagem": {
+        "tipo": "hectare",
+        "referenciaBRL": 35,
+        "unidade": "hectare",
+        "legenda": null
+      },
+      "Inspeção de Linhas de Transmissão / Torres": {
+        "tipo": "diaria",
+        "referenciaBRL": 6000,
+        "unidade": "diária",
+        "legenda": "Exige alto nível técnico e equipamentos específicos."
+      },
+      "Levantamento Topográfico / Ortomosaico": {
+        "tipo": "misto",
+        "diaria": { "referenciaBRL": 4500, "label": "Por projeto / diária" },
+        "hectare": { "referenciaBRL": 60, "label": "Por hectare" },
+        "unidade": "projeto ou hectare",
+        "legenda": null
+      }
+    },
+    "DEFAULT": {
+      "_comentario": "Fallback = mesmos valores de São Paulo"
+    }
+  },
+  "taxasGlobais": {
+    "taxaBaseVooBRL": 450,
+    "valorFotoBRL": 1.50,
+    "taxaDiagnosticoBRL": 350,
+    "manutencao2026": {
+      "diagnostico": 350,
+      "preventivaGeral": 600,
+      "homologacao": 150,
+      "agricolaCiclo1000ha": 12000,
+      "tetoPorPorte": {
+        "leve": 1800,
+        "medio": 4000,
+        "subpesado": 5500,
+        "pesado": 12000
+      }
+    }
+  }
+}
