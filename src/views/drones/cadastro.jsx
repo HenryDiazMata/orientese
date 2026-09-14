@@ -1,7 +1,7 @@
 // ==========================================
 // CADASTRO.JSX
-// PAGINA CENTRAL DE CARDS
-// AUXILIARES ABRE EL FORMULARIO AQUI, SIN IR A LA LISTA Y SIN MODAL
+// CARDS + TIEMPO APROXIMADO
+// PROFISSIONAIS NO CIERRA AL ENVIAR (EL FORM MUESTRA EXITO)
 // ==========================================
 
 import React, { useState } from 'react';
@@ -25,7 +25,6 @@ import CadastroConserto from "../../components/drones/formularios/CadastroConser
 import CadastroAuxiliar from "../../components/drones/formularios/CadastroAuxiliar";
 import CadastroProfissionais from "../../components/drones/formularios/CadastroProfissionais";
 import CadastroVagas from "../../components/drones/formularios/CadastroVagas";
-
 
 export default function Cadastro() {
   const { theme } = useTheme();
@@ -79,7 +78,6 @@ export default function Cadastro() {
     );
   }
 
-  // AUXILIAR: FORMULARIO COMPLETO AQUI, SIN LISTA Y SIN MODAL
   if (formularioAtivo === 'auxiliar') {
     return (
       <div style={{ padding: '30px 20px', maxWidth: '1000px', margin: '0 auto' }}>
@@ -116,11 +114,24 @@ export default function Cadastro() {
     );
   }
 
+  if (formularioAtivo === 'profissional') {
+    return (
+      <div style={{ padding: '30px 20px', maxWidth: '1000px', margin: '0 auto' }}>
+        <BotaoVoltar />
+        <CadastroProfissionais
+          onCancelar={() => setFormularioAtivo(null)}
+        />
+      </div>
+    );
+  }
+
   const opcoesCadastro = [
     {
       id: 'usuarios',
       titulo: 'Usuários / Contratantes',
       descricao: 'Fazendeiros, engenheiros, construtoras, ganadeiros e demais contratantes de serviços.',
+      tempo: 'Tempo aproximado: 6 a 8 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo.',
       icon: <UserPlus size={28} color="#0077C8" />,
       status: 'Disponível',
       formKey: 'usuario'
@@ -129,6 +140,8 @@ export default function Cadastro() {
       id: 'pilotos',
       titulo: 'Pilotos de Drones',
       descricao: 'Cadastro de pilotos profissionais (iniciantes e experientes) para operações aéreas.',
+      tempo: 'Tempo aproximado: 8 a 10 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo.',
       icon: <Plane size={28} color="#0077C8" />,
       status: 'Disponível',
       formKey: 'piloto'
@@ -137,6 +150,8 @@ export default function Cadastro() {
       id: 'auxiliares',
       titulo: 'Auxiliares de Campo',
       descricao: 'Profissionais de apoio em solo (observador visual, logística, baterias, etc.).',
+      tempo: 'Tempo aproximado: 6 a 8 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo.',
       icon: <Users size={28} color="#0077C8" />,
       status: 'Disponível',
       formKey: 'auxiliar'
@@ -145,6 +160,8 @@ export default function Cadastro() {
       id: 'manutencao',
       titulo: 'Manutenção',
       descricao: 'Técnicos especializados em manutenção preventiva e corretiva de drones.',
+      tempo: 'Tempo aproximado: 8 a 10 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo.',
       icon: <Wrench size={28} color="#0077C8" />,
       status: 'Disponível',
       formKey: 'manutencao'
@@ -153,6 +170,8 @@ export default function Cadastro() {
       id: 'consertos',
       titulo: 'Consertos (Oficinas-profissionais)',
       descricao: 'Oficinas e profissionais que realizam reparos e consertos de equipamentos.',
+      tempo: 'Tempo aproximado: 8 a 12 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo.',
       icon: <Settings size={28} color="#0077C8" />,
       status: 'Disponível',
       formKey: 'conserto'
@@ -160,14 +179,19 @@ export default function Cadastro() {
     {
       id: 'profissionais',
       titulo: 'Profissionais',
-      descricao: 'Profissionais afins do setor.',
+      descricao: 'Profissionais, técnicos, empregados e operários afins do setor.',
+      tempo: 'Tempo aproximado: 8 a 12 minutos.',
+      aviso: 'Formulário completo. Reserve um momento calmo. Dados pessoais só são vistos por quem for contratar.',
       icon: <Briefcase size={28} color="#0077C8" />,
-      status: 'Em breve'
+      status: 'Disponível',
+      formKey: 'profissional'
     },
     {
       id: 'vagas',
       titulo: 'Vagas',
       descricao: 'Busca de pessoal.',
+      tempo: 'Tempo aproximado: a definir.',
+      aviso: 'Em breve.',
       icon: <Megaphone size={28} color="#0077C8" />,
       status: 'Em breve'
     },
@@ -175,6 +199,8 @@ export default function Cadastro() {
       id: 'anunciantes',
       titulo: 'Anunciantes / Patrocinadores',
       descricao: 'Empresas que desejam anunciar no portal.',
+      tempo: 'Tempo aproximado: a definir.',
+      aviso: 'Em breve.',
       icon: <Megaphone size={28} color="#0077C8" />,
       status: 'Em breve'
     },
@@ -182,6 +208,8 @@ export default function Cadastro() {
       id: 'drones',
       titulo: 'Drones (Partes / acessórios)',
       descricao: 'Ofertas de drones e acessórios.',
+      tempo: 'Tempo aproximado: a definir.',
+      aviso: 'Em breve.',
       icon: <Megaphone size={28} color="#0077C8" />,
       status: 'Em breve'
     },
@@ -217,8 +245,14 @@ export default function Cadastro() {
               <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '700', color: textMain }}>
                 {opcao.titulo}
               </h3>
-              <p style={{ margin: '0 0 20px 0', fontSize: '14px', color: textMuted }}>
+              <p style={{ margin: '0 0 12px 0', fontSize: '14px', color: textMuted }}>
                 {opcao.descricao}
+              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', fontWeight: '700', color: textMain }}>
+                {opcao.tempo}
+              </p>
+              <p style={{ margin: '0 0 20px 0', fontSize: '12px', color: textMuted }}>
+                {opcao.aviso}
               </p>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

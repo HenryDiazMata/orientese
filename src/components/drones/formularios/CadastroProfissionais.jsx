@@ -1,87 +1,86 @@
 // ==========================================
-// CADASTROCONSERTO.JSX
-// TECNICO / OFICINA DE CONSERTO DE DRONES
-// DATOS CIVILES: PORTAL / AUTH (SOLO LECTURA)
-// ESTILO UNIFICADO: CADASTROFORM.CSS
-// PUNTOS 8 Y 9: SIMULADOR Y VALIDACION DEL SISTEMA
-// NO USA REACT-ROUTER
+// CADASTROPROFISSIONAIS.JSX
+// B+C: 4 PASOS + LISTAS EXTERNAS
+// EXITO EN PANTALLA (NO SALTA A LAS CARDS AL ENVIAR)
 // ==========================================
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTheme } from "../../../context/drones/ThemeContext";
 import { useAuth } from "../../../context/drones/AuthContext";
 import './CadastroForm.css';
+import {
+  PAISES,
+  FORMACION_ACADEMICA,
+  FORMACION_TECNICA,
+  FORMACION_BASICA,
+  AREAS_SERVICO,
+  VINCULOS,
+  DISPONIBILIDADES,
+  IDIOMAS,
+  NIVEIS_EXP,
+} from './cadastroProfissionaisListas';
 
-const STORAGE_KEY = 'cadastros_conserto';
+const STORAGE_KEY = 'cadastros_profissionais';
+const TOTAL_PASOS = 4;
 
-const PAISES = [
-  { id: 'BR', label: 'Brasil', doc: 'CNPJ da oficina ou CPF profissional' },
-  { id: 'PT', label: 'Portugal', doc: 'NIF / NIPC' },
-  { id: 'ES', label: 'España', doc: 'NIF / CIF' },
-  { id: 'FR', label: 'France', doc: 'SIRET / TVA' },
-  { id: 'IT', label: 'Italia', doc: 'Partita IVA' },
-  { id: 'US', label: 'United States', doc: 'EIN / Tax ID' },
-  { id: 'MX', label: 'México', doc: 'RFC' },
-  { id: 'AR', label: 'Argentina', doc: 'CUIT / CUIL' },
-  { id: 'CO', label: 'Colombia', doc: 'NIT' },
-  { id: 'CL', label: 'Chile', doc: 'RUT' },
-  { id: 'PE', label: 'Perú', doc: 'RUC' },
-  { id: 'PY', label: 'Paraguay', doc: 'RUC' },
-  { id: 'UY', label: 'Uruguay', doc: 'RUT' },
-  { id: 'OTHER', label: 'Other / Otro / Autre / Altro', doc: 'Tax ID local' },
-];
-
-const TIPOS_DRON = [
-  { id: 'consumer', label: 'Consumer / selfie / mini' },
-  { id: 'pro', label: 'Pro / cinema' },
-  { id: 'agricola', label: 'Agrícola' },
-  { id: 'fpv', label: 'FPV / corrida' },
-  { id: 'mapeo', label: 'Mapeo / RTK / lidar' },
-  { id: 'vtol', label: 'VTOL / carga' },
-];
-
-const SUBSISTEMAS = [
-  { id: 'fc', label: 'Controladora de voo / FC' },
-  { id: 'esc', label: 'ESC e motores' },
-  { id: 'gimbal', label: 'Gimbal e câmera' },
-  { id: 'radio', label: 'Rádio e enlace' },
-  { id: 'gnss', label: 'GNSS / IMU / compass' },
-  { id: 'bateria', label: 'Bateria e PDB' },
-  { id: 'frame', label: 'Frame, braços e hélices' },
-  { id: 'agric_bomba', label: 'Tanque / bomba agrícola' },
-];
-
-const NIVEIS = [
-  { id: 'diagnostico', label: 'Diagnóstico' },
-  { id: 'solda', label: 'Solda / SMD / micro solda' },
-  { id: 'firmware', label: 'Firmware e calibração' },
-  { id: 'optica', label: 'Óptica e alinhamento de gimbal' },
-  { id: 'recuperacao', label: 'Recuperação de dados / log' },
-];
-
-const MARCAS = ['DJI', 'Autel', 'Skydio', 'Parrot', 'Yamaha', 'FPV artesanal', 'Outras'];
-
-const IDIOMAS = [
-  { id: 'pt', label: 'Português' },
-  { id: 'es', label: 'Español' },
-  { id: 'en', label: 'English' },
-  { id: 'fr', label: 'Français' },
-  { id: 'it', label: 'Italiano' },
+const TITULOS_PASO = [
+  'Dados pessoais',
+  'Formação acadêmica, técnica e básica',
+  'Áreas de serviço, habilidades e observações',
+  'Vínculo, credencial e envio',
 ];
 
 function paisConfig(paisId) {
   return PAISES.find((item) => item.id === paisId) || PAISES[0];
 }
 
-function dadosPortal(user) {
+function textoReal(valor) {
+  const texto = String(valor || '').trim();
+  if (!texto) return '';
+  if (texto.toLowerCase().includes('não informado')) return '';
+  if (texto.toLowerCase().includes('nao informado')) return '';
+  return texto;
+}
+
+function soDigitos(valor) {
+  return String(valor || '').replace(/\D/g, '');
+}
+
+function validarCPF(valor) {
+  const cpf = soDigitos(valor);
+  if (cpf.length !== 11) return false;
+  if (/^(\d)\1{10}$/.test(cpf)) return false;
+  let soma = 0;
+  for (let i = 0; i < 9; i += 1) soma += Number(cpf[i]) * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== Number(cpf[9])) return false;
+  soma = 0;
+  for (let i = 0; i < 10; i += 1) soma += Number(cpf[i]) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  return resto === Number(cpf[10]);
+}
+
+function formatarCPF(valor) {
+  const d = soDigitos(valor).slice(0, 11);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `${d.slice(0, 3)}.${d.slice(3)}`;
+  if (d.length <= 9) return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6)}`;
+  return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`;
+}
+
+function metade(lista) {
+  const meio = Math.ceil(lista.length / 2);
+  return [lista.slice(0, meio), lista.slice(meio)];
+}
+
+function dadosPessoaisPortal(user) {
+  if (!user) return { temSessao: false, nome: '', email: '' };
   return {
-    provedor: 'Portal SSO',
-    sessionId: user?.sessionId || user?.id || 'sso-sess-portal',
-    nome: user?.nomeCompleto || user?.nome || user?.name || 'Não informado no portal',
-    email: user?.email || 'Não informado no portal',
-    documento: user?.cpf || user?.documento || user?.taxId || 'Não informado no portal',
-    telefone: user?.telefone || user?.phone || 'Não informado no portal',
-    paisPortal: user?.pais || user?.country || 'BR',
+    temSessao: true,
+    nome: textoReal(user.nomeCompleto || user.nome || user.name || user.fullName),
+    email: textoReal(user.email),
   };
 }
 
@@ -90,124 +89,86 @@ function toggleIn(lista, valor) {
   return atual.includes(valor) ? atual.filter((item) => item !== valor) : [...atual, valor];
 }
 
-function calcularSimulacao(form) {
-  let valor = form.tipoAtor === 'oficina' ? 280 : 190;
-  valor += (form.tiposDron || []).length * 22;
-  valor += (form.subsistemas || []).length * 18;
-  valor += (form.niveis || []).length * 16;
-  valor += (form.marcas || []).length * 14;
-  valor += Math.min(Number(form.anosExperiencia) || 0, 20) * 10;
-  valor += form.autorizadoFabricante ? 70 : 0;
-  valor += form.bancadaPropria ? 40 : 0;
-  valor += form.piezas === 'original' ? 35 : form.piezas === 'mixta' ? 20 : 0;
-  valor += form.enviaInternacional ? 30 : 0;
-  valor += form.atendeCampo ? 20 : 0;
-  valor += form.seguroRC ? 25 : 0;
-  valor += Number(form.garantiaDias) >= 90 ? 25 : Number(form.garantiaDias) >= 30 ? 12 : 0;
-  valor += Number(form.prazoDiagnosticoDias) <= 2 ? 20 : 0;
-  if (form.pais !== 'BR') valor = Math.round(valor * 1.04);
-
-  return {
-    especialidadeLabel: (form.tiposDron || []).join(', ') || '—',
-    ticketBase: form.tipoAtor === 'oficina' ? 280 : 190,
-    valorReferencial: Math.max(130, Math.round(valor)),
-    observacao:
-      'Valor referencial emitido pelo simulador do subdomínio Consertos. Não é editável pelo usuário.',
-  };
-}
-
-function emitirValidacao(form, simulacao, portal) {
-  let pontuacao = 40;
-  if (portal.email && !String(portal.email).includes('Não informado')) pontuacao += 6;
-  if ((form.nomeComercial || '').trim().length >= 3) pontuacao += 8;
-  if ((form.cidade || '').trim().length >= 2) pontuacao += 6;
-  if ((form.tiposDron || []).length >= 1) pontuacao += 8;
-  if ((form.subsistemas || []).length >= 2) pontuacao += 6;
-  if (form.bancadaPropria) pontuacao += 4;
-  if (form.autorizadoFabricante) pontuacao += 6;
-  if (form.termoResponsabilidade) pontuacao += 6;
-  if (simulacao.valorReferencial >= 200) pontuacao += 6;
-  pontuacao = Math.min(100, pontuacao);
-
-  let status = 'em_analise';
-  if (!form.termoResponsabilidade || (form.tiposDron || []).length === 0) status = 'pendente';
-  else if (pontuacao >= 80) status = 'validado';
-  else if (pontuacao < 55) status = 'pendente';
-
-  return {
-    pontuacao,
-    status,
-    emitidoPor: 'sistema',
-    codigo: `VAL-CON-${Date.now().toString(36).toUpperCase()}`,
-    emitidoEm: new Date().toISOString(),
-    criterios: [
-      'Identidade recebida do Portal SSO',
-      'Completude dos campos do subdomínio Consertos',
-      'Valor referencial calculado pelo simulador',
-      'Pontuação e status gerados apenas pelo sistema',
-    ],
-  };
+function ListaDosColumnas({ items, valores, onToggle }) {
+  const [colA, colB] = metade(items);
+  return (
+    <div className="form-grid">
+      <div className="checkbox-group">
+        {colA.map((item) => (
+          <label key={item.id} className="checkbox-item">
+            <input type="checkbox" checked={(valores || []).includes(item.id)} onChange={() => onToggle(item.id)} />
+            {item.label}
+          </label>
+        ))}
+      </div>
+      <div className="checkbox-group">
+        {colB.map((item) => (
+          <label key={item.id} className="checkbox-item">
+            <input type="checkbox" checked={(valores || []).includes(item.id)} onChange={() => onToggle(item.id)} />
+            {item.label}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 const INITIAL = {
-  tipoAtor: 'tecnico',
-  nomeComercial: '',
-  web: '',
-  whatsappComercial: '',
-  pais: 'BR',
+  nomeApresentacao: '',
+  dataNascimento: '',
+  localNascimento: '',
+  telefone1: '',
+  telefone2: '',
+  whatsapp: '',
+  pais: '',
   documentoLocal: '',
+  endereco: '',
   cidade: '',
   uf: '',
-  direccionTaller: '',
-  tiposDron: [],
-  subsistemas: [],
-  niveis: [],
-  marcas: [],
-  noHace: '',
-  anosExperiencia: 1,
-  credencialFabricante: '',
-  autorizadoFabricante: false,
-  bancadaPropria: false,
-  piezas: 'mixta',
-  stockPropio: false,
-  trazaSerie: true,
-  atendePresencial: true,
-  atendeRemessaNacional: true,
-  enviaInternacional: false,
-  atendeCampo: false,
-  clientePagaEnvio: true,
-  idiomasAtencion: ['pt'],
-  prazoDiagnosticoDias: 2,
-  prazoReparoDias: 7,
-  garantiaDias: 90,
-  garantiaCubre: 'ambos',
-  orcamentoPago: false,
-  osSimultaneas: 3,
+  cep: '',
+  pontoEncontro: '',
+  formacionAcademica: [],
+  formacionAcademicaOutro: '',
+  formacionTecnica: [],
+  formacionTecnicaOutro: '',
+  formacionBasica: [],
+  formacionBasicaOutro: '',
+  areasSetor: [],
+  areaOutro: '',
+  habilidadesExtras: '',
+  observaciones: '',
+  vinculo: '',
+  nivelExperiencia: '',
+  anosExperiencia: '',
+  disponibilidades: [],
+  raioKm: '',
+  idiomasAtencion: [],
+  temCredencial: false,
+  orgaoCredencial: '',
+  numeroCredencial: '',
   seguroRC: false,
-  ndaFlota: false,
-  descarteBateria: false,
-  resumoTecnico: '',
+  aceitaNDA: false,
+  declaroDadosReais: false,
+  aceitaVerificacao: false,
   termoResponsabilidade: false,
 };
 
-export default function CadastroConserto({ onSalvar, onCancelar }) {
+export default function CadastroProfissionais({ onSalvar, onCancelar }) {
   const { theme } = useTheme();
   const { user } = useAuth();
   const isDark = theme === 'dark';
-  const portal = dadosPortal(user);
+  const pessoais = dadosPessoaisPortal(user);
+  const mostrarDadosPortal = pessoais.temSessao && (!!pessoais.nome || !!pessoais.email);
+
+  const [paso, setPaso] = useState(1);
   const [form, setForm] = useState({
     ...INITIAL,
-    pais: portal.paisPortal === 'BR' ? 'BR' : portal.paisPortal || 'BR',
+    nomeApresentacao: pessoais.nome || '',
   });
   const [erro, setErro] = useState('');
   const [enviado, setEnviado] = useState(null);
-
-  const simulacao = useMemo(() => calcularSimulacao(form), [form]);
-  const previewValidacao = useMemo(
-    () => emitirValidacao(form, simulacao, portal),
-    [form, simulacao, portal]
-  );
-  const docLabel = paisConfig(form.pais).doc;
+  const docLabel = paisConfig(form.pais || 'BR').doc;
+  const docObligatorio = form.pais === 'BR' || !!form.pais;
 
   function setField(name, value) {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -217,70 +178,106 @@ export default function CadastroConserto({ onSalvar, onCancelar }) {
     setForm((prev) => ({ ...prev, [campo]: toggleIn(prev[campo], valor) }));
   }
 
+  function onDocumentoChange(valor) {
+    if (form.pais === 'BR') {
+      setField('documentoLocal', formatarCPF(valor));
+      return;
+    }
+    setField('documentoLocal', valor);
+  }
+
+  function validarPaso(n) {
+    if (n === 1) {
+      if (!(form.nomeApresentacao || '').trim()) return 'Informe o nome de apresentação.';
+      if (!(form.cidade || '').trim()) return 'Informe a cidade.';
+      if (!(form.telefone1 || '').trim()) return 'Informe pelo menos um telefone.';
+      if (form.pais === 'BR') {
+        if (!(form.documentoLocal || '').trim()) return 'Informe o CPF.';
+        if (!validarCPF(form.documentoLocal)) return 'CPF inválido. Confira os 11 dígitos.';
+      } else if (form.pais && !(form.documentoLocal || '').trim()) {
+        return 'Informe o documento do país de atuação.';
+      }
+      if (!form.declaroDadosReais) return 'É necessário declarar que os dados são reais.';
+    }
+    if (n === 2) {
+      const temFormacao =
+        (form.formacionAcademica || []).length ||
+        (form.formacionTecnica || []).length ||
+        (form.formacionBasica || []).length;
+      if (!temFormacao) return 'Marque pelo menos uma opção em Acadêmica, Técnica ou Básica.';
+      if ((form.formacionAcademica || []).includes('outro_academico') && !(form.formacionAcademicaOutro || '').trim()) {
+        return 'Descreva a formação acadêmica em Outro.';
+      }
+      if ((form.formacionTecnica || []).includes('outro_tecnico') && !(form.formacionTecnicaOutro || '').trim()) {
+        return 'Descreva a formação técnica em Outro.';
+      }
+      if ((form.formacionBasica || []).includes('outro_basico') && !(form.formacionBasicaOutro || '').trim()) {
+        return 'Descreva a formação básica em Outro.';
+      }
+    }
+    if (n === 3) {
+      if ((form.areasSetor || []).length === 0) return 'Marque pelo menos uma área de serviço que aspira.';
+      if ((form.areasSetor || []).includes('outro_area') && !(form.areaOutro || '').trim()) {
+        return 'Descreva a outra área de serviço.';
+      }
+    }
+    if (n === 4 && !form.termoResponsabilidade) {
+      return 'Aceite o termo para enviar.';
+    }
+    return '';
+  }
+
+  function irAdelante() {
+    const msg = validarPaso(paso);
+    if (msg) {
+      setErro(msg);
+      return;
+    }
+    setErro('');
+    setPaso((n) => Math.min(TOTAL_PASOS, n + 1));
+  }
+
+  function irAtras() {
+    setErro('');
+    setPaso((n) => Math.max(1, n - 1));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    setErro('');
-
-    if (!(form.nomeComercial || '').trim()) {
-      setErro('Informe o nome comercial ou como o técnico será apresentado.');
+    const msg = validarPaso(4);
+    if (msg) {
+      setErro(msg);
       return;
     }
-    if (!(form.cidade || '').trim()) {
-      setErro('Informe a cidade de atuação da bancada ou do técnico.');
-      return;
-    }
-    if ((form.tiposDron || []).length === 0) {
-      setErro('Marque pelo menos um tipo de drone que você realmente conserta.');
-      return;
-    }
-    if ((form.subsistemas || []).length === 0) {
-      setErro('Marque pelo menos um subsistema (FC, gimbal, bateria...).');
-      return;
-    }
-    if ((form.idiomasAtencion || []).length === 0) {
-      setErro('Marque pelo menos um idioma de atendimento.');
-      return;
-    }
-    if (!form.termoResponsabilidade) {
-      setErro('Aceite o termo de responsabilidade técnica para enviar.');
-      return;
-    }
-
-    const validacao = emitirValidacao(form, simulacao, portal);
     const registro = {
       id: crypto.randomUUID(),
-      subdominio: 'consertos',
-      perfil: 'tecnico_conserto',
-      portal,
+      subdominio: 'drones',
+      modulo: 'profissionais',
+      pessoaisPortal: mostrarDadosPortal ? pessoais : { temSessao: false },
+      visibilidadePessoal: 'apenas_contratante',
+      documentoNormalizado: soDigitos(form.documentoLocal),
       ...form,
-      valorReferencial: simulacao.valorReferencial,
-      simulacao,
-      validacao,
       criadoEm: new Date().toISOString(),
     };
-
     const atual = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     localStorage.setItem(STORAGE_KEY, JSON.stringify([registro, ...atual]));
     setEnviado(registro);
-    if (onSalvar) onSalvar(registro);
   }
 
-  /* PANTALLA DE EXITO DESPUES DE ENVIAR */
+  function voltarDepoisDoExito() {
+    if (onSalvar) onSalvar(enviado);
+    if (onCancelar) onCancelar();
+  }
+
   if (enviado) {
     return (
       <div className="cadastro-container" data-theme={isDark ? 'dark' : 'light'}>
         <div className="success-card">
-          <h2>Cadastro de conserto enviado</h2>
+          <h2>Cadastro realizado com sucesso</h2>
+          <p>Seus dados foram enviados e ficarão disponíveis na lista de profissionais do subdomínio.</p>
           <p>Protocolo: {enviado.id}</p>
-          <p>
-            Valor referencial:{' '}
-            {enviado.valorReferencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-          </p>
-          <p>Pontuação: {enviado.validacao.pontuacao}</p>
-          <p>Status: {enviado.validacao.status}</p>
-          <div className="code-badge">{enviado.validacao.codigo}</div>
         </div>
-        <button type="button" className="btn-cancel" onClick={() => onCancelar && onCancelar()}>
+        <button type="button" className="btn-cancel" onClick={voltarDepoisDoExito}>
           Voltar para Área de Cadastros
         </button>
       </div>
@@ -289,369 +286,284 @@ export default function CadastroConserto({ onSalvar, onCancelar }) {
 
   return (
     <form className="cadastro-container" onSubmit={handleSubmit} data-theme={isDark ? 'dark' : 'light'}>
-      {/* CABECERA */}
       <div className="cadastro-header">
-        <h2>Cadastro de técnico de conserto de drones</h2>
-        <p>Nome, e-mail, telefone e documento civil vêm do portal. Aqui só entra a capacidade real de conserto.</p>
+        <h2>Cadastro de profissionais afins do setor</h2>
+        <p className="help-text">{TITULOS_PASO[paso - 1]}</p>
+        <p className="help-text">* Campo obrigatório</p>
+        <div className="paso-contador">
+          <span>{paso}/{TOTAL_PASOS}</span>
+        </div>
       </div>
 
-      {/* BLOQUE 1: DATOS DEL PORTAL, SOLO LECTURA */}
-      <section className="form-section">
-        <h3>1. Dados do Portal SSO</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Provedor</label>
-            <input value={portal.provedor} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Sessão</label>
-            <input value={portal.sessionId} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Nome</label>
-            <input value={portal.nome} readOnly />
-          </div>
-          <div className="form-group">
-            <label>E-mail</label>
-            <input value={portal.email} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Documento</label>
-            <input value={portal.documento} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Telefone</label>
-            <input value={portal.telefone} readOnly />
-          </div>
-        </div>
-      </section>
-
-      {/* BLOQUE 2: IDENTIDAD PROFESIONAL */}
-      <section className="form-section">
-        <h3>2. Identidade profissional de conserto</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Tipo de atuação</label>
-            <select value={form.tipoAtor} onChange={(e) => setField('tipoAtor', e.target.value)}>
-              <option value="tecnico">Técnico autônomo</option>
-              <option value="oficina">Oficina / bancada</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Nome comercial</label>
-            <input value={form.nomeComercial} onChange={(e) => setField('nomeComercial', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>Site ou rede comercial</label>
-            <input value={form.web} onChange={(e) => setField('web', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>WhatsApp comercial</label>
-            <input value={form.whatsappComercial} onChange={(e) => setField('whatsappComercial', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>País de atuação</label>
-            <select value={form.pais} onChange={(e) => setField('pais', e.target.value)}>
-              {PAISES.map((pais) => (
-                <option key={pais.id} value={pais.id}>{pais.label}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label>{docLabel}</label>
-            <input value={form.documentoLocal} onChange={(e) => setField('documentoLocal', e.target.value)} />
-            <span className="help-text">Só se ainda não estiver no portal</span>
-          </div>
-          <div className="form-group">
-            <label>Cidade da bancada</label>
-            <input value={form.cidade} onChange={(e) => setField('cidade', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>{form.pais === 'BR' ? 'UF' : 'Estado / região'}</label>
-            <input value={form.uf} onChange={(e) => setField('uf', e.target.value)} />
-          </div>
-          <div className="form-group full-width">
-            <label>Endereço de recepção de equipamentos</label>
-            <input value={form.direccionTaller} onChange={(e) => setField('direccionTaller', e.target.value)} />
-          </div>
-        </div>
-      </section>
-
-      {/* BLOQUE 3: TIPOS DE DRONE Y SUBSISTEMAS */}
-      <section className="form-section">
-        <h3>3. Tipos de drone e subsistemas</h3>
-        <div className="form-group full-width">
-          <label>Tipos de drone</label>
-          <div className="checkbox-group">
-            {TIPOS_DRON.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.tiposDron || []).includes(item.id)}
-                  onChange={() => toggle('tiposDron', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Subsistemas</label>
-          <div className="checkbox-group">
-            {SUBSISTEMAS.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.subsistemas || []).includes(item.id)}
-                  onChange={() => toggle('subsistemas', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Nível técnico</label>
-          <div className="checkbox-group">
-            {NIVEIS.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.niveis || []).includes(item.id)}
-                  onChange={() => toggle('niveis', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Marcas</label>
-          <div className="checkbox-group">
-            {MARCAS.map((marca) => (
-              <label key={marca} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.marcas || []).includes(marca)}
-                  onChange={() => toggle('marcas', marca)}
-                />
-                {marca}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>O que você NÃO conserta</label>
-          <textarea rows={3} value={form.noHace} onChange={(e) => setField('noHace', e.target.value)} />
-        </div>
-      </section>
-
-      {/* BLOQUE 4: BANCADA, PIEZAS Y CREDENCIALES */}
-      <section className="form-section">
-        <h3>4. Bancada, peças e credenciais</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Anos consertando drones</label>
-            <input type="number" min="0" value={form.anosExperiencia} onChange={(e) => setField('anosExperiencia', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>Origem das peças</label>
-            <select value={form.piezas} onChange={(e) => setField('piezas', e.target.value)}>
-              <option value="original">Só originais de fabricante</option>
-              <option value="mixta">Originais e compatíveis, com aviso ao cliente</option>
-              <option value="compativel">Principalmente compatíveis</option>
-            </select>
-          </div>
-        </div>
-        <div className="checkbox-group">
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.autorizadoFabricante} onChange={(e) => setField('autorizadoFabricante', e.target.checked)} />
-            Autorizado / credenciado por fabricante
-          </label>
-          {form.autorizadoFabricante && (
-            <div className="form-group">
-              <label>Número da credencial</label>
-              <input value={form.credencialFabricante} onChange={(e) => setField('credencialFabricante', e.target.value)} />
-            </div>
+      {paso === 1 && (
+        <>
+          {mostrarDadosPortal && (
+            <section className="form-section">
+              <h3>Dados pessoais</h3>
+              <div className="form-grid">
+                {pessoais.nome ? (
+                  <div className="form-group">
+                    <label>Nome</label>
+                    <input value={pessoais.nome} readOnly />
+                  </div>
+                ) : null}
+                {pessoais.email ? (
+                  <div className="form-group">
+                    <label>E-mail</label>
+                    <input value={pessoais.email} readOnly />
+                  </div>
+                ) : null}
+              </div>
+            </section>
           )}
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.bancadaPropria} onChange={(e) => setField('bancadaPropria', e.target.checked)} />
-            Bancada / laboratório próprio
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.stockPropio} onChange={(e) => setField('stockPropio', e.target.checked)} />
-            Mantenho estoque próprio
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.trazaSerie} onChange={(e) => setField('trazaSerie', e.target.checked)} />
-            Registro número de série do drone e da peça trocada
-          </label>
-        </div>
-      </section>
-
-      {/* BLOQUE 5: LOGISTICA E IDIOMAS */}
-      <section className="form-section">
-        <h3>5. Logística e idiomas de atendimento</h3>
-        <div className="checkbox-group">
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendePresencial} onChange={(e) => setField('atendePresencial', e.target.checked)} />
-            Retirada presencial
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendeRemessaNacional} onChange={(e) => setField('atendeRemessaNacional', e.target.checked)} />
-            Envio nacional
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.enviaInternacional} onChange={(e) => setField('enviaInternacional', e.target.checked)} />
-            Envio internacional (aduana por conta do cliente)
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendeCampo} onChange={(e) => setField('atendeCampo', e.target.checked)} />
-            Atendimento em campo / fazenda / obra
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.clientePagaEnvio} onChange={(e) => setField('clientePagaEnvio', e.target.checked)} />
-            Cliente paga ida e volta do equipamento
-          </label>
-        </div>
-        <div className="form-group full-width">
-          <label>Idiomas de atendimento</label>
-          <div className="checkbox-group">
-            {IDIOMAS.map((idioma) => (
-              <label key={idioma.id} className="checkbox-item">
+          <section className="form-section">
+            <h3>Complemento dos dados pessoais</h3>
+            <div className="aviso-box">
+              Informe dados reais. O portal não se responsabiliza por informações falsas.
+              Estes dados não entram no catálogo público: só quem for contratar poderá vê-los.
+            </div>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Nome de apresentação *</label>
+                <input value={form.nomeApresentacao} onChange={(e) => setField('nomeApresentacao', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Data de nascimento</label>
+                <input type="date" value={form.dataNascimento} onChange={(e) => setField('dataNascimento', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Local de nascimento</label>
+                <input value={form.localNascimento} onChange={(e) => setField('localNascimento', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Telefone principal *</label>
+                <input value={form.telefone1} onChange={(e) => setField('telefone1', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Telefone 2</label>
+                <input value={form.telefone2} onChange={(e) => setField('telefone2', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>WhatsApp</label>
+                <input value={form.whatsapp} onChange={(e) => setField('whatsapp', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>País</label>
+                <select value={form.pais} onChange={(e) => setField('pais', e.target.value)}>
+                  <option value="">Selecione</option>
+                  {PAISES.map((pais) => (
+                    <option key={pais.id} value={pais.id}>{pais.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>{docLabel}{docObligatorio ? ' *' : ''}</label>
                 <input
-                  type="checkbox"
-                  checked={(form.idiomasAtencion || []).includes(idioma.id)}
-                  onChange={() => toggle('idiomasAtencion', idioma.id)}
+                  value={form.documentoLocal}
+                  onChange={(e) => onDocumentoChange(e.target.value)}
+                  placeholder={form.pais === 'BR' ? '000.000.000-00' : ''}
                 />
-                {idioma.label}
+                {form.pais === 'BR' ? <span className="help-text">CPF validado ao continuar.</span> : null}
+              </div>
+              <div className="form-group">
+                <label>Cidade *</label>
+                <input value={form.cidade} onChange={(e) => setField('cidade', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>{form.pais === 'BR' ? 'UF' : 'Estado / região'}</label>
+                <input value={form.uf} onChange={(e) => setField('uf', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>CEP / código postal</label>
+                <input value={form.cep} onChange={(e) => setField('cep', e.target.value)} />
+              </div>
+              <div className="form-group full-width">
+                <label>Endereço</label>
+                <input value={form.endereco} onChange={(e) => setField('endereco', e.target.value)} />
+              </div>
+              <div className="form-group full-width">
+                <label>Ponto de encontro (opcional)</label>
+                <input value={form.pontoEncontro} onChange={(e) => setField('pontoEncontro', e.target.value)} />
+              </div>
+            </div>
+            <div className="checkbox-group">
+              <label className="checkbox-item">
+                <input type="checkbox" checked={form.declaroDadosReais} onChange={(e) => setField('declaroDadosReais', e.target.checked)} />
+                Declaro que os dados pessoais e profissionais são reais. *
               </label>
-            ))}
-          </div>
-        </div>
-      </section>
+              <label className="checkbox-item">
+                <input type="checkbox" checked={form.aceitaVerificacao} onChange={(e) => setField('aceitaVerificacao', e.target.checked)} />
+                Autorizo a validação interna para o selo “Profissional confirmado”.
+              </label>
+            </div>
+          </section>
+        </>
+      )}
 
-      {/* BLOQUE 6: PLAZOS, PRESUPUESTO Y GARANTIA */}
-      <section className="form-section">
-        <h3>6. Prazo, orçamento e garantia</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Prazo de diagnóstico (dias)</label>
-            <input type="number" min="1" value={form.prazoDiagnosticoDias} onChange={(e) => setField('prazoDiagnosticoDias', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>Prazo médio de reparo (dias)</label>
-            <input type="number" min="1" value={form.prazoReparoDias} onChange={(e) => setField('prazoReparoDias', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>Garantia do serviço (dias)</label>
-            <input type="number" min="0" value={form.garantiaDias} onChange={(e) => setField('garantiaDias', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>A garantia cobre</label>
-            <select value={form.garantiaCubre} onChange={(e) => setField('garantiaCubre', e.target.value)}>
-              <option value="mao">Só mão de obra</option>
-              <option value="peca">Só peça fornecida por mim</option>
-              <option value="ambos">Mão de obra e peça</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>OS simultâneas</label>
-            <input type="number" min="1" value={form.osSimultaneas} onChange={(e) => setField('osSimultaneas', e.target.value)} />
-          </div>
-        </div>
-        <label className="checkbox-item">
-          <input type="checkbox" checked={form.orcamentoPago} onChange={(e) => setField('orcamentoPago', e.target.checked)} />
-          Diagnóstico / orçamento é pago (desconta se o cliente aceitar)
-        </label>
-      </section>
+      {paso === 2 && (
+        <>
+          <section className="form-section">
+            <h3>Formação acadêmica, técnica, básica *</h3>
+            <p className="help-text">
+              Marque pelo menos uma opção em Acadêmica, Técnica ou Básica.
+              Não use este formulário se você é piloto, auxiliar de campo, técnico de manutenção, oficina de conserto ou contratante.
+            </p>
+          </section>
+          <section className="form-section">
+            <h3>Acadêmica</h3>
+            <ListaDosColumnas items={FORMACION_ACADEMICA} valores={form.formacionAcademica} onToggle={(id) => toggle('formacionAcademica', id)} />
+            {(form.formacionAcademica || []).includes('outro_academico') && (
+              <div className="form-group full-width">
+                <label>Descreva a formação acadêmica *</label>
+                <input value={form.formacionAcademicaOutro} onChange={(e) => setField('formacionAcademicaOutro', e.target.value)} />
+              </div>
+            )}
+          </section>
+          <section className="form-section">
+            <h3>Técnica</h3>
+            <ListaDosColumnas items={FORMACION_TECNICA} valores={form.formacionTecnica} onToggle={(id) => toggle('formacionTecnica', id)} />
+            {(form.formacionTecnica || []).includes('outro_tecnico') && (
+              <div className="form-group full-width">
+                <label>Descreva a formação técnica *</label>
+                <input value={form.formacionTecnicaOutro} onChange={(e) => setField('formacionTecnicaOutro', e.target.value)} />
+              </div>
+            )}
+          </section>
+          <section className="form-section">
+            <h3>Básica</h3>
+            <ListaDosColumnas items={FORMACION_BASICA} valores={form.formacionBasica} onToggle={(id) => toggle('formacionBasica', id)} />
+            {(form.formacionBasica || []).includes('outro_basico') && (
+              <div className="form-group full-width">
+                <label>Descreva o ofício básico *</label>
+                <input value={form.formacionBasicaOutro} onChange={(e) => setField('formacionBasicaOutro', e.target.value)} />
+              </div>
+            )}
+          </section>
+        </>
+      )}
 
-      {/* BLOQUE 7: RIESGO, FLOTA Y RESIDUOS */}
-      <section className="form-section">
-        <h3>7. Risco, flota e resíduos</h3>
-        <div className="checkbox-group">
+      {paso === 3 && (
+        <>
+          <section className="form-section">
+            <h3>Áreas de serviço que aspira *</h3>
+            <p className="help-text">Marque pelo menos uma área.</p>
+            <ListaDosColumnas items={AREAS_SERVICO} valores={form.areasSetor} onToggle={(id) => toggle('areasSetor', id)} />
+            {(form.areasSetor || []).includes('outro_area') && (
+              <div className="form-group full-width">
+                <label>Descreva a outra área *</label>
+                <input value={form.areaOutro} onChange={(e) => setField('areaOutro', e.target.value)} />
+              </div>
+            )}
+          </section>
+          <section className="form-section">
+            <h3>Habilidades extras e observações</h3>
+            <div className="form-group full-width">
+              <label>Habilidades extras</label>
+              <textarea rows={3} value={form.habilidadesExtras} onChange={(e) => setField('habilidadesExtras', e.target.value)} />
+            </div>
+            <div className="form-group full-width">
+              <label>Observações</label>
+              <textarea rows={3} value={form.observaciones} onChange={(e) => setField('observaciones', e.target.value)} />
+            </div>
+          </section>
+        </>
+      )}
+
+      {paso === 4 && (
+        <>
+          <section className="form-section">
+            <h3>Vínculo, experiência e disponibilidade</h3>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Vínculo</label>
+                <select value={form.vinculo} onChange={(e) => setField('vinculo', e.target.value)}>
+                  <option value="">Selecione</option>
+                  {VINCULOS.map((item) => (
+                    <option key={item.id} value={item.id}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Nível</label>
+                <select value={form.nivelExperiencia} onChange={(e) => setField('nivelExperiencia', e.target.value)}>
+                  <option value="">Selecione</option>
+                  {NIVEIS_EXP.map((item) => (
+                    <option key={item.id} value={item.id}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Anos de experiência</label>
+                <input type="number" min="0" value={form.anosExperiencia} onChange={(e) => setField('anosExperiencia', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>Raio de atuação (km)</label>
+                <input type="number" min="0" value={form.raioKm} onChange={(e) => setField('raioKm', e.target.value)} />
+              </div>
+            </div>
+            <div className="form-group full-width">
+              <label>Disponibilidade</label>
+              <ListaDosColumnas items={DISPONIBILIDADES} valores={form.disponibilidades} onToggle={(id) => toggle('disponibilidades', id)} />
+            </div>
+            <div className="form-group full-width">
+              <label>Idiomas</label>
+              <ListaDosColumnas items={IDIOMAS} valores={form.idiomasAtencion} onToggle={(id) => toggle('idiomasAtencion', id)} />
+            </div>
+          </section>
+          <section className="form-section">
+            <h3>Credencial da ocupação</h3>
+            <label className="checkbox-item">
+              <input type="checkbox" checked={form.temCredencial} onChange={(e) => setField('temCredencial', e.target.checked)} />
+              Possuo credencial, conselho de classe, CNH profissional ou equivalente
+            </label>
+            {form.temCredencial && (
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Órgão</label>
+                  <input value={form.orgaoCredencial} onChange={(e) => setField('orgaoCredencial', e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Número</label>
+                  <input value={form.numeroCredencial} onChange={(e) => setField('numeroCredencial', e.target.value)} />
+                </div>
+              </div>
+            )}
+            <div className="checkbox-group">
+              <label className="checkbox-item">
+                <input type="checkbox" checked={form.seguroRC} onChange={(e) => setField('seguroRC', e.target.checked)} />
+                Tenho seguro de responsabilidade civil
+              </label>
+              <label className="checkbox-item">
+                <input type="checkbox" checked={form.aceitaNDA} onChange={(e) => setField('aceitaNDA', e.target.checked)} />
+                Aceito NDA / sigilo de dados do contratante
+              </label>
+            </div>
+          </section>
           <label className="checkbox-item">
-            <input type="checkbox" checked={form.seguroRC} onChange={(e) => setField('seguroRC', e.target.checked)} />
-            Tenho seguro de responsabilidade civil
+            <input type="checkbox" checked={form.termoResponsabilidade} onChange={(e) => setField('termoResponsabilidade', e.target.checked)} />
+            Declaro que a formação e as áreas marcadas correspondem à minha atuação real no entorno do setor de drones. *
           </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.ndaFlota} onChange={(e) => setField('ndaFlota', e.target.checked)} />
-            Aceito NDA / sigilo de mapas e imagens do cliente
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.descarteBateria} onChange={(e) => setField('descarteBateria', e.target.checked)} />
-            Faço descarte correto de baterias e placas
-          </label>
-        </div>
-        <div className="form-group full-width">
-          <label>Resumo técnico</label>
-          <textarea rows={4} value={form.resumoTecnico} onChange={(e) => setField('resumoTecnico', e.target.value)} />
-        </div>
-      </section>
-
-      {/* BLOQUE 8: SIMULADOR */}
-      <section className="form-section">
-        <h3>8. Simulador — valor referencial</h3>
-        <p className="help-text">{simulacao.observacao}</p>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Tipos considerados</label>
-            <input value={simulacao.especialidadeLabel} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Ticket base do simulador</label>
-            <input value={simulacao.ticketBase} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Valor referencial</label>
-            <input
-              value={simulacao.valorReferencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              readOnly
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* BLOQUE 9: PUNTUACION Y VALIDACION */}
-      <section className="form-section">
-        <h3>9. Pontuação e validação emitidas pelo sistema</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Pontuação</label>
-            <input value={previewValidacao.pontuacao} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Status</label>
-            <input value={previewValidacao.status} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Emitido por</label>
-            <input value={previewValidacao.emitidoPor} readOnly />
-          </div>
-        </div>
-        <ul className="criterios-lista">
-          {previewValidacao.criterios.map((criterio) => (
-            <li key={criterio}>{criterio}</li>
-          ))}
-        </ul>
-      </section>
-
-      {/* TERMINO DE RESPONSABILIDAD */}
-      <label className="checkbox-item">
-        <input
-          type="checkbox"
-          checked={form.termoResponsabilidade}
-          onChange={(e) => setField('termoResponsabilidade', e.target.checked)}
-        />
-        Declaro que os tipos de drone e subsistemas marcados correspondem à minha capacidade real e assumo a responsabilidade técnica do conserto.
-      </label>
+        </>
+      )}
 
       {erro ? <p className="erro">{erro}</p> : null}
 
-      <button type="submit" className="btn-submit">Enviar cadastro de conserto</button>
-      <button type="button" className="btn-cancel" onClick={() => onCancelar && onCancelar()}>
-        Cancelar
-      </button>
+      <div className="paso-contador">
+        <span>{paso}/{TOTAL_PASOS}</span>
+      </div>
+
+      <div className="form-actions">
+        {paso === 1 ? (
+          <button type="button" className="btn-cancelar" onClick={() => onCancelar && onCancelar()}>Cancelar</button>
+        ) : (
+          <button type="button" className="btn-cancelar" onClick={irAtras}>Voltar</button>
+        )}
+        {paso < TOTAL_PASOS ? (
+          <button type="button" className="btn-salvar" onClick={irAdelante}>Continuar</button>
+        ) : (
+          <button type="submit" className="btn-salvar">Enviar cadastro de profissional</button>
+        )}
+      </div>
     </form>
   );
 }

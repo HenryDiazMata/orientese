@@ -13,13 +13,12 @@ import { useAuth } from "../../context/drones/AuthContext";
 import logoImg from "../../assets/Logosorientese/LogoDrones11.png";
 
 // ICONO CHICO CUANDO EL MENU SE REPLEGA
-// ESTA IMAGEN ESTA EN public/favicon/drones/favicom.png
 const faviconImg = "/favicon/drones/favicom.png";
 
 import ModalLogin from "../drones/modals/ModalLogin";
 import LanguageSwitcher from "./LanguageSwitcher";
-import DronesNav from "../drones/NavOutros/DronesNav";
-/* ICONOS SVG INLINE: NO HACE FALTA LIBRERÍA EXTRA */
+
+/* ICONOS SVG INLINE: NO HACE FALTA LIBRERIA EXTRA */
 const Icon = ({ name, className = '' }) => {
   const common = {
     className,
@@ -72,7 +71,7 @@ export const Header = ({ currentView, setCurrentView }) => {
   const [cadastradosOpen, setCadastradosOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  /* DESKTOP: MENÚ ANCHO O SOLO ICONOS. SE RECUERDA EN EL NAVEGADOR. */
+  /* DESKTOP: MENU ANCHO O SOLO ICONOS. SE RECUERDA EN EL NAVEGADOR. */
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return localStorage.getItem('sidebarCollapsed') === '1';
@@ -81,19 +80,13 @@ export const Header = ({ currentView, setCurrentView }) => {
     }
   });
 
-  const menuItems = [
-    { labelKey: 'nav.home', id: 'INÍCIO', icon: 'home' },
-    { labelKey: 'nav.quote', id: 'ORÇAMENTOS', icon: 'calc' },
-    { labelKey: 'nav.register', id: 'CADASTRO', icon: 'userPlus' },
-    { labelKey: 'nav.professionals', id: 'PROFISSIONAIS', icon: 'briefcase' },
-    { labelKey: 'nav.drones', id: 'DRONES', icon: 'drone' },
-  ];
-
+  /* SUBMENU CADASTRADOS: PROFISSIONAIS VA DESPUES DE TECNICOS CONSERTOS */
   const cadastradosItems = [
     { labelKey: 'nav.pilots', id: 'PILOTOS' },
     { labelKey: 'nav.helpers', id: 'AUXILIARES' },
     { labelKey: 'nav.techMaint', id: 'MANUTENÇÃO' },
     { labelKey: 'nav.techRepair', id: 'CONSERTOS' },
+    { labelKey: 'nav.professionals', id: 'PROFISSIONAIS' },
   ];
 
   const handleSelectView = (viewId) => {
@@ -130,8 +123,9 @@ export const Header = ({ currentView, setCurrentView }) => {
   };
 
   const isCadastradosActive = cadastradosItems.some((item) => item.id === currentView);
+  const isInicioActive = currentView === 'INÍCIO' || currentView === 'INICIO';
+  const isOrcamentosActive = currentView === 'ORÇAMENTOS' || currentView === 'ORCAMENTOS';
 
-  /* AL PASAR A DESKTOP, CIERRA EL DRAWER MÓVIL */
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 768) setMobileOpen(false);
@@ -140,7 +134,6 @@ export const Header = ({ currentView, setCurrentView }) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  /* BLOQUEA EL SCROLL DEL FONDO CON EL MENÚ MÓVIL ABIERTO */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => {
@@ -148,7 +141,6 @@ export const Header = ({ currentView, setCurrentView }) => {
     };
   }, [mobileOpen]);
 
-  /* AVISA AL CSS DEL ANCHO ACTUAL DE LA BARRA (DESKTOP) */
   useEffect(() => {
     document.documentElement.style.setProperty(
       '--sidebar-width',
@@ -163,6 +155,7 @@ export const Header = ({ currentView, setCurrentView }) => {
 
   const NavContent = () => (
     <>
+      {/* BLOQUE: LOGO SUPERIOR */}
       <div
         className={`sidebar-logo ${collapsed ? 'is-collapsed' : ''}`}
         onClick={() => handleSelectView('INÍCIO')}
@@ -178,72 +171,120 @@ export const Header = ({ currentView, setCurrentView }) => {
       </div>
 
       <nav className="sidebar-nav">
-        {menuItems.map((item) => {
-          if (item.id === 'CADASTRO') {
-            return (
-              <React.Fragment key="cadastro-and-cadastrados">
-                <button
-                  type="button"
-                  onClick={() => handleSelectView(item.id)}
-                  className={itemClass(currentView === item.id)}
-                  title={t(item.labelKey)}
-                >
-                  <Icon name={item.icon} />
-                  {!collapsed && <span>{t(item.labelKey)}</span>}
-                </button>
+        {/* BLOQUE: TRES PRIMERAS OPCIONES CON FONDO DISTINTO */}
+        <div className="sidebar-top-group">
+          {/* 1. MEU PERFIL */}
+          <button
+            type="button"
+            onClick={handleEntrarClick}
+            className={`btn-menu sidebar-item sidebar-item-top ${collapsed ? 'is-collapsed' : ''} ${
+              currentView === 'MEU_PERFIL' || currentView === 'PERFIL' ? 'is-top-active' : ''
+            }`}
+            title={
+              isAuthenticated
+                ? `${t('nav.loggedAs')}: ${user?.nomeCompleto || user?.email || ''}`
+                : t('nav.doLogin')
+            }
+          >
+            <Icon name="user" />
+            {!collapsed && <span>{t('nav.enterProfile')}</span>}
+          </button>
 
-                <div className="sidebar-subwrap">
+          {/* 2. TEMA LIGHT / DARK */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className={`btn-menu sidebar-item sidebar-item-top sidebar-theme-top ${collapsed ? 'is-collapsed' : ''}`}
+            title={t('nav.toggleTheme')}
+          >
+            <Icon name={theme === 'light' ? 'moon' : 'sun'} />
+            {!collapsed && <span>{theme === 'light' ? t('nav.dark') : t('nav.light')}</span>}
+          </button>
+
+          {/* 3. IDIOMA */}
+          <div className={`sidebar-item-top sidebar-lang-row ${collapsed ? 'is-collapsed' : ''}`}>
+            {!collapsed && (
+              <>
+                <LanguageSwitcher />
+                <small className="sidebar-lang">{i18n.language}</small>
+              </>
+            )}
+            {collapsed && <LanguageSwitcher />}
+          </div>
+        </div>
+
+        {/* 4. INICIO */}
+        <button
+          type="button"
+          onClick={() => handleSelectView('INÍCIO')}
+          className={`btn-menu sidebar-item sidebar-item-inicio ${
+            isInicioActive ? 'is-inicio-active' : 'btn-menu-inactive'
+          } ${collapsed ? 'is-collapsed' : ''}`}
+          title={t('nav.home')}
+        >
+          <Icon name="home" />
+          {!collapsed && <span>{t('nav.home')}</span>}
+        </button>
+
+        {/* 5. ORCAMENTOS */}
+        <button
+          type="button"
+          onClick={() => handleSelectView('ORÇAMENTOS')}
+          className={itemClass(isOrcamentosActive)}
+          title={t('nav.quote')}
+        >
+          <Icon name="calc" />
+          {!collapsed && <span>{t('nav.quote')}</span>}
+        </button>
+
+        {/* 6. CADASTRO */}
+        <button
+          type="button"
+          onClick={() => handleSelectView('CADASTRO')}
+          className={itemClass(currentView === 'CADASTRO')}
+          title={t('nav.register')}
+        >
+          <Icon name="userPlus" />
+          {!collapsed && <span>{t('nav.register')}</span>}
+        </button>
+
+        {/* 7. CADASTRADOS + SUBMENU */}
+        <div className="sidebar-subwrap">
+          <button
+            type="button"
+            onClick={() => setCadastradosOpen((prev) => !prev)}
+            className={itemClass(isCadastradosActive)}
+            title={t('nav.registered')}
+          >
+            <Icon name="users" />
+            {!collapsed && (
+              <>
+                <span className="flex-1 text-left">{t('nav.registered')}</span>
+                <span className="text-xs">{cadastradosOpen ? '▲' : '▼'}</span>
+              </>
+            )}
+          </button>
+
+          {cadastradosOpen && (
+            <div className={`sidebar-submenu ${collapsed ? 'is-flyout' : ''}`}>
+              {cadastradosItems.map((subItem) => {
+                const isActive = currentView === subItem.id;
+                return (
                   <button
+                    key={subItem.id}
                     type="button"
-                    onClick={() => setCadastradosOpen((prev) => !prev)}
-                    className={itemClass(isCadastradosActive)}
-                    title={t('nav.registered')}
+                    onClick={() => handleSelectView(subItem.id)}
+                    className={`sidebar-subitem ${isActive ? 'is-active' : ''}`}
                   >
-                    <Icon name="users" />
-                    {!collapsed && (
-                      <>
-                        <span className="flex-1 text-left">{t('nav.registered')}</span>
-                        <span className="text-xs">{cadastradosOpen ? '▲' : '▼'}</span>
-                      </>
-                    )}
+                    {t(subItem.labelKey)}
                   </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
-                  {cadastradosOpen && (
-                    <div className={`sidebar-submenu ${collapsed ? 'is-flyout' : ''}`}>
-                      {cadastradosItems.map((subItem) => {
-                        const isActive = currentView === subItem.id;
-                        return (
-                          <button
-                            key={subItem.id}
-                            type="button"
-                            onClick={() => handleSelectView(subItem.id)}
-                            className={`sidebar-subitem ${isActive ? 'is-active' : ''}`}
-                          >
-                            {t(subItem.labelKey)}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </React.Fragment>
-            );
-          }
-
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleSelectView(item.id)}
-              className={itemClass(currentView === item.id)}
-              title={t(item.labelKey)}
-            >
-              <Icon name={item.icon} />
-              {!collapsed && <span>{t(item.labelKey)}</span>}
-            </button>
-          );
-        })}
-
+        {/* 8. VAGAS */}
         <button
           type="button"
           onClick={() => handleSelectView('VAGAS')}
@@ -254,20 +295,7 @@ export const Header = ({ currentView, setCurrentView }) => {
           {!collapsed && <span>{t('nav.jobs')}</span>}
         </button>
 
-        <button
-          type="button"
-          onClick={handleEntrarClick}
-          className={`btn-menu sidebar-item sidebar-item-cta ${collapsed ? 'is-collapsed' : ''}`}
-          title={
-            isAuthenticated
-              ? `${t('nav.loggedAs')}: ${user?.nomeCompleto || user?.email || ''}`
-              : t('nav.doLogin')
-          }
-        >
-          <Icon name="user" />
-          {!collapsed && <span>{t('nav.enterProfile')}</span>}
-        </button>
-
+        {/* 9. ANUNCIANTES / PATROCINADORES */}
         <button
           type="button"
           onClick={() => handleSelectView('ANUNCIANTES')}
@@ -278,35 +306,30 @@ export const Header = ({ currentView, setCurrentView }) => {
           {!collapsed && <span>{t('nav.sponsors')}</span>}
         </button>
 
-        <div className={`sidebar-tools ${collapsed ? 'is-collapsed' : ''}`}>
-          {!collapsed && (
-            <>
-              <LanguageSwitcher />
-              <small className="sidebar-lang">{i18n.language}</small>
-            </>
-          )}
+        {/* 10. DRONES */}
+        <button
+          type="button"
+          onClick={() => handleSelectView('DRONES')}
+          className={itemClass(currentView === 'DRONES')}
+          title={t('nav.drones')}
+        >
+          <Icon name="drone" />
+          {!collapsed && <span>{t('nav.drones')}</span>}
+        </button>
 
+        {/* LINEA SEPARADORA + BOTON DESPLEGAR / REPLEGAR, DESPUES DE DRONES */}
+        <div className="sidebar-bottom-group">
           <button
             type="button"
-            onClick={toggleTheme}
-            className="theme-btn sidebar-theme"
-            title={t('nav.toggleTheme')}
+            className="sidebar-collapse-btn"
+            onClick={toggleCollapsed}
+            title={collapsed ? 'Desplegar menú' : 'Replegar menú'}
           >
-            <Icon name={theme === 'light' ? 'moon' : 'sun'} />
-            {!collapsed && <span>{theme === 'light' ? t('nav.dark') : t('nav.light')}</span>}
+            <Icon name={collapsed ? 'chevronR' : 'chevronL'} />
+            {!collapsed && <span>{collapsed ? 'Desplegar' : 'Replegar'}</span>}
           </button>
         </div>
       </nav>
-
-      <button
-        type="button"
-        className="sidebar-collapse-btn"
-        onClick={toggleCollapsed}
-        title={collapsed ? 'Expandir menú' : 'Replegar menú'}
-      >
-        <Icon name={collapsed ? 'chevronR' : 'chevronL'} />
-        {!collapsed && <span>Replegar</span>}
-      </button>
     </>
   );
 

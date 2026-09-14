@@ -404,3 +404,19 @@
     flex-direction: column;
   }
 }
+
+/* CONTADOR DE PASOS DEL CADASTRO (DERECHA, COLOR ATENUADO) */
+.paso-contador {
+  text-align: right;
+  margin: 6px 0 12px;
+}
+
+.paso-contador span {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #86efac;
+  color: #166534;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
