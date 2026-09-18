@@ -1,0 +1,307 @@
+/* =========================================================
+   ESTILOS SOLO DE LA SECCIÓN CADASTRO (SUBDOMÍNIO DRONES).
+   NO TOCAR APP.CSS / HEADER / FOOTER DEL PORTAL.
+   NO MEZCLAR CON PROFISSIONAIS.CSS.
+   ========================================================= */
+
+.cad-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  color: #1e293b;
+}
+
+.cad-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.cad-top h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.cad-sub {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+/* =========================================================
+   BADGE “PASO X DE 4” ARRIBA A LA DERECHA.
+   ========================================================= */
+.cad-step-badge {
+  background: #7fffd4;
+  color: #0f172a;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cad-path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 24px;
+}
+
+.cad-path-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cad-path-item.is-on {
+  border-color: #7fffd4;
+  background: #f0fffa;
+}
+
+.cad-path-n {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cad-path-item.is-on .cad-path-n {
+  background: #7fffd4;
+}
+
+.cad-visit,
+.cad-card,
+.cad-normas {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.cad-visit h2,
+.cad-card h3,
+.cad-normas h2 {
+  margin: 0 0 8px;
+}
+
+.cad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* =========================================================
+   FILA SUPERIOR: VISITANTE | OBSERVACIÓN IMPORTANTE
+   ========================================================= */
+.cad-grid-top {
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+.cad-plus {
+  border-top: 4px solid #7c3aed;
+}
+
+.cad-pro {
+  border-top: 4px solid #2563eb;
+}
+
+.cad-elite {
+  border-top: 4px solid #ca8a04;
+}
+
+.cad-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+.cad-price-note {
+  font-size: 12px;
+  color: #64748b;
+  margin: 4px 0 12px;
+}
+
+.cad-dirigido {
+  margin: 0 0 8px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.cad-ben-title {
+  margin: 12px 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cad-card ul,
+.cad-visit ul {
+  padding-left: 18px;
+  margin: 0 0 8px;
+}
+
+.cad-card li,
+.cad-visit li {
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   BENEFICIO DE RENOVACIÓN RESALTADO EN PLANES PAGOS
+   ========================================================= */
+.cad-ben-destaque {
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.cad-mais {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #0f766e;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cad-extra {
+  margin-top: 8px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.cad-normas {
+  background: #fff7ed;
+  border-color: #fdba74;
+  font-size: 13px;
+  color: #334155;
+}
+
+.cad-normas p {
+  margin: 6px 0;
+}
+
+.cad-card.is-off {
+  opacity: 0.55;
+}
+
+.btn-plus,
+.btn-pro,
+.btn-elite,
+.btn-ghost {
+  width: 100%;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-plus {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.btn-pro {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-elite {
+  background: #ca8a04;
+  color: #fff;
+}
+
+.btn-ghost {
+  width: 100%;
+  margin-top: 12px;
+  border: 2px solid #0f766e;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  background: #ccfbf1;
+  color: #115e59;
+}
+
+.btn-ghost:hover {
+  background: #99f6e4;
+  filter: none;
+}
+
+.btn-plus:hover,
+.btn-pro:hover,
+.btn-elite:hover {
+  filter: brightness(0.95);
+}
+
+.cad-form {
+  display: grid;
+  gap: 12px;
+  max-width: 520px;
+}
+
+.cad-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.cad-form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.cad-check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cad-check input {
+  width: auto;
+}
+
+.cad-foto {
+  width: 96px;
+  height: 128px;
+  object-fit: cover;
+  display: block;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.cad-msg {
+  background: #f0fffa;
+  border: 1px solid #7fffd4;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+@media (max-width: 640px) {
+  .cad-top {
+    flex-direction: column;
+  }
+
+  .cad-step-badge {
+    align-self: flex-end;
+  }
+}
