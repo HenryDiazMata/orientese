@@ -1,7 +1,9 @@
 // ==========================================
 // CADASTROPROFISSIONAIS.JSX
-// B+C: 4 PASOS + LISTAS EXTERNAS
-// EXITO EN PANTALLA (NO SALTA A LAS CARDS AL ENVIAR)
+// FORMULARIO DE 4 PASOS + LISTAS EXTERNAS
+// EXITO EN PANTALLA: NUEVO CADASTRO O IR A LA LISTA
+// NO CIERRA SOLO AL ENVIAR (EL PADRE NO DEBE PASAR ONSALVAR QUE CIERRE)
+// TEXTOS DE UI EN PT
 // ==========================================
 
 import React, { useState } from 'react';
@@ -20,6 +22,9 @@ import {
   NIVEIS_EXP,
 } from './cadastroProfissionaisListas';
 
+// ==========================================
+// CONSTANTES DE PERSISTENCIA Y PASOS
+// ==========================================
 const STORAGE_KEY = 'cadastros_profissionais';
 const TOTAL_PASOS = 4;
 
@@ -30,6 +35,9 @@ const TITULOS_PASO = [
   'Vínculo, credencial e envio',
 ];
 
+// ==========================================
+// UTILIDADES DE PAIS / TEXTO / DOCUMENTO
+// ==========================================
 function paisConfig(paisId) {
   return PAISES.find((item) => item.id === paisId) || PAISES[0];
 }
@@ -75,6 +83,9 @@ function metade(lista) {
   return [lista.slice(0, meio), lista.slice(meio)];
 }
 
+// ==========================================
+// SSO DEL PORTAL: SOLO NOMBRE Y EMAIL REALES
+// ==========================================
 function dadosPessoaisPortal(user) {
   if (!user) return { temSessao: false, nome: '', email: '' };
   return {
@@ -89,6 +100,9 @@ function toggleIn(lista, valor) {
   return atual.includes(valor) ? atual.filter((item) => item !== valor) : [...atual, valor];
 }
 
+// ==========================================
+// LISTA EN DOS COLUMNAS (CHECKBOX)
+// ==========================================
 function ListaDosColumnas({ items, valores, onToggle }) {
   const [colA, colB] = metade(items);
   return (
@@ -113,6 +127,10 @@ function ListaDosColumnas({ items, valores, onToggle }) {
   );
 }
 
+// ==========================================
+// ESTADO INICIAL DEL FORMULARIO
+// NO COPIAR CAMPOS DE TALLER / CONSERTO
+// ==========================================
 const INITIAL = {
   nomeApresentacao: '',
   dataNascimento: '',
@@ -153,7 +171,13 @@ const INITIAL = {
   termoResponsabilidade: false,
 };
 
-export default function CadastroProfissionais({ onSalvar, onCancelar }) {
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ONSALVAR: AVISO AL PADRE SIN CERRAR
+// ONCANCELAR: SALIR AL HUB / ABA ANTERIOR
+// ONVERLISTA: IR A PROFISSIONAIS CADASTRADOS
+// ==========================================
+export default function CadastroProfissionais({ onSalvar, onCancelar, onVerLista }) {
   const { theme } = useTheme();
   const { user } = useAuth();
   const isDark = theme === 'dark';
@@ -186,6 +210,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
     setField('documentoLocal', valor);
   }
 
+  // ==========================================
+  // VALIDACION POR PASO
+  // ==========================================
   function validarPaso(n) {
     if (n === 1) {
       if (!(form.nomeApresentacao || '').trim()) return 'Informe o nome de apresentação.';
@@ -242,6 +269,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
     setPaso((n) => Math.max(1, n - 1));
   }
 
+  // ==========================================
+  // ENVIO: GUARDA EN LOCALSTORAGE Y MUESTRA EXITO
+  // ==========================================
   function handleSubmit(e) {
     e.preventDefault();
     const msg = validarPaso(4);
@@ -262,13 +292,37 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
     const atual = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     localStorage.setItem(STORAGE_KEY, JSON.stringify([registro, ...atual]));
     setEnviado(registro);
+    if (onSalvar) onSalvar(registro);
   }
 
-  function voltarDepoisDoExito() {
-    if (onSalvar) onSalvar(enviado);
+  // ==========================================
+  // EXITO: VOLVER AL MISMO FORMULARIO VACIO
+  // ==========================================
+  function voltarAoCadastroProfissionais() {
+    setErro('');
+    setPaso(1);
+    setForm({
+      ...INITIAL,
+      nomeApresentacao: pessoais.nome || '',
+    });
+    setEnviado(null);
+  }
+
+  // ==========================================
+  // EXITO: IR A LA LISTA DE CADASTRADOS
+  // SI EL PADRE NO PASA ONVERLISTA, CAE EN ONCANCELAR
+  // ==========================================
+  function irParaListaCadastrados() {
+    if (onVerLista) {
+      onVerLista(enviado);
+      return;
+    }
     if (onCancelar) onCancelar();
   }
 
+  // ==========================================
+  // PANTALLA DE EXITO (DOS ACCIONES)
+  // ==========================================
   if (enviado) {
     return (
       <div className="cadastro-container" data-theme={isDark ? 'dark' : 'light'}>
@@ -277,13 +331,21 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
           <p>Seus dados foram enviados e ficarão disponíveis na lista de profissionais do subdomínio.</p>
           <p>Protocolo: {enviado.id}</p>
         </div>
-        <button type="button" className="btn-cancel" onClick={voltarDepoisDoExito}>
-          Voltar para Área de Cadastros
-        </button>
+        <div className="form-actions">
+          <button type="button" className="btn-cancelar" onClick={voltarAoCadastroProfissionais}>
+            Voltar ao cadastro de profissionais
+          </button>
+          <button type="button" className="btn-salvar" onClick={irParaListaCadastrados}>
+            Ver profissionais cadastrados
+          </button>
+        </div>
       </div>
     );
   }
 
+  // ==========================================
+  // FORMULARIO POR PASOS
+  // ==========================================
   return (
     <form className="cadastro-container" onSubmit={handleSubmit} data-theme={isDark ? 'dark' : 'light'}>
       <div className="cadastro-header">
@@ -295,6 +357,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
         </div>
       </div>
 
+      {/* ==========================================
+          PASO 1: DATOS PERSONALES + COMPLEMENTO
+          ========================================== */}
       {paso === 1 && (
         <>
           {mostrarDadosPortal && (
@@ -400,6 +465,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
         </>
       )}
 
+      {/* ==========================================
+          PASO 2: FORMACION ACADEMICA / TECNICA / BASICA
+          ========================================== */}
       {paso === 2 && (
         <>
           <section className="form-section">
@@ -442,6 +510,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
         </>
       )}
 
+      {/* ==========================================
+          PASO 3: AREAS, HABILIDADES Y OBSERVACIONES
+          ========================================== */}
       {paso === 3 && (
         <>
           <section className="form-section">
@@ -469,6 +540,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
         </>
       )}
 
+      {/* ==========================================
+          PASO 4: VINCULO, CREDENCIAL Y ENVIO
+          ========================================== */}
       {paso === 4 && (
         <>
           <section className="form-section">
@@ -552,6 +626,9 @@ export default function CadastroProfissionais({ onSalvar, onCancelar }) {
         <span>{paso}/{TOTAL_PASOS}</span>
       </div>
 
+      {/* ==========================================
+          ACCIONES DE PASO (NO CIERRAN AL ENVIAR)
+          ========================================== */}
       <div className="form-actions">
         {paso === 1 ? (
           <button type="button" className="btn-cancelar" onClick={() => onCancelar && onCancelar()}>Cancelar</button>

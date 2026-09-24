@@ -1,100 +1,24 @@
 // ==========================================
-// ARCHIVO COMPLETO: orientese/src/views/drones/profissionais.jsx
-// DESCRIPCIÓN: VISTA PRINCIPAL DE PROFESIONALES Y TÉCNICOS DEL SECTOR DE DRONES
+// PROFISSIONAIS.JSX
+// VISTA: FILTROS + GRID + PAGINACION
+// DATOS EN profissionaisListaDados.js
 // ==========================================
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-// ==========================================
-// CORRECCIÓN DE RUTAS DE IMPORTACIÓN DE COMPONENTES SEGÚN LA ESTRUCTURA DE ORIENTESE
-// ==========================================
 import CadastroProfissionais from '../../components/drones/formularios/CadastroProfissionais';
 import CadastroVagas from '../../components/drones/formularios/CadastroVagas';
 import ModalDrone from '../../components/drones/modals/ModalDrone';
+import {
+  MOCK_PROFISSIONAIS,
+  MOCK_VAGAS,
+  OPCOES_POR_PAGINA,
+  POR_PAGINA_PADRAO,
+  lerCadastrosLocais,
+} from '../../components/drones/formularios/profissionaisListaDados';
 import './profissionais.css';
 
-// ==========================================
-// DATOS MOCK DE PROFESIONALES
-// ==========================================
-const MOCK_PROFISSIONAIS = [
-  { 
-    id: 1, 
-    nome: 'Carlos Eduardo', 
-    especialidade: 'Piloto de Drone', 
-    estado: 'SP', 
-    cidade: 'Ribeirão Preto', 
-    registro: 'ANAC-10293', 
-    experiencia: '100h+', 
-    pagamento: 'PJ / NF',
-    disponibilidade: 'Imediata',
-    certificacao: 'Autorizado / Certificado',
-    garantia: '3 Meses',
-    whatsapp: '5516999998888',
-    email: 'carlos.piloto@example.com'
-  },
-  { 
-    id: 2, 
-    nome: 'Mariana Silva', 
-    especialidade: 'Agrônomo', 
-    estado: 'MG', 
-    cidade: 'Uberlândia', 
-    registro: 'CREA-98765', 
-    experiencia: 'Especialista', 
-    pagamento: 'CLT / Diária',
-    disponibilidade: 'Finais de Semana',
-    certificacao: 'Autônomo / Independente',
-    garantia: 'Sem Garantia',
-    whatsapp: '5534988887777',
-    email: 'mariana.agro@example.com'
-  },
-  { 
-    id: 3, 
-    nome: 'Roberto Alves', 
-    especialidade: 'Técnico em Manutenção', 
-    estado: 'PR', 
-    cidade: 'Cascavel', 
-    registro: 'CREA-43210', 
-    experiencia: 'Especialista', 
-    pagamento: 'PJ / NF',
-    disponibilidade: 'Imediata',
-    certificacao: 'Autorizado / Certificado',
-    garantia: '6 Meses',
-    whatsapp: '5545977776666',
-    email: 'roberto.fix@example.com'
-  },
-  { 
-    id: 4, 
-    nome: 'Ana Souza', 
-    especialidade: 'Fotógrafo / Videomaker', 
-    estado: 'SP', 
-    cidade: 'Campinas', 
-    registro: 'Portfólio', 
-    experiencia: 'Estagiário', 
-    pagamento: 'Diária',
-    disponibilidade: 'Sob Consulta',
-    certificacao: 'Autônomo / Independente',
-    garantia: '1 Mês',
-    whatsapp: '5519966665555',
-    email: 'ana.foto@example.com'
-  }
-];
-
-// ==========================================
-// DATOS MOCK DE VAGAS
-// ==========================================
-const MOCK_VAGAS = [
-  { id: 1, titulo: 'Piloto para Pulverização de Cana', empresa: 'Usina Santa Maria', local: 'Ribeirão Preto - SP', contrato: 'Safra / Temporário' },
-  { id: 2, titulo: 'Mapeamento Agrícola com Drones', empresa: 'AgroGeo Topografia', local: 'Uberlândia - MG', contrato: 'PJ / Prestação de Serviço' },
-  { id: 3, titulo: 'Técnico de Manutenção DJI', empresa: 'DroneFix Soluções', local: 'Cascavel - PR', contrato: 'CLT' }
-];
-
-// ==========================================
-// COMPONENTE PRINCIPAL PROFISSIONAIS
-// ==========================================
 export default function Profissionais({ abaAtiva, setAbaAtiva }) {
-  // ==========================================
-  // ESTADOS DE FILTRO DE PROFESIONALES
-  // ==========================================
   const [buscaNome, setBuscaNome] = useState('');
   const [estadoUF, setEstadoUF] = useState('todos');
   const [cidade, setCidade] = useState('');
@@ -104,20 +28,16 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
   const [disponibilidade, setDisponibilidade] = useState('todas');
   const [certificacao, setCertificacao] = useState('todas');
   const [garantia, setGarantia] = useState('todas');
-
-  // ==========================================
-  // ESTADO DE FILTRO DE VAGAS
-  // ==========================================
   const [buscaVaga, setBuscaVaga] = useState('');
-
-  // ==========================================
-  // ESTADO MODAL
-  // ==========================================
   const [modalDados, setModalDados] = useState(null);
+  const [tickLista, setTickLista] = useState(0);
+  const [porPagina, setPorPagina] = useState(POR_PAGINA_PADRAO);
+  const [pagina, setPagina] = useState(1);
 
-  // ==========================================
-  // FUNCIÓN PARA LIMPIAR TODOS LOS FILTROS
-  // ==========================================
+  const baseProfissionais = useMemo(() => {
+    return [...lerCadastrosLocais(), ...MOCK_PROFISSIONAIS];
+  }, [tickLista]);
+
   const limparFiltros = () => {
     setBuscaNome('');
     setEstadoUF('todos');
@@ -128,73 +48,78 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
     setDisponibilidade('todas');
     setCertificacao('todas');
     setGarantia('todas');
+    setPagina(1);
   };
 
-  // ==========================================
-  // FILTRADO DE PROFESIONALES
-  // ==========================================
-  const profissionaisFiltrados = MOCK_PROFISSIONAIS
+  const profissionaisFiltrados = baseProfissionais
     .filter((pro) => {
-      const matchNome = pro.nome.toLowerCase().includes(buscaNome.toLowerCase());
+      const matchNome = String(pro.nome || '').toLowerCase().includes(buscaNome.toLowerCase());
       const matchUF = estadoUF === 'todos' || pro.estado === estadoUF;
-      const matchCidade = pro.cidade.toLowerCase().includes(cidade.toLowerCase());
+      const matchCidade = String(pro.cidade || '').toLowerCase().includes(cidade.toLowerCase());
       const matchCat = categoria === 'todas' || pro.especialidade === categoria;
       const matchExp = experiencia === 'todos' || pro.experiencia === experiencia;
-      const matchPag = formaPagamento === 'todas' || pro.pagamento.includes(formaPagamento);
+      const matchPag = formaPagamento === 'todas' || String(pro.pagamento || '').includes(formaPagamento);
       const matchDisp = disponibilidade === 'todas' || pro.disponibilidade === disponibilidade;
       const matchCert = certificacao === 'todas' || pro.certificacao === certificacao;
       const matchGar = garantia === 'todas' || pro.garantia === garantia;
-
       return matchNome && matchUF && matchCidade && matchCat && matchExp && matchPag && matchDisp && matchCert && matchGar;
     })
-    .sort((a, b) => a.nome.localeCompare(b.nome));
+    .sort((a, b) => String(a.nome).localeCompare(String(b.nome)));
 
-  // ==========================================
-  // FILTRADO DE VAGAS
-  // ==========================================
+  const totalFiltrado = profissionaisFiltrados.length;
+  const totalPaginas = Math.max(1, Math.ceil(totalFiltrado / porPagina));
+  const paginaSegura = Math.min(pagina, totalPaginas);
+  const inicio = (paginaSegura - 1) * porPagina;
+  const profissionaisPagina = profissionaisFiltrados.slice(inicio, inicio + porPagina);
+
   const vagasFiltradas = MOCK_VAGAS.filter((vaga) => {
     const termo = buscaVaga.toLowerCase();
-    return vaga.titulo.toLowerCase().includes(termo) || 
+    return vaga.titulo.toLowerCase().includes(termo) ||
            vaga.empresa.toLowerCase().includes(termo) ||
            vaga.local.toLowerCase().includes(termo);
   });
 
-  return (
-    // ==========================================
-    // CONTENEDOR PRINCIPAL
-    // ==========================================
-    <div className="profissionais-container">
+  function mudarPorPagina(valor) {
+    setPorPagina(Number(valor));
+    setPagina(1);
+  }
 
-      {/* ==========================================
-          PAINEL: PROFISSIONAIS
-          ========================================== */}
+  function mudarFiltro(setter) {
+    return (evento) => {
+      setter(evento.target.value);
+      setPagina(1);
+    };
+  }
+
+  return (
+    <div className="profissionais-container">
       {(abaAtiva === 'buscar-pro' || !abaAtiva) && (
         <section className="painel-catalogo">
           <div className="filtro-painel-avancado">
             <div className="filtro-grupo">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Nome do profissional..."
                 value={buscaNome}
-                onChange={(e) => setBuscaNome(e.target.value)}
+                onChange={mudarFiltro(setBuscaNome)}
               />
-              <select value={estadoUF} onChange={(e) => setEstadoUF(e.target.value)}>
+              <select value={estadoUF} onChange={mudarFiltro(setEstadoUF)}>
                 <option value="todos">Todos os Estados (UF)</option>
                 <option value="SP">São Paulo (SP)</option>
                 <option value="MG">Minas Gerais (MG)</option>
                 <option value="PR">Paraná (PR)</option>
                 <option value="GO">Goiás (GO)</option>
               </select>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Cidade..."
                 value={cidade}
-                onChange={(e) => setCidade(e.target.value)}
+                onChange={mudarFiltro(setCidade)}
               />
             </div>
 
             <div className="filtro-grupo">
-              <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+              <select value={categoria} onChange={mudarFiltro(setCategoria)}>
                 <option value="todas">Todas as Áreas / Especialidades</option>
                 <option value="Piloto de Drone">Piloto de Drone</option>
                 <option value="Agrônomo">Agrônomo / Mapeamento</option>
@@ -202,14 +127,14 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
                 <option value="Fotógrafo / Videomaker">Fotógrafo / Videomaker</option>
               </select>
 
-              <select value={experiencia} onChange={(e) => setExperiencia(e.target.value)}>
+              <select value={experiencia} onChange={mudarFiltro(setExperiencia)}>
                 <option value="todos">Nível de Experiência</option>
                 <option value="Estagiário">Estagiário / Iniciante</option>
                 <option value="100h+">Mais de 100 horas de voo</option>
                 <option value="Especialista">Especialista / Senior</option>
               </select>
 
-              <select value={formaPagamento} onChange={(e) => setFormaPagamento(e.target.value)}>
+              <select value={formaPagamento} onChange={mudarFiltro(setFormaPagamento)}>
                 <option value="todas">Forma de Pagamento</option>
                 <option value="Diária">Diária</option>
                 <option value="PJ">PJ / Nota Fiscal</option>
@@ -218,20 +143,20 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
             </div>
 
             <div className="filtro-grupo">
-              <select value={disponibilidade} onChange={(e) => setDisponibilidade(e.target.value)}>
+              <select value={disponibilidade} onChange={mudarFiltro(setDisponibilidade)}>
                 <option value="todas">Disponibilidade</option>
                 <option value="Imediata">Imediata</option>
                 <option value="Finais de Semana">Finais de Semana</option>
                 <option value="Sob Consulta">Sob Consulta</option>
               </select>
 
-              <select value={certificacao} onChange={(e) => setCertificacao(e.target.value)}>
+              <select value={certificacao} onChange={mudarFiltro(setCertificacao)}>
                 <option value="todas">Qualificação / Selo</option>
                 <option value="Autorizado / Certificado">Técnico/Oficina Autorizada</option>
                 <option value="Autônomo / Independente">Profissional Independente</option>
               </select>
 
-              <select value={garantia} onChange={(e) => setGarantia(e.target.value)}>
+              <select value={garantia} onChange={mudarFiltro(setGarantia)}>
                 <option value="todas">Garantia Oferecida</option>
                 <option value="Sem Garantia">Sem Garantia</option>
                 <option value="1 Mês">1 Mês</option>
@@ -246,19 +171,20 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
           </div>
 
           <div className="contador-resultados">
-            Exibindo <strong>{profissionaisFiltrados.length}</strong> profissional(ais) encontrado(s) em ordem alfabética.
+            Exibindo <strong>{profissionaisPagina.length}</strong> de <strong>{totalFiltrado}</strong> profissional(ais)
+            {' '}— página {paginaSegura} de {totalPaginas}.
           </div>
 
-          {profissionaisFiltrados.length === 0 ? (
+          {totalFiltrado === 0 ? (
             <div className="sem-resultados">Nenhum profissional encontrado com os filtros aplicados.</div>
           ) : (
             <div className="grid-profissionais">
-              {profissionaisFiltrados.map((pro) => (
+              {profissionaisPagina.map((pro) => (
                 <div key={pro.id} className="card-profissional">
                   <div>
                     <span className="badge-especialidade">{pro.especialidade}</span>
                     <h3>{pro.nome}</h3>
-                    <p>📍 {pro.cidade} - {pro.estado}</p>
+                    <p>📍 {pro.cidade}{pro.estado ? ` - ${pro.estado}` : ''}</p>
                     <p>📄 {pro.registro}</p>
                     <p>⏱️ Exp: <strong>{pro.experiencia}</strong> | 📅 {pro.disponibilidade}</p>
                   </div>
@@ -269,17 +195,46 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
               ))}
             </div>
           )}
+
+          {totalFiltrado > 0 && (
+            <div className="paginacao-profissionais" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', justifyContent: 'space-between', marginTop: '20px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                Por página
+                <select value={porPagina} onChange={(e) => mudarPorPagina(e.target.value)}>
+                  {OPCOES_POR_PAGINA.map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </label>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  className="btn-limpar-filtros"
+                  disabled={paginaSegura <= 1}
+                  onClick={() => setPagina((n) => Math.max(1, n - 1))}
+                >
+                  Anterior
+                </button>
+                <span>Página {paginaSegura} / {totalPaginas}</span>
+                <button
+                  type="button"
+                  className="btn-limpar-filtros"
+                  disabled={paginaSegura >= totalPaginas}
+                  onClick={() => setPagina((n) => Math.min(totalPaginas, n + 1))}
+                >
+                  Próxima
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       )}
 
-      {/* ==========================================
-          PAINEL: MURAL DE VAGAS
-          ========================================== */}
       {abaAtiva === 'mural-vagas' && (
         <section className="painel-vagas">
           <div className="filtro-bar">
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Buscar vaga por título, empresa ou cidade..."
               value={buscaVaga}
               onChange={(e) => setBuscaVaga(e.target.value)}
@@ -310,24 +265,25 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
         </section>
       )}
 
-      {/* ==========================================
-          PAINEL: CADASTROS
-          ========================================== */}
       {abaAtiva === 'criar-pro' && (
-        <CadastroProfissionais onCancel={() => setAbaAtiva('buscar-pro')} />
+        <CadastroProfissionais
+          onCancelar={() => setAbaAtiva && setAbaAtiva('buscar-pro')}
+          onVerLista={() => {
+            setTickLista((n) => n + 1);
+            setPagina(1);
+            if (setAbaAtiva) setAbaAtiva('buscar-pro');
+          }}
+        />
       )}
 
       {abaAtiva === 'publicar-vaga' && (
-        <CadastroVagas onCancel={() => setAbaAtiva('mural-vagas')} />
+        <CadastroVagas onCancel={() => setAbaAtiva && setAbaAtiva('mural-vagas')} />
       )}
 
-      {/* ==========================================
-          MODAL
-          ========================================== */}
-      <ModalDrone 
-        isOpen={!!modalDados} 
-        onClose={() => setModalDados(null)} 
-        dados={modalDados} 
+      <ModalDrone
+        isOpen={!!modalDados}
+        onClose={() => setModalDados(null)}
+        dados={modalDados}
       />
     </div>
   );

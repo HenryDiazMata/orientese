@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "TARIFE",
+    "frasePago": "Der Tarif wird bei der Registrierung vollständig bezahlt. Wenn Ihre internationale Karte Raten zulässt, gelten die Bedingungen Ihrer Bank, nicht die von drones.orientese.com.",
+    "intro1": "Informatives Hub. Es verkauft nicht und vermittelt nicht. Der Tarif wird vollständig an drones.orientese.com bei Registrierung oder Aktivierung gezahlt. Lässt Ihre internationale Karte Raten zu, legt die Bank die Aufteilung fest. Kostenlose Registrierung und Nutzung: Oktober bis Dezember 2026. Frist zur Aktivierung dieser Registrierungen: 31-12-2026 UTC.",
+    "intro2": "Tarifdauer: 365 Tage. Aktivierung am 1-1-2027 gilt bis 1-1-2028 zum Einstiegstarif. Folgende Verlängerungen nutzen den Tarif des Vorjahres. Simulatoruhr: Kalendermonat. StandShowTour und Mentora: in Produktion. Clubs: geplant.",
+    "etapasTitulo": "Stufen PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (Aktivierung ≤ 31. Dez. 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Danach Listenpreise 99 / 263 / 329 USD. INICIANTE bleibt bei 66 USD / 365 Tagen. Sichtbares Kontingent: 1800 bezahlte Anmeldungen je Tarif (PLUS, PRO und ÉLITE), weltweit, je Stufe.",
+    "extrasTitulo": "Extras (ab Geltung des Tarifs)",
+    "extrasTexto": "1) +2 Nutzungen an diesem Tag bei Erreichen der Tagesgrenze (PLUS–ÉLITE max. 8 Tage/Monat; INICIANTE max. 4). 2) Beutel auf 0: +50 % einmal je Kalendermonat. 3) Pack 10 Nutzungen: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 Packs/Monat. Besuchende kaufen keine Extras. Okt.–Dez. 2026 läuft der Test ohne Extras. Logbuch, NOTAM und Höhenmesser: in dieser Stufe nur Wörter.",
+    "cambioTitulo": "Tarifwechsel",
+    "cambioTexto": "Der Wechsel zu einem günstigeren Tarif kann eine Preisdifferenz erzeugen, die beim Wechsel berechnet wird, zugunsten von drones.orientese.com in Geld oder zugunsten der wechselnden Person durch mehr Simulatornutzungen und/oder mehr Sendungen von Personalanfragen und/oder Verkäufen von Drohnen, Teilen oder Zubehör in gutem Zustand. Keine Rückerstattung. Das Feld „Ich habe bereits 400 h überschritten“ ermöglicht ein Upgrade; es schließt niemanden aus.",
+    "btnRegistro": "REGISTRIERUNG",
+    "btnActivar": "AKTIVIEREN",
+    "btnInicio": "START",
+    "visitante": {
+      "apodo": "Besucher",
+      "titulo": "VISITANTE",
+      "precio": "Ohne bezahlte Mitgliedschaft",
+      "puntos": [
+        "Verzeichnis und Schaufenster ansehen.",
+        "Simulator: 5 Nutzungen je Kalendermonat (Richtwert 1/Tag).",
+        "Hinweisbox.",
+        "Kauft keine Extras."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Sympathisant",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 Tage (ohne Stufenrabatt)",
+      "puntos": [
+        "Einmal je Person. Nicht als Iniciante verlängerbar.",
+        "Simulator: 10 Nutzungen / Monat (max. 2/Tag).",
+        "Nach Ablauf wird man Besucher, außer PLUS, PRO oder ÉLITE wird aktiviert.",
+        "Erklärung (ohne Gericht): frischer Abschluss, unter 400 h, Beamter oder Arbeiter."
+      ]
+    },
+    "plus": {
+      "apodo": "Konsequent",
+      "titulo": "PLUS",
+      "precio": "Liste 99 · E1 89 · E2 92 · E3 94 USD / 365 Tage",
+      "puntos": [
+        "Beutel A 36 / B 45 im Monat (Deckel 2 / 3 am Tag).",
+        "A = kein Pilot (Landwirt oder Projekt). B = Pilot oder Techniker.",
+        "Gleicher Preis; das Profil wird bei der Aktivierung erklärt.",
+        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      ]
+    },
+    "pro": {
+      "apodo": "Freund",
+      "titulo": "PRO",
+      "precio": "Liste 263 · E1 224 · E2 231 · E3 237 USD / 365 Tage",
+      "puntos": [
+        "Beutel A 72 / B 90 im Monat (Deckel 8 / 8 am Tag).",
+        "A / B: gleicher Preis; Profil bei Aktivierung.",
+        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      ]
+    },
+    "elite": {
+      "apodo": "Verbündeter",
+      "titulo": "ÉLITE",
+      "precio": "Liste 329 · E1 263 · E2 273 · E3 280 USD / 365 Tage",
+      "puntos": [
+        "Beutel A 96 / B 120 im Monat (Deckel 15 / 15 am Tag).",
+        "A / B: gleicher Preis; Profil bei Aktivierung.",
+        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      ]
+    }
+  }
+}

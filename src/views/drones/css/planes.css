@@ -1,0 +1,243 @@
+/* ==========================================
+   ARCHIVO: src/views/drones/css/planes.css
+   SOLO VISTA PLANES. MAIN BLANCO. SIN DARK.
+   ========================================== */
+
+/* ========== PAGINA ========== */
+.drones-planes-page {
+  width: 100%;
+  background: #ffffff;
+  color: #1A2330;
+  padding: 28px 16px 56px;
+  box-sizing: border-box;
+}
+
+/* ========== ANCHO 80 % — EDITAR AQUI EL MARGEN ========== */
+.drones-planes-wrap {
+  width: 80%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ========== CABECERA ========== */
+.drones-planes-head {
+  margin-bottom: 18px;
+}
+
+.drones-planes-h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1A8FD0;
+}
+
+/* ========== FRASE DE PAGO ========== */
+.drones-planes-frase {
+  margin: 0;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 2px solid #1A8FD0;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 700;
+  color: #123;
+  box-shadow: 0 2px 8px rgba(26, 143, 208, 0.10);
+}
+
+/* ========== BLOQUES DE TEXTO ========== */
+.drones-planes-bloque {
+  margin: 16px 0;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #d7e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 143, 208, 0.08);
+}
+
+.drones-planes-h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1A8FD0;
+}
+
+.drones-planes-p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.drones-planes-p-last {
+  margin-bottom: 0;
+}
+
+/* ========== GRILLA ========== */
+.drones-planes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 8px 0 18px;
+}
+
+@media (min-width: 720px) {
+  .drones-planes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .drones-planes-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ========== CARD BASE ========== */
+.drones-planes-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 16px 16px 18px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 2px solid #d7e8f0;
+  box-shadow: 0 4px 14px rgba(26, 143, 208, 0.10);
+}
+
+.drones-planes-apodo {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.drones-planes-titulo {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.drones-planes-precio {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.drones-planes-lista {
+  margin: 0 0 16px;
+  padding-left: 1.1rem;
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.drones-planes-lista li {
+  margin-bottom: 6px;
+}
+
+/* ========== COLOR POR PLAN ========== */
+.drones-planes-card.is-visitante {
+  border-color: #7ec8d8;
+  background: linear-gradient(180deg, #EAF6FB 0%, #ffffff 42%);
+}
+.drones-planes-card.is-visitante .drones-planes-apodo,
+.drones-planes-card.is-visitante .drones-planes-titulo {
+  color: #3a6d7a;
+}
+
+.drones-planes-card.is-iniciante {
+  border-color: #2f9e6a;
+  background: linear-gradient(180deg, #e7f8ef 0%, #ffffff 42%);
+}
+.drones-planes-card.is-iniciante .drones-planes-apodo,
+.drones-planes-card.is-iniciante .drones-planes-titulo {
+  color: #1f7a50;
+}
+
+.drones-planes-card.is-plus {
+  border-color: #1A8FD0;
+  background: linear-gradient(180deg, #d9eef9 0%, #ffffff 42%);
+}
+.drones-planes-card.is-plus .drones-planes-apodo,
+.drones-planes-card.is-plus .drones-planes-titulo {
+  color: #1A8FD0;
+}
+
+.drones-planes-card.is-pro {
+  border-color: #2bb8ab;
+  background: linear-gradient(180deg, #d9f7f4 0%, #ffffff 42%);
+}
+.drones-planes-card.is-pro .drones-planes-apodo,
+.drones-planes-card.is-pro .drones-planes-titulo {
+  color: #1a8a80;
+}
+
+.drones-planes-card.is-elite {
+  border-color: #E6C200;
+  background: linear-gradient(180deg, #fff6c8 0%, #ffffff 42%);
+}
+.drones-planes-card.is-elite .drones-planes-apodo,
+.drones-planes-card.is-elite .drones-planes-titulo {
+  color: #8a7200;
+}
+
+/* ========== BOTONES (HOVER AQUAMARINA COMO EL MENU) ========== */
+.drones-planes-btn-card,
+.drones-planes-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #1A8FD0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drones-planes-btn-card:hover,
+.drones-planes-btn:hover {
+  background: #40E0D0;
+  color: #0f172a;
+  border-color: #40E0D0;
+}
+
+/* ========== CTAS INFERIORES ========== */
+.drones-planes-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.drones-planes-ctas .drones-planes-btn {
+  width: auto;
+  min-width: 160px;
+  padding: 10px 18px;
+}
+
+/* ========== MOVIL ========== */
+@media (max-width: 767px) {
+  .drones-planes-wrap {
+    width: 92%;
+  }
+
+  .drones-planes-h1 {
+    font-size: 24px;
+  }
+
+  .drones-planes-ctas .drones-planes-btn {
+    width: 100%;
+  }
+}

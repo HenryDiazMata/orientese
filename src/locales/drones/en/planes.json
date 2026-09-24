@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "PLANS",
+    "frasePago": "The plan is paid in full at sign-up. If your international card allows installments, the terms are set by your bank, not by drones.orientese.com.",
+    "intro1": "Informational hub. It does not sell or intermediate. The plan is paid in full to drones.orientese.com at sign-up or activation. If your international card allows installments, the bank sets the split. Free sign-up and use: October through December 2026. Deadline to activate those registrations: 31-12-2026 UTC.",
+    "intro2": "Plan length: 365 days. Activation on 1-1-2027 runs until 1-1-2028 at the rate you started with. Later renewals use the previous year's rate. Simulator clock: calendar month. StandShowTour and Mentora: in production. Clubs: scheduled.",
+    "etapasTitulo": "Stages PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (activation ≤ 31 Dec 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Then list rates 99 / 263 / 329 USD. INICIANTE stays at 66 USD / 365 days. Visible quota: 1800 paid sign-ups per plan (PLUS, PRO and ÉLITE), worldwide, per stage.",
+    "extrasTitulo": "Extras (from plan start date)",
+    "extrasTexto": "1) +2 uses that day if the daily cap is hit (PLUS–ÉLITE max. 8 days/month; INICIANTE max. 4). 2) Bag at 0: +50 % once per calendar month. 3) Pack of 10 uses: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 packs/month. Visitor cannot buy extras. In Oct–Dec 2026 the trial has no extras. Logbook, NOTAM and altimeter: words only at this stage.",
+    "cambioTitulo": "Plan change",
+    "cambioTexto": "Switching to a more economical plan may create a price difference charged at the time of the change, either in favor of drones.orientese.com in money or in favor of the person changing plan, with extra simulator uses and/or extra sends of staff requests and/or sales of drones, parts or accessories in good condition. No money is refunded. The box “I already exceeded 400 h” enables an upgrade; it does not remove you.",
+    "btnRegistro": "SIGN UP",
+    "btnActivar": "ACTIVATE",
+    "btnInicio": "HOME",
+    "visitante": {
+      "apodo": "Visitor",
+      "titulo": "VISITANTE",
+      "precio": "No paid membership",
+      "puntos": [
+        "Browse the directory and showcase.",
+        "Simulator: 5 uses per calendar month (guide 1/day).",
+        "Notices box.",
+        "Cannot buy extras."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Supporter",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 days (no stage discounts)",
+      "puntos": [
+        "Once per person. Not renewable as Iniciante.",
+        "Simulator: 10 uses / month (max. 2/day).",
+        "When it ends you become Visitor unless you activate PLUS, PRO or ÉLITE.",
+        "Declaration (no court): recent graduate, under 400 h, civil servant or worker."
+      ]
+    },
+    "plus": {
+      "apodo": "Consistent",
+      "titulo": "PLUS",
+      "precio": "List 99 · E1 89 · E2 92 · E3 94 USD / 365 days",
+      "puntos": [
+        "Bag A 36 / B 45 per month (cap 2 / 3 per day).",
+        "A = non-pilot (farmer or project). B = pilot or technician.",
+        "Same price; profile is declared at activation.",
+        "Quota: 1800 paid sign-ups per visible stage."
+      ]
+    },
+    "pro": {
+      "apodo": "Friend",
+      "titulo": "PRO",
+      "precio": "List 263 · E1 224 · E2 231 · E3 237 USD / 365 days",
+      "puntos": [
+        "Bag A 72 / B 90 per month (cap 8 / 8 per day).",
+        "A / B: same price; profile at activation.",
+        "Quota: 1800 paid sign-ups per visible stage."
+      ]
+    },
+    "elite": {
+      "apodo": "Ally",
+      "titulo": "ÉLITE",
+      "precio": "List 329 · E1 263 · E2 273 · E3 280 USD / 365 days",
+      "puntos": [
+        "Bag A 96 / B 120 per month (cap 15 / 15 per day).",
+        "A / B: same price; profile at activation.",
+        "Quota: 1800 paid sign-ups per visible stage."
+      ]
+    }
+  }
+}

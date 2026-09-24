@@ -6,6 +6,9 @@
 
 .cad-page {
   max-width: 1100px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 24px 16px 64px;
   color: #1e293b;
@@ -29,9 +32,6 @@
   color: #64748b;
 }
 
-/* =========================================================
-   BADGE “PASO X DE 4” ARRIBA A LA DERECHA.
-   ========================================================= */
 .cad-step-badge {
   background: #7fffd4;
   color: #0f172a;
@@ -87,8 +87,16 @@
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cad-visit,
+.cad-card {
+  display: flex;
+  flex-direction: column;
 }
 
 .cad-visit h2,
@@ -97,17 +105,21 @@
   margin: 0 0 8px;
 }
 
+/* 3 cards: columnas fijas que se encojen, sin 4ª fantasma */
 .cad-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
+  width: 100%;
 }
 
-/* =========================================================
-   FILA SUPERIOR: VISITANTE | OBSERVACIÓN IMPORTANTE
-   ========================================================= */
+/* Visitante | Observação: siempre 2 columnas */
 .cad-grid-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: stretch;
+  gap: 16px;
+  width: 100%;
   margin-bottom: 16px;
 }
 
@@ -160,9 +172,6 @@
   line-height: 1.4;
 }
 
-/* =========================================================
-   BENEFICIO DE RENOVACIÓN RESALTADO EN PLANES PAGOS
-   ========================================================= */
 .cad-ben-destaque {
   font-weight: 700;
   color: #0f766e;
@@ -203,7 +212,7 @@
 .btn-elite,
 .btn-ghost {
   width: 100%;
-  margin-top: 12px;
+  margin-top: auto;
   border: 0;
   border-radius: 10px;
   padding: 10px 14px;
@@ -228,7 +237,7 @@
 
 .btn-ghost {
   width: 100%;
-  margin-top: 12px;
+  margin-top: auto;
   border: 2px solid #0f766e;
   border-radius: 10px;
   padding: 10px 14px;
@@ -294,6 +303,13 @@
   border: 1px solid #7fffd4;
   padding: 10px 12px;
   border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .cad-grid,
+  .cad-grid-top {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {

@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "PIANI",
+    "frasePago": "Il piano si paga per intero alla registrazione. Se la carta internazionale ammette rate, le condizioni le fissa la banca, non drones.orientese.com.",
+    "intro1": "Hub informativo. Non vende e non intermedia. Il piano si paga per intero a drones.orientese.com alla registrazione o all'attivazione. Se la carta internazionale ammette rate, il frazionamento lo fissa la banca. Registrazione e uso gratuiti: ottobre-dicembre 2026. Scadenza per attivare quelle registrazioni: 31-12-2026 UTC.",
+    "intro2": "Durata del piano: 365 giorni. Chi attiva l'1-1-2027 vale fino all'1-1-2028 con la tariffa di partenza. I rinnovi successivi usano la tariffa dell'anno precedente. Orologio del simulatore: mese di calendario. StandShowTour e Mentora: in produzione. Club: programmati.",
+    "etapasTitulo": "Tappe PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (attivazione ≤ 31 dic 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Poi listino 99 / 263 / 329 USD. INICIANTE resta a 66 USD / 365 giorni. Quota visibile: 1800 iscrizioni pagate per piano (PLUS, PRO e ÉLITE), mondiale, per tappa.",
+    "extrasTitulo": "Extra (dalla viggenza del piano)",
+    "extrasTexto": "1) +2 usi quel giorno se si tocca il tetto giornaliero (PLUS–ÉLITE max. 8 giorni/mese; INICIANTE max. 4). 2) Borsa a 0: +50 % una volta al mese di calendario. 3) Pack 10 usi: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 pack/mese. Il visitatore non compra extra. In ott–dic 2026 la prova è senza extra. Bitácora, NOTAM e altimetro: solo parole in questa fase.",
+    "cambioTitulo": "Cambio di piano",
+    "cambioTexto": "Passare a un piano più economico può generare una differenza di prezzo addebitata al momento del cambio, a favore di drones.orientese.com in denaro o a favore di chi cambia piano, con più usi del simulatore di preventivi e/o più invii di richiesta di personale e/o di vendita di droni, pezzi o accessori in buono stato. Non si restituisce denaro. La casella «Ho già superato 400 h» abilita il passaggio a un piano superiore; non espelle.",
+    "btnRegistro": "REGISTRAZIONE",
+    "btnActivar": "ATTIVARE",
+    "btnInicio": "HOME",
+    "visitante": {
+      "apodo": "Visitatore",
+      "titulo": "VISITANTE",
+      "precio": "Senza iscrizione a pagamento",
+      "puntos": [
+        "Consulta l'elenco e la vetrina.",
+        "Simulatore: 5 usi per mese di calendario (guida 1/giorno).",
+        "Casella avvisi.",
+        "Non compra extra."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Simpatizzante",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 giorni (senza tappe di sconto)",
+      "puntos": [
+        "Una sola volta per persona. Non rinnovabile come Iniciante.",
+        "Simulatore: 10 usi / mese (max. 2/giorno).",
+        "Alla scadenza diventa Visitatore salvo attivazione PLUS, PRO o ÉLITE.",
+        "Dichiarazione (senza tribunale): neolaureato, meno di 400 h, impiegato o operaio."
+      ]
+    },
+    "plus": {
+      "apodo": "Coerente",
+      "titulo": "PLUS",
+      "precio": "Listino 99 · E1 89 · E2 92 · E3 94 USD / 365 giorni",
+      "puntos": [
+        "Borsa A 36 / B 45 al mese (tetto 2 / 3 al giorno).",
+        "A = non pilota (agricoltore o progetto). B = pilota o tecnico.",
+        "Stesso prezzo; il profilo si dichiara all'attivazione.",
+        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      ]
+    },
+    "pro": {
+      "apodo": "Amico",
+      "titulo": "PRO",
+      "precio": "Listino 263 · E1 224 · E2 231 · E3 237 USD / 365 giorni",
+      "puntos": [
+        "Borsa A 72 / B 90 al mese (tetto 8 / 8 al giorno).",
+        "A / B: stesso prezzo; profilo all'attivazione.",
+        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      ]
+    },
+    "elite": {
+      "apodo": "Alleato",
+      "titulo": "ÉLITE",
+      "precio": "Listino 329 · E1 263 · E2 273 · E3 280 USD / 365 giorni",
+      "puntos": [
+        "Borsa A 96 / B 120 al mese (tetto 15 / 15 al giorno).",
+        "A / B: stesso prezzo; profilo all'attivazione.",
+        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      ]
+    }
+  }
+}

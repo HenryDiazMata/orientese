@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "PLANES",
+    "frasePago": "El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.",
+    "intro1": "Hub informativo. No vende ni intermedia. El plan se paga íntegro a drones.orientese.com al cadastrarse o activar. Si su tarjeta internacional admite cuotas, el fraccionamiento lo fija su banco. Gratuidad de registro y uso: octubre a diciembre de 2026. Tope para activar esos registros: 31-12-2026 UTC.",
+    "intro2": "Duración del plan: 365 días. Quien activa el 1-1-2027 rige hasta el 1-1-2028 con la tarifa con la que empezó. Las renovaciones siguientes usan la tarifa del año anterior. Reloj del simulador: mes de calendario. StandShowTour y Mentora: en producción. Clubes: programados.",
+    "etapasTitulo": "Etapas PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (activación ≤ 31 dic 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Luego tarifa lista 99 / 263 / 329 USD. INICIANTE permanece en 66 USD / 365 días. Cupo visible: 1800 altas por plan (PLUS, PRO y ÉLITE), mundial, por etapa.",
+    "extrasTitulo": "Extras (a partir de la vigencia del plan)",
+    "extrasTexto": "1) +2 usos ese día si se toca el techo diario (PLUS–ÉLITE máx. 8 días/mes; INICIANTE máx. 4). 2) Bolsa en 0: +50 % una vez por mes calendario. 3) Pack 10 usos: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; máx. 2 packs/mes. Visitante no compra extras. En oct–dic 2026 la prueba va sin extras. Bitácora, NOTAM y altímetro: solo palabras en esta etapa.",
+    "cambioTitulo": "Cambio de plan",
+    "cambioTexto": "Cambiar de un plan a otro más económico puede generar una diferencia de precio que será cobrada al momento de hacer el cambio, bien sea a favor de drones.orientese.com en dinero o a favor de quien cambia de plan, recibiendo aumentos en las cantidades de usos del simulador de presupuestos, de envíos de solicitud de personal y/o de envío de ventas de drones, piezas o accesorios en buen estado. No se devuelve dinero. La casilla «Ya superé 400 h» habilita subir de plan; no expulsa.",
+    "btnRegistro": "REGISTRO",
+    "btnActivar": "ACTIVAR",
+    "btnInicio": "INICIO",
+    "visitante": {
+      "apodo": "Visitante",
+      "titulo": "VISITANTE",
+      "precio": "Sin membresía de pago",
+      "puntos": [
+        "Mira el directorio y la vitrina.",
+        "Simulador: 5 usos por mes de calendario (guía 1/día).",
+        "Casilla de avisos.",
+        "No compra extras."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Simpatizante",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 días (sin etapas de descuento)",
+      "puntos": [
+        "Una sola vez por persona. No renovable como Iniciante.",
+        "Simulador: 10 usos / mes (máx. 2/día).",
+        "Al vencer pasa a Visitante salvo que active PLUS, PRO o ÉLITE.",
+        "Declaración (sin tribunal): titulado reciente, menos de 400 h, funcionario u obrero."
+      ]
+    },
+    "plus": {
+      "apodo": "Consecuente",
+      "titulo": "PLUS",
+      "precio": "Lista 99 · E1 89 · E2 92 · E3 94 USD / 365 días",
+      "puntos": [
+        "Bolsa A 36 / B 45 al mes (techo 2 / 3 al día).",
+        "A = no piloto (hacendado o proyecto). B = piloto o técnico.",
+        "Mismo precio; el perfil se declara al activar.",
+        "Cupo: 1800 altas pagadas por etapa visible."
+      ]
+    },
+    "pro": {
+      "apodo": "Amigo",
+      "titulo": "PRO",
+      "precio": "Lista 263 · E1 224 · E2 231 · E3 237 USD / 365 días",
+      "puntos": [
+        "Bolsa A 72 / B 90 al mes (techo 8 / 8 al día).",
+        "A / B: mismo precio; perfil al activar.",
+        "Cupo: 1800 altas pagadas por etapa visible."
+      ]
+    },
+    "elite": {
+      "apodo": "Aliado",
+      "titulo": "ÉLITE",
+      "precio": "Lista 329 · E1 263 · E2 273 · E3 280 USD / 365 días",
+      "puntos": [
+        "Bolsa A 96 / B 120 al mes (techo 15 / 15 al día).",
+        "A / B: mismo precio; perfil al activar.",
+        "Cupo: 1800 altas pagadas por etapa visible."
+      ]
+    }
+  }
+}

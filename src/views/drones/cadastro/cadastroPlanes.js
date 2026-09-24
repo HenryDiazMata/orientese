@@ -1,129 +1,109 @@
-/* =========================================================
-   DATOS Y HELPERS SOLO DE CADASTRO.
-   PRECIOS USD = COMPARACIÓN EN PANTALLA. NO ES CHECKOUT REAL.
-   NO REABRIR PRODUCTO NI CUPOS YA DEFINIDOS.
-   ========================================================= */
+export const LEYENDAS_PLANOS = [
+  "A fatura dos planos pagos sai na moeda local, no câmbio do dia do pagamento.",
+  "A renovação dos planos pagos começa no dia seguinte ao vencimento e usa a tarifa do ano anterior.",
+  "Visitante não cria senha, não tem perfil e não renova. Só marca avisos de cursos.",
+];
 
-export const PRECIOS_USD = {
-  plus: 120,
-  pro: 240,
-  elite: 480,
+export const LEYENDA_MONEDA_LOCAL = LEYENDAS_PLANOS[0];
+export const TEXTO_RENOVACION = LEYENDAS_PLANOS[1];
+
+const VISITANTE = {
+  id: "visitante",
+  nome: "Visitante",
+  dirigidoA: "Quem só quer avisos de cursos e consultar o conteúdo público.",
+  precoUsd: 0,
+  pago: false,
+  beneficios: [
+    "Conteúdo público: profissionais, empresas, anunciantes, cursos e usados",
+    "Avisos de cursos (sem senha, sem perfil, sem renovação)",
+    "Simulador 2×/dia no fuso",
+    "Não publica",
+  ],
+};
+
+const PLUS = {
+  id: "plus",
+  nome: "Plus",
+  dirigidoA: "Profissional ou empresa em início de presença.",
+  precoUsd: 120,
+  pago: true,
+  beneficios: [
+    "Ficha no diretório",
+    "Publicação conforme o plano",
+    "Renovação no dia seguinte ao vencimento, tarifa do ano anterior",
+  ],
+  beneficiosExtra: [],
+};
+
+const PRO = {
+  id: "pro",
+  nome: "Pro",
+  dirigidoA: "Quem precisa de mais presença no diretório.",
+  precoUsd: 240,
+  pago: true,
+  beneficios: [
+    "Ficha no diretório",
+    "Publicação conforme o plano",
+    "Renovação no dia seguinte ao vencimento, tarifa do ano anterior",
+  ],
+  beneficiosExtra: [],
+};
+
+const ELITE = {
+  id: "elite",
+  nome: "Elite",
+  dirigidoA: "Máxima presença no subdomínio.",
+  precoUsd: 480,
+  pago: true,
+  beneficios: [
+    "Ficha no diretório",
+    "Publicação conforme o plano",
+    "Renovação no dia seguinte ao vencimento, tarifa do ano anterior",
+  ],
+  beneficiosExtra: [],
 };
 
 export const PLANES = {
-  visitante: {
+  visitante: VISITANTE,
+  plus: PLUS,
+  pro: PRO,
+  elite: ELITE,
+};
+
+export const PLANOS = [VISITANTE, PLUS, PRO, ELITE];
+
+export const TIPOS_CADASTRO = [
+  {
     id: "visitante",
     nome: "Visitante",
-    dirigidoA: "Quem quer conhecer o site sem publicar",
-    precoUsd: 0,
-    tiposPermitidos: ["visitante"],
-    beneficios: [
-      "Áreas públicas do site: listas de profissionais e empresas, Anunciantes / Patrocinadores, cursos e peças usadas (somente leitura)",
-      "Simulador: 2 usos por dia no fuso local",
-      "Ver opções de plano",
-      "Não publica vaga nem usado",
-    ],
-    beneficiosExtra: [],
+    dirigidoA: "Quem só quer consultar o conteúdo público e receber avisos de cursos.",
+    paraQuem: "Quem só quer consultar o conteúdo público e receber avisos de cursos.",
+    alcance:
+      "Avisos de cursos. Sem senha, sem perfil, sem renovar. Não publica.",
   },
-  plus: {
-    id: "plus",
-    nome: "Plus",
-    dirigidoA: "Para quem começa a publicar vagas ou usados",
-    precoUsd: PRECIOS_USD.plus,
-    tiposPermitidos: ["profissional", "empresa"],
-    beneficios: [
-      "Publicar no mural conforme o tipo cadastrado (profissional ou empresa)",
-      "Até 2 vagas por semana e 3 usados por semana",
-      "Simulador: 5 usos por dia no fuso local",
-      "Destaque no Elite não incluso; pode ser contratado à parte",
-      "Renovação: tarifa do ano anterior, a partir do dia seguinte ao vencimento.",
-    ],
-    beneficiosExtra: [
-      "Plano de 365 dias. Upgrade paga só a diferença. Sem reembolso.",
-    ],
+  {
+    id: "profissional",
+    nome: "Profissional",
+    dirigidoA: "Pilotos, auxiliares, técnicos e afins.",
+    paraQuem: "Pilotos, auxiliares, técnicos e afins.",
+    alcance: "Ficha profissional (foto 3×4). Publica e aparece no diretório.",
   },
-  pro: {
-    id: "pro",
-    nome: "Pro",
-    dirigidoA: "Para operação contínua de vagas e usados",
-    precoUsd: PRECIOS_USD.pro,
-    tiposPermitidos: ["profissional", "empresa"],
-    beneficios: [
-      "Publicar no mural conforme o tipo cadastrado (profissional ou empresa)",
-      "Até 7 vagas por semana e 9 usados por semana",
-      "Simulador: 7 usos por dia no fuso local",
-      "Destaque no Elite não incluso; pode ser contratado à parte",
-      "Renovação: tarifa do ano anterior, a partir do dia seguinte ao vencimento.",
-    ],
-    beneficiosExtra: [
-      "Plano de 365 dias. Upgrade paga só a diferença. Sem reembolso.",
-    ],
+  {
+    id: "empresa",
+    nome: "Empresa",
+    dirigidoA: "Empresas e anunciantes do setor.",
+    paraQuem: "Empresas e anunciantes do setor.",
+    alcance: "Ficha da empresa. Publica e aparece no diretório.",
   },
-  elite: {
-    id: "elite",
-    nome: "Elite",
-    dirigidoA: "Para máxima exposição no mural e no destaque",
-    precoUsd: PRECIOS_USD.elite,
-    tiposPermitidos: ["profissional", "empresa"],
-    beneficios: [
-      "Publicar no mural conforme o tipo cadastrado (profissional ou empresa)",
-      "Até 9 vagas por semana e 15 usados por semana",
-      "Simulador: 12 usos por dia no fuso local",
-      "Destaque no Elite incluso conforme o pacote deste plano",
-      "Renovação: tarifa do ano anterior, a partir do dia seguinte ao vencimento.",
-    ],
-    beneficiosExtra: [
-      "Plano de 365 dias. Upgrade/downgrade sem reembolso em dinheiro.",
-    ],
-  },
-};
-
-/* =========================================================
-   OBSERVACIÓN IMPORTANTE AL LADO DEL BLOQUE VISITANTE.
-   LA RENOVACIÓN NO VA AQUÍ: VA RESALTADA EN CADA PLAN PAGO.
-   ========================================================= */
-export const LEYENDAS_PLANOS = [
-  "Planos pagos duram 365 dias.",
-  "Não há reembolso em dinheiro.",
-  "Upgrade: paga só a diferença do período restante.",
-  "Downgrade: vale a partir do dia seguinte ao vencimento.",
-  "Créditos eventuais ficam na plataforma (dias), nunca em transferência.",
-  "A fatura sai na moeda local no câmbio do dia do pagamento.",
 ];
 
-/* =========================================================
-   PREFIJOS POR TIPO. PROFISSIONAL NO NACE COMO P-
-   ========================================================= */
-export const TIPOS = [
-  { id: "visitante", nome: "Visitante", prefixo: "V-" },
-  { id: "profissional", nome: "Profissional", prefixo: "PRF-" },
-  { id: "empresa", nome: "Empresa", prefixo: "EMP-" },
-];
+export const TIPOS = TIPOS_CADASTRO;
 
-export const PASOS = [
-  { n: 1, id: "planos", titulo: "Planos e benefícios" },
-  { n: 2, id: "tipos", titulo: "Cadastros" },
-  { n: 3, id: "ficha", titulo: "Preencher ficha" },
-  { n: 4, id: "pagamento", titulo: "Pagamento" },
-];
+export function planoPorId(planoId) {
+  return PLANES[planoId] || PLANOS.find((p) => p.id === planoId) || null;
+}
 
-export const FICHA_VACIA = {
-  nome: "",
-  email: "",
-  emailConfirm: "",
-  nascimento: "",
-  pais: "",
-  fuso: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-  avisosCursos: false,
-  querWhatsapp: false,
-  querTelegram: false,
-  whatsapp: "",
-  telegram: "",
-  foto34: "",
-};
-
-export function generarCodigo(tipoId) {
-  const tipo = TIPOS.find((t) => t.id === tipoId) || TIPOS[0];
-  const n = String(Math.floor(100000 + Math.random() * 900000));
-  return `${tipo.prefixo}${n}`;
+export function planoEsPago(planoId) {
+  const plano = planoPorId(planoId);
+  return !!(plano && plano.pago);
 }

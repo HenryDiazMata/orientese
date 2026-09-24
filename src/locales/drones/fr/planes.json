@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "PLANS",
+    "frasePago": "Le plan est payé intégralement à l'inscription. Si votre carte internationale accepte les mensualités, les conditions sont fixées par votre banque, pas par drones.orientese.com.",
+    "intro1": "Hub informatif. Il ne vend pas et n'intermédie pas. Le plan est payé intégralement à drones.orientese.com à l'inscription ou à l'activation. Si votre carte internationale accepte les mensualités, le fractionnement est fixé par la banque. Inscription et usage gratuits : octobre à décembre 2026. Date limite pour activer ces inscriptions : 31-12-2026 UTC.",
+    "intro2": "Durée du plan : 365 jours. Une activation au 1-1-2027 vaut jusqu'au 1-1-2028 au tarif de départ. Les renouvellements suivants utilisent le tarif de l'année précédente. Horloge du simulateur : mois calendaire. StandShowTour et Mentora : en production. Clubs : programmés.",
+    "etapasTitulo": "Étapes PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (activation ≤ 31 déc. 2026 UTC) : 10 / 15 / 20 % → 89 / 224 / 263 USD. E2 : 7 / 12 / 17 % → 92 / 231 / 273 USD. E3 : 5 / 10 / 15 % → 94 / 237 / 280 USD. Puis tarifs liste 99 / 263 / 329 USD. INICIANTE reste à 66 USD / 365 jours. Quota visible : 1800 inscriptions payantes par plan (PLUS, PRO et ÉLITE), mondial, par étape.",
+    "extrasTitulo": "Extras (à partir de la vigne du plan)",
+    "extrasTexto": "1) +2 usages ce jour-là si le plafond quotidien est atteint (PLUS–ÉLITE max. 8 jours/mois ; INICIANTE max. 4). 2) Sac à 0 : +50 % une fois par mois calendaire. 3) Pack 10 usages : INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8 ; max. 2 packs/mois. Le visiteur n'achète pas d'extras. En oct.–déc. 2026 l'essai va sans extras. Journal, NOTAM et altimètre : mots seulement à cette étape.",
+    "cambioTitulo": "Changement de plan",
+    "cambioTexto": "Passer à un plan plus économique peut créer une différence de prix facturée au moment du changement, soit en faveur de drones.orientese.com en argent, soit en faveur de la personne qui change de plan, avec plus d'usages du simulateur de devis et/ou plus d'envois de demande de personnel et/ou de ventes de drones, pièces ou accessoires en bon état. Aucun remboursement. La case « J'ai déjà dépassé 400 h » permet de monter de plan ; elle n'exclut pas.",
+    "btnRegistro": "INSCRIPTION",
+    "btnActivar": "ACTIVER",
+    "btnInicio": "ACCUEIL",
+    "visitante": {
+      "apodo": "Visiteur",
+      "titulo": "VISITANTE",
+      "precio": "Sans adhésion payante",
+      "puntos": [
+        "Consulte l'annuaire et la vitrine.",
+        "Simulateur : 5 usages par mois calendaire (guide 1/jour).",
+        "Boîte d'avis.",
+        "N'achète pas d'extras."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Sympathisant",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 jours (sans étapes de remise)",
+      "puntos": [
+        "Une seule fois par personne. Non renouvelable en tant qu'Iniciante.",
+        "Simulateur : 10 usages / mois (max. 2/jour).",
+        "À l'échéance passe Visiteur sauf activation PLUS, PRO ou ÉLITE.",
+        "Déclaration (sans tribunal) : diplômé récent, moins de 400 h, fonctionnaire ou ouvrier."
+      ]
+    },
+    "plus": {
+      "apodo": "Conséquent",
+      "titulo": "PLUS",
+      "precio": "Liste 99 · E1 89 · E2 92 · E3 94 USD / 365 jours",
+      "puntos": [
+        "Sac A 36 / B 45 par mois (plafond 2 / 3 par jour).",
+        "A = non-pilote (exploitant ou projet). B = pilote ou technicien.",
+        "Même prix ; le profil se déclare à l'activation.",
+        "Quota : 1800 inscriptions payantes par étape visible."
+      ]
+    },
+    "pro": {
+      "apodo": "Ami",
+      "titulo": "PRO",
+      "precio": "Liste 263 · E1 224 · E2 231 · E3 237 USD / 365 jours",
+      "puntos": [
+        "Sac A 72 / B 90 par mois (plafond 8 / 8 par jour).",
+        "A / B : même prix ; profil à l'activation.",
+        "Quota : 1800 inscriptions payantes par étape visible."
+      ]
+    },
+    "elite": {
+      "apodo": "Allié",
+      "titulo": "ÉLITE",
+      "precio": "Liste 329 · E1 263 · E2 273 · E3 280 USD / 365 jours",
+      "puntos": [
+        "Sac A 96 / B 120 par mois (plafond 15 / 15 par jour).",
+        "A / B : même prix ; profil à l'activation.",
+        "Quota : 1800 inscriptions payantes par étape visible."
+      ]
+    }
+  }
+}

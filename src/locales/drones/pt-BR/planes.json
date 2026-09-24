@@ -1,0 +1,70 @@
+{
+  "planes": {
+    "h1": "PLANOS",
+    "frasePago": "O plano é pago por inteiro no cadastro. Se o cartão internacional admitir parcelas, as condições são do banco, não da drones.orientese.com.",
+    "intro1": "Hub informativo. Não vende nem intermedia. O plano é pago por inteiro à drones.orientese.com no cadastro ou na ativação. Se o cartão internacional admitir parcelas, o fracionamento é do banco. Gratuidade de cadastro e uso: outubro a dezembro de 2026. Prazo para ativar esses cadastros: 31-12-2026 UTC.",
+    "intro2": "Duração do plano: 365 dias. Quem ativa em 1-1-2027 vigora até 1-1-2028 com a tarifa com que começou. As renovações seguintes usam a tarifa do ano anterior. Relógio do simulador: mês calendário. StandShowTour e Mentora: em produção. Clubes: programados.",
+    "etapasTitulo": "Etapas PLUS / PRO / ÉLITE",
+    "etapasTexto": "E1 (ativação ≤ 31 dez 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Depois tarifa de lista 99 / 263 / 329 USD. INICIANTE permanece em 66 USD / 365 dias. Cota visível: 1800 altas por plano (PLUS, PRO e ÉLITE), mundial, por etapa.",
+    "extrasTitulo": "Extras (a partir da vigência do plano)",
+    "extrasTexto": "1) +2 usos nesse dia se tocar o teto diário (PLUS–ÉLITE máx. 8 dias/mês; INICIANTE máx. 4). 2) Bolsa em 0: +50 % uma vez por mês calendário. 3) Pack 10 usos: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; máx. 2 packs/mês. Visitante não compra extras. Em out–dez 2026 a prova vai sem extras. Bitácora, NOTAM e altímetro: só palavras nesta etapa.",
+    "cambioTitulo": "Mudança de plano",
+    "cambioTexto": "Mudar de um plano para outro mais económico pode gerar uma diferença de preço cobrada no momento da mudança, a favor da drones.orientese.com em dinheiro ou a favor de quem muda de plano, com aumento nas quantidades de usos do simulador de orçamentos, de envios de pedido de pessoal e/ou de envio de vendas de drones, peças ou acessórios em bom estado. Não se devolve dinheiro. A caixa «Já superéi 400 h» habilita subir de plano; não expulsa.",
+    "btnRegistro": "CADASTRO",
+    "btnActivar": "ATIVAR",
+    "btnInicio": "INÍCIO",
+    "visitante": {
+      "apodo": "Visitante",
+      "titulo": "VISITANTE",
+      "precio": "Sem mensalidade paga",
+      "puntos": [
+        "Vê o diretório e a vitrine.",
+        "Simulador: 5 usos por mês calendário (guia 1/dia).",
+        "Caixa de avisos.",
+        "Não compra extras."
+      ]
+    },
+    "iniciante": {
+      "apodo": "Simpatizante",
+      "titulo": "INICIANTE",
+      "precio": "66 USD / 365 dias (sem etapas de desconto)",
+      "puntos": [
+        "Uma só vez por pessoa. Não renovável como Iniciante.",
+        "Simulador: 10 usos / mês (máx. 2/dia).",
+        "Ao vencer passa a Visitante salvo se ativar PLUS, PRO ou ÉLITE.",
+        "Declaração (sem tribunal): titulado recente, menos de 400 h, funcionário ou operário."
+      ]
+    },
+    "plus": {
+      "apodo": "Consequente",
+      "titulo": "PLUS",
+      "precio": "Lista 99 · E1 89 · E2 92 · E3 94 USD / 365 dias",
+      "puntos": [
+        "Bolsa A 36 / B 45 ao mês (teto 2 / 3 ao dia).",
+        "A = não piloto (fazendeiro ou projeto). B = piloto ou técnico.",
+        "Mesmo preço; o perfil declara-se ao ativar.",
+        "Cota: 1800 altas pagas por etapa visível."
+      ]
+    },
+    "pro": {
+      "apodo": "Amigo",
+      "titulo": "PRO",
+      "precio": "Lista 263 · E1 224 · E2 231 · E3 237 USD / 365 dias",
+      "puntos": [
+        "Bolsa A 72 / B 90 ao mês (teto 8 / 8 ao dia).",
+        "A / B: mesmo preço; perfil ao ativar.",
+        "Cota: 1800 altas pagas por etapa visível."
+      ]
+    },
+    "elite": {
+      "apodo": "Aliado",
+      "titulo": "ÉLITE",
+      "precio": "Lista 329 · E1 263 · E2 273 · E3 280 USD / 365 dias",
+      "puntos": [
+        "Bolsa A 96 / B 120 ao mês (teto 15 / 15 ao dia).",
+        "A / B: mesmo preço; perfil ao ativar.",
+        "Cota: 1800 altas pagas por etapa visível."
+      ]
+    }
+  }
+}

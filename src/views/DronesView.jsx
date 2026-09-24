@@ -1,39 +1,28 @@
 // ==========================================
-// ARCHIVO: src/views/DronesView.jsx
+// ARCHIVO COMPLETO: src/views/DronesView.jsx
 // ORQUESTADOR DEL SUBDOMINIO DRONES
-// UNE MENU IZQUIERDO + PAGINA CENTRAL + PIE
-// NO TOCA HEADER/FOOTER/APP.CSS DEL PORTAL
+// INICIO = HERO | BIENVENIDA = INSTITUCIONAL
+// ACTIVAR / RENOVAR / PLANES = VISTAS PROPIAS
 // ==========================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// ==========================================
-// PROVEEDORES SOLO DE DRONES
-// ==========================================
 import { ThemeProvider } from '../context/drones/ThemeContext';
 import { AuthProvider } from '../context/drones/AuthContext';
 
-// ==========================================
-// MENU LATERAL Y PIE SOLO DEL SUBDOMINIO DRONES
-// ==========================================
 import Header from '../components/drones_HeaderFooter/Header';
 import Footer from '../components/drones_HeaderFooter/Footer';
 
-// ==========================================
-// IDIOMAS Y CSS SOLO DE DRONES
-// ==========================================
 import '../components/drones/i18n';
 import '../components/drones/drones.css';
 
-// ==========================================
-// PORTADA Y SIMULADOR
-// ==========================================
 import DronesHome from '../components/drones/NavOutros/DronesHome.jsx';
+import InicioHero from './drones/InicioHero.jsx';
+import Activar from './drones/Activar.jsx';
+import Renovar from './drones/Renovar.jsx';
+import Planes from './drones/Planes.jsx';
 import SimuladorDuplo from '../components/drones/Simulador/SimuladorDuplo.jsx';
 
-// ==========================================
-// VISTAS INTERNAS
-// ==========================================
 import Anunciantes from './drones/anunciantes.jsx';
 import Auxiliares from './drones/auxiliares.jsx';
 import Cadastro from './drones/cadastro/cadastro.jsx';
@@ -47,18 +36,42 @@ import Somos from './drones/somos.jsx';
 import Vagas from './drones/vagas.jsx';
 
 function DronesContent({ onNavigate }) {
-  // ==========================================
-  // VISTA INICIAL AL ENTRAR
-  // ==========================================
   const [currentView, setCurrentView] = useState('INÍCIO');
 
   // ==========================================
-  // SEGUN EL BOTON DEL MENU O PIE, CARGA UNA PAGINA
-  // VAGAS Y DRONES = SOLO MURAL
-  // PUBLICAR SOLO DESDE PERFIL
+  // UN SOLO TEMA CIELO / AZUL. APAGA DARK GUARDADO
   // ==========================================
+  useEffect(() => {
+    try {
+      localStorage.setItem('theme', 'light');
+      localStorage.setItem('drones-theme', 'light');
+      localStorage.setItem('dronesTheme', 'light');
+    } catch {
+      /* IGNORAR SI LOCALSTORAGE FALLA */
+    }
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.remove('dark');
+    body.classList.remove('dark');
+    root.setAttribute('data-theme', 'light');
+    body.setAttribute('data-theme', 'light');
+    root.style.colorScheme = 'light';
+  }, []);
+
   const renderView = () => {
     switch (currentView) {
+      case 'BIENVENIDA':
+        return <DronesHome setCurrentView={setCurrentView} />;
+
+      case 'PLANES':
+        return <Planes setCurrentView={setCurrentView} />;
+
+      case 'ACTIVAR':
+        return <Activar setCurrentView={setCurrentView} />;
+
+      case 'RENOVAR':
+        return <Renovar />;
+
       case 'CADASTRO':
         return <Cadastro setCurrentView={setCurrentView} />;
 
@@ -102,7 +115,7 @@ function DronesContent({ onNavigate }) {
       case 'INÍCIO':
       case 'INICIO':
       default:
-        return <DronesHome />;
+        return <InicioHero setCurrentView={setCurrentView} />;
     }
   };
 

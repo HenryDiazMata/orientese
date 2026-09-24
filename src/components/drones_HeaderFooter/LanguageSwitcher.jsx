@@ -1,18 +1,27 @@
-// Selector de idioma para TODO el subdominio drones.orientese.com
+// ==========================================
+// ARCHIVO COMPLETO: src/components/drones_HeaderFooter/LanguageSwitcher.jsx
+// SELECTOR DE IDIOMA DEL SUBDOMINIO drones.orientese.com
+// VIVE EN LA FRANJA SUPERIOR (NO EN EL MENU IZQUIERDO)
+// IDIOMAS: PT, ES, EN, FR, IT (DE MAS ADELANTE)
+// COLORES / TAMAÑO: CLASE .drones-lang-select EN drones.css
+// ==========================================
+
 import { useTranslation } from 'react-i18next';
+import i18nDrones from '../drones/i18n';
 
 const IDIOMAS = [
   { code: 'pt', label: 'Português' },
   { code: 'es', label: 'Castellano' },
   { code: 'en', label: 'English' },
   { code: 'fr', label: 'Français' },
-  { code: 'it', label: 'Italiano' }
+  { code: 'it', label: 'Italiano' },
+  { code: 'de', label: 'Deutsch' },
 ];
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation(undefined, { i18n: i18nDrones });
 
-  // pt y pt-BR son el mismo idioma
+  // PT Y PT-BR SON EL MISMO IDIOMA
   const actual = i18n.language?.startsWith('pt') ? 'pt' : i18n.language;
 
   const cambiar = (code) => {
@@ -24,8 +33,7 @@ export default function LanguageSwitcher() {
       value={actual}
       onChange={(e) => cambiar(e.target.value)}
       aria-label="Idioma"
-      className="p-2 rounded-lg border text-xs font-medium min-w-[130px]"
-      style={{ backgroundColor: '#fff', color: '#0f172a', borderColor: '#cbd5e1' }}
+      className="drones-lang-select"
     >
       {IDIOMAS.map((item) => (
         <option key={item.code} value={item.code}>
