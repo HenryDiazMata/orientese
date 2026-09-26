@@ -1,69 +1,136 @@
 {
   "planes": {
     "h1": "PLANS",
-    "frasePago": "The plan is paid in full at sign-up. If your international card allows installments, the terms are set by your bank, not by drones.orientese.com.",
-    "intro1": "Informational hub. It does not sell or intermediate. The plan is paid in full to drones.orientese.com at sign-up or activation. If your international card allows installments, the bank sets the split. Free sign-up and use: October through December 2026. Deadline to activate those registrations: 31-12-2026 UTC.",
-    "intro2": "Plan length: 365 days. Activation on 1-1-2027 runs until 1-1-2028 at the rate you started with. Later renewals use the previous year's rate. Simulator clock: calendar month. StandShowTour and Mentora: in production. Clubs: scheduled.",
-    "etapasTitulo": "Stages PLUS / PRO / ÉLITE",
-    "etapasTexto": "E1 (activation ≤ 31 Dec 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Then list rates 99 / 263 / 329 USD. INICIANTE stays at 66 USD / 365 days. Visible quota: 1800 paid sign-ups per plan (PLUS, PRO and ÉLITE), worldwide, per stage.",
-    "extrasTitulo": "Extras (from plan start date)",
-    "extrasTexto": "1) +2 uses that day if the daily cap is hit (PLUS–ÉLITE max. 8 days/month; INICIANTE max. 4). 2) Bag at 0: +50 % once per calendar month. 3) Pack of 10 uses: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 packs/month. Visitor cannot buy extras. In Oct–Dec 2026 the trial has no extras. Logbook, NOTAM and altimeter: words only at this stage.",
-    "cambioTitulo": "Plan change",
-    "cambioTexto": "Switching to a more economical plan may create a price difference charged at the time of the change, either in favor of drones.orientese.com in money or in favor of the person changing plan, with extra simulator uses and/or extra sends of staff requests and/or sales of drones, parts or accessories in good condition. No money is refunded. The box “I already exceeded 400 h” enables an upgrade; it does not remove you.",
+    "beneficios": "Benefits",
+    "verMas": "See more",
+    "verMenos": "See less",
+    "btnProbar": "TRY THE SITE",
     "btnRegistro": "SIGN UP",
-    "btnActivar": "ACTIVATE",
     "btnInicio": "HOME",
+    "leyendaBeta": "BETA mode until 31-12-2026. Trying the site does not activate a plan. To become a member: SIGN UP and ACTIVATE by that date.",
+    "frasePago": "The plan is paid in full at sign-up. If your international card allows installments, the terms are set by your bank, not by drones.orientese.com.",
+    "pagoTitulo": "Payments",
+    "pagoExtra": "In BETA (October to December 2026) you may sign up and use the plan before invoicing is live. When you ACTIVATE (deadline 31-12-2026 UTC) you pay the full amount. Invoice by email when the LLC is operating. The site does not split installments.",
+    "cambioTitulo": "Plan change",
+    "cambioTexto": "If you switch plans mid-year after paying, the difference is charged in favor of drones.orientese.com or offset with extra simulator uses and extra JOBS or USED listings. No refunds. At renewal (end of the 365 days) you choose any plan and pay only that plan. INICIANTE is not renewed back-to-back: when it ends you become a Visitor and may return to INICIANTE only one year later, unless you move to PLUS, PRO or ÉLITE.",
+    "panelSello": "BETA MODE",
+    "panelH1": "Try the site",
+    "panelIntro": "This is not a plan. Until 31-12-2026 you may use the site with low quotas. Payment submit is off. To become a member: SIGN UP and ACTIVATE by that date.",
+    "panelCupoSim": "Simulator: up to 3 uses per day.",
+    "panelCupoVagas": "JOBS: 1 listing per day, max 6 in the whole BETA. Expires 31-12-2026. Genuine listings only.",
+    "panelCupoUsados": "USED: 1 listing per day, max 6 in the whole BETA. Expires 31-12-2026. Real gear only.",
+    "panelCupoAds": "ADVERTISERS / SPONSORS: 1 piece per day, max 3 in BETA. Visible 2 days or until 31-12-2026.",
+    "atajo": {
+      "sim": { "t": "Quotes", "d": "Try the simulator (3 uses per day)." },
+      "vagas": { "t": "Jobs", "d": "View and post a staff request (BETA quota)." },
+      "usados": { "t": "Used", "d": "View and post gear listings (BETA quota)." },
+      "anunciantes": { "t": "Advertisers", "d": "View the showcase and the BETA ad quota." },
+      "registro": { "t": "Sign up", "d": "Choose a plan and become a member." },
+      "planes": { "t": "Plans", "d": "See benefits and rates." }
+    },
     "visitante": {
-      "apodo": "Visitor",
       "titulo": "VISITANTE",
-      "precio": "No paid membership",
-      "puntos": [
-        "Browse the directory and showcase.",
-        "Simulator: 5 uses per calendar month (guide 1/day).",
-        "Notices box.",
-        "Cannot buy extras."
+      "apodo": "Visitor",
+      "tipo": "Anyone who enters the site with no membership. Not a member until they sign up for a plan.",
+      "preview": [
+        "Free access. No paid membership.",
+        "Profile panel: not applicable.",
+        "Simulator: 8 uses per month. In BETA, up to 3 uses per day.",
+        "Does not post JOBS or USED ads except the BETA quota (1 listing of each type per day, max 6 of each until 31-12-2026). Listings must be genuine and expire on that date."
+      ],
+      "extra": [
+        "May view DIRECTORY, USED, JOBS and the ADVERTISERS / SPONSORS showcase and make contact.",
+        "Inbox for course notices and related messages.",
+        "In BETA you may view sign-up forms; payment submit is off.",
+        "You may sign up for a plan whenever you decide."
       ]
     },
     "iniciante": {
-      "apodo": "Supporter",
       "titulo": "INICIANTE",
-      "precio": "66 USD / 365 days (no stage discounts)",
-      "puntos": [
-        "Once per person. Not renewable as Iniciante.",
-        "Simulator: 10 uses / month (max. 2/day).",
-        "When it ends you become Visitor unless you activate PLUS, PRO or ÉLITE.",
-        "Declaration (no court): recent graduate, under 400 h, civil servant or worker."
+      "apodo": "Supporter",
+      "tipo": "Preferred for recent graduates, pilots with fewer than 400 hours, civil servants, workers and employees. Hours are entered on the form; they are not checked in court.",
+      "preview": [
+        "My profile panel: basic (you may update flight hours).",
+        "66 USD / 365 days. No discount stages.",
+        "365 days. Not renewable at once as Iniciante.",
+        "Simulator: 30 uses per month. 2 free extra uses per day. Pack of 10 uses at 10 USD."
+      ],
+      "extra": [
+        "JOBS: does not post staff requests.",
+        "USED: 2 listings per month and 1 extra listing. Real gear in good condition only.",
+        "May view and contact DIRECTORY, USED, JOBS and ADVERTISERS.",
+        "When it ends you become a Visitor. One year later you may return to INICIANTE, or sooner if you activate PLUS, PRO or ÉLITE.",
+        "INICIANTE membership. Access to other portal subdomains except private ones.",
+        "Further benefits may be added according to real use of the site, with no promise of date or of which they will be."
       ]
     },
     "plus": {
-      "apodo": "Consistent",
       "titulo": "PLUS",
-      "precio": "List 99 · E1 89 · E2 92 · E3 94 USD / 365 days",
-      "puntos": [
-        "Bag A 36 / B 45 per month (cap 2 / 3 per day).",
-        "A = non-pilot (farmer or project). B = pilot or technician.",
-        "Same price; profile is declared at activation.",
-        "Quota: 1800 paid sign-ups per visible stage."
+      "apodo": "Consistent",
+      "tipo": "Preferred for micro-business (VSB / MEI) and professionals or technicians. Also pilots with more than 400 hours. Guidance, not a lock-out.",
+      "preview": [
+        "My profile panel: full.",
+        "List 99 USD / 365 days.",
+        "Stage 1 (60 days): 89 USD (10 percent). Quota 1800 sign-ups, worldwide.",
+        "Stage 2 (60 days): 92 USD (7 percent). Quota 1800, worldwide.",
+        "Stage 3 (60 days): 94 USD (5 percent). Quota 1800, worldwide."
+      ],
+      "extra": [
+        "After the stages: list rate 99 USD / 365 days.",
+        "Simulator: 40 uses per month. 5 free extra uses per day. Pack of 10 uses at 10 USD.",
+        "JOBS: 4 requests per month and 2 extra sends.",
+        "USED: 8 listings per month and 2 extra listings.",
+        "May view, contact and publish in DIRECTORY, USED, JOBS and ADVERTISERS.",
+        "Renewable at 365 days. At renewal you choose a plan and pay only that plan.",
+        "Same account for portal subdomains added later, except private ones.",
+        "Esperanza, Pelícano and Centros G clubs: request and approval.",
+        "Further benefits may be added according to real use of the site, with no promise of date or of which they will be."
       ]
     },
     "pro": {
-      "apodo": "Friend",
       "titulo": "PRO",
-      "precio": "List 263 · E1 224 · E2 231 · E3 237 USD / 365 days",
-      "puntos": [
-        "Bag A 72 / B 90 per month (cap 8 / 8 per day).",
-        "A / B: same price; profile at activation.",
-        "Quota: 1800 paid sign-ups per visible stage."
+      "apodo": "Friend",
+      "tipo": "Preferred for small and mid-size firms (SB, ME, EPP, MB, MSMEs), professionals, technicians and pilots with more than 400 hours. Guidance, not a lock-out.",
+      "preview": [
+        "My profile panel: full.",
+        "List 263 USD / 365 days.",
+        "Stage 1 (60 days): 224 USD (15 percent). Quota 1800 sign-ups, worldwide.",
+        "Stage 2 (60 days): 231 USD (12 percent). Quota 1800, worldwide.",
+        "Stage 3 (60 days): 237 USD (10 percent). Quota 1800, worldwide."
+      ],
+      "extra": [
+        "After the stages: list rate 263 USD / 365 days.",
+        "Simulator: 50 uses per month. 10 free extra uses per day. Pack of 10 uses at 10 USD.",
+        "JOBS: 9 requests per month and 3 extra sends.",
+        "USED: 12 listings per month and 5 extra listings.",
+        "May view, contact and publish in DIRECTORY, USED, JOBS and ADVERTISERS.",
+        "Renewable at 365 days. At renewal you choose a plan and pay only that plan.",
+        "Same account for portal subdomains added later, except private ones.",
+        "Esperanza, Pelícano and Centros G clubs: request and approval.",
+        "Further benefits may be added according to real use of the site, with no promise of date or of which they will be."
       ]
     },
     "elite": {
-      "apodo": "Ally",
       "titulo": "ÉLITE",
-      "precio": "List 329 · E1 263 · E2 273 · E3 280 USD / 365 days",
-      "puntos": [
-        "Bag A 96 / B 120 per month (cap 15 / 15 per day).",
-        "A / B: same price; profile at activation.",
-        "Quota: 1800 paid sign-ups per visible stage."
+      "apodo": "Ally",
+      "tipo": "Preferred for corporations, advertisers, sponsors and large firms (LE). Professionals, technicians and pilots with more than 400 hours may also sign up. Not exclusive.",
+      "preview": [
+        "My profile panel: full.",
+        "List 329 USD / 365 days.",
+        "Stage 1 (60 days): 263 USD (20 percent). Quota 1800 sign-ups, worldwide.",
+        "Stage 2 (60 days): 273 USD (17 percent). Quota 1800, worldwide.",
+        "Stage 3 (60 days): 280 USD (15 percent). Quota 1800, worldwide."
+      ],
+      "extra": [
+        "After the stages: list rate 329 USD / 365 days.",
+        "Simulator: 60 uses per month. 15 free extra uses per day. Pack of 10 uses at 10 USD.",
+        "JOBS: 12 requests per month and 5 extra sends.",
+        "USED: 16 listings per month and 9 extra listings.",
+        "May view, contact and publish in DIRECTORY, USED, JOBS and ADVERTISERS.",
+        "Renewable at 365 days. At renewal you choose a plan and pay only that plan.",
+        "Same account for portal subdomains added later, except private ones.",
+        "Esperanza, Pelícano and Centros G clubs: request and approval.",
+        "Further benefits may be added according to real use of the site, with no promise of date or of which they will be."
       ]
     }
   }

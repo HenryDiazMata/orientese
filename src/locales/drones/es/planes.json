@@ -1,69 +1,136 @@
 {
   "planes": {
     "h1": "PLANES",
-    "frasePago": "El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.",
-    "intro1": "Hub informativo. No vende ni intermedia. El plan se paga íntegro a drones.orientese.com al cadastrarse o activar. Si su tarjeta internacional admite cuotas, el fraccionamiento lo fija su banco. Gratuidad de registro y uso: octubre a diciembre de 2026. Tope para activar esos registros: 31-12-2026 UTC.",
-    "intro2": "Duración del plan: 365 días. Quien activa el 1-1-2027 rige hasta el 1-1-2028 con la tarifa con la que empezó. Las renovaciones siguientes usan la tarifa del año anterior. Reloj del simulador: mes de calendario. StandShowTour y Mentora: en producción. Clubes: programados.",
-    "etapasTitulo": "Etapas PLUS / PRO / ÉLITE",
-    "etapasTexto": "E1 (activación ≤ 31 dic 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Luego tarifa lista 99 / 263 / 329 USD. INICIANTE permanece en 66 USD / 365 días. Cupo visible: 1800 altas por plan (PLUS, PRO y ÉLITE), mundial, por etapa.",
-    "extrasTitulo": "Extras (a partir de la vigencia del plan)",
-    "extrasTexto": "1) +2 usos ese día si se toca el techo diario (PLUS–ÉLITE máx. 8 días/mes; INICIANTE máx. 4). 2) Bolsa en 0: +50 % una vez por mes calendario. 3) Pack 10 usos: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; máx. 2 packs/mes. Visitante no compra extras. En oct–dic 2026 la prueba va sin extras. Bitácora, NOTAM y altímetro: solo palabras en esta etapa.",
-    "cambioTitulo": "Cambio de plan",
-    "cambioTexto": "Cambiar de un plan a otro más económico puede generar una diferencia de precio que será cobrada al momento de hacer el cambio, bien sea a favor de drones.orientese.com en dinero o a favor de quien cambia de plan, recibiendo aumentos en las cantidades de usos del simulador de presupuestos, de envíos de solicitud de personal y/o de envío de ventas de drones, piezas o accesorios en buen estado. No se devuelve dinero. La casilla «Ya superé 400 h» habilita subir de plan; no expulsa.",
+    "beneficios": "Beneficios",
+    "verMas": "Ver más",
+    "verMenos": "Ver menos",
+    "btnProbar": "PROBAR SITIO",
     "btnRegistro": "REGISTRO",
-    "btnActivar": "ACTIVAR",
     "btnInicio": "INICIO",
+    "leyendaBeta": "Modo BETA hasta el 31-12-2026. Probar el site no activa un plan. Para ser miembro: REGISTRO y ACTIVAR a más tardar esa fecha.",
+    "frasePago": "El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.",
+    "pagoTitulo": "Pagos",
+    "pagoExtra": "En BETA (octubre a diciembre de 2026) puede registrar y usar el plan sin facturar todavía. Al ACTIVAR (tope 31-12-2026 UTC) paga el total. Factura al correo cuando el LLC esté operativo. El site no fracciona cuotas.",
+    "cambioTitulo": "Cambio de plan",
+    "cambioTexto": "Si pide otro plan a mitad del año ya pagado, la diferencia se cobra a favor de drones.orientese.com o se compensa con más usos del simulador y más envíos de VACANTES o USADOS. No se devuelve dinero. Al renovar (fin de los 365 días) elige el plan que quiera y paga solo ese plan. INICIANTE no se renueva seguido: al vencer pasa a Visitante y recién un año después puede volver a INICIANTE, salvo que pase a PLUS, PRO o ÉLITE.",
+    "panelSello": "MODO BETA",
+    "panelH1": "Probar el site",
+    "panelIntro": "No es un plan. Hasta el 31-12-2026 puede usar el site con cupos bajos. El envío de pago está apagado. Para ser miembro: REGISTRO y ACTIVAR a más tardar esa fecha.",
+    "panelCupoSim": "Simulador: hasta 3 usos por día.",
+    "panelCupoVagas": "VACANTES: 1 aviso por día, máximo 6 en todo el BETA. Caduca el 31-12-2026. Solo avisos reales.",
+    "panelCupoUsados": "USADOS: 1 aviso por día, máximo 6 en todo el BETA. Caduca el 31-12-2026. Solo equipos reales.",
+    "panelCupoAds": "ANUNCIANTES / PATROCINADORES: 1 pieza por día, máximo 3 en el BETA. Visible 2 días o hasta el 31-12-2026.",
+    "atajo": {
+      "sim": { "t": "Presupuestos", "d": "Probar el simulador (3 usos por día)." },
+      "vagas": { "t": "Vacantes", "d": "Ver y publicar solicitud de personal (cupo BETA)." },
+      "usados": { "t": "Usados", "d": "Ver y publicar avisos de equipos (cupo BETA)." },
+      "anunciantes": { "t": "Anunciantes", "d": "Ver la vitrina y el cupo de anuncio BETA." },
+      "registro": { "t": "Registro", "d": "Elegir un plan y pasar a miembro." },
+      "planes": { "t": "Planes", "d": "Ver beneficios y tarifas." }
+    },
     "visitante": {
-      "apodo": "Visitante",
       "titulo": "VISITANTE",
-      "precio": "Sin membresía de pago",
-      "puntos": [
-        "Mira el directorio y la vitrina.",
-        "Simulador: 5 usos por mes de calendario (guía 1/día).",
-        "Casilla de avisos.",
-        "No compra extras."
+      "apodo": "Visitante",
+      "tipo": "Cualquier persona que entra al site sin membresía. No es miembro hasta que se registra en un plan.",
+      "preview": [
+        "Acceso gratuito. Sin membresía de pago.",
+        "Panel: no aplica.",
+        "Simulador: 8 usos al mes. En BETA, hasta 3 usos por día.",
+        "No publica VACANTES ni USADOS salvo el cupo BETA (1 aviso de cada tipo por día, máximo 6 de cada uno hasta el 31-12-2026). Los avisos deben ser reales y caducan esa fecha."
+      ],
+      "extra": [
+        "Puede ver REGISTRADOS, USADOS, VACANTES y la vitrina de ANUNCIANTES / PATROCINADORES y contactar.",
+        "Casilla para avisos de cursos y afines.",
+        "En BETA puede ver formularios de registro; el envío de pago está apagado.",
+        "Puede registrarse en un plan cuando lo decida."
       ]
     },
     "iniciante": {
-      "apodo": "Simpatizante",
       "titulo": "INICIANTE",
-      "precio": "66 USD / 365 días (sin etapas de descuento)",
-      "puntos": [
-        "Una sola vez por persona. No renovable como Iniciante.",
-        "Simulador: 10 usos / mes (máx. 2/día).",
-        "Al vencer pasa a Visitante salvo que active PLUS, PRO o ÉLITE.",
-        "Declaración (sin tribunal): titulado reciente, menos de 400 h, funcionario u obrero."
+      "apodo": "Simpatizante",
+      "tipo": "Preferible para recién titulados, pilotos con menos de 400 horas, funcionarios, obreros y empleados. Informa las horas en el formulario; no se verifica ante un tribunal.",
+      "preview": [
+        "Panel Mi perfil: básico (puede actualizar horas de vuelo).",
+        "66 USD / 365 días. Sin etapas de descuento.",
+        "365 días. No renovable de inmediato como Iniciante.",
+        "Simulador: 30 usos al mes. 2 usos extras gratis por día. Paquete de 10 usos a 10 USD."
+      ],
+      "extra": [
+        "VACANTES: no publica solicitudes de personal.",
+        "USADOS: 2 avisos al mes y 1 aviso extra. Solo equipos reales y en buen estado.",
+        "Puede ver y contactar en REGISTRADOS, USADOS, VACANTES y ANUNCIANTES.",
+        "Al vencer pasa a Visitante. Un año después puede volver a INICIANTE, o antes si activa PLUS, PRO o ÉLITE.",
+        "Membresía INICIANTE. Ingreso a otros subdominios del portal salvo los privados.",
+        "Se podrán sumar beneficios según el uso real del site, sin compromiso de fecha ni de cuáles serán."
       ]
     },
     "plus": {
-      "apodo": "Consecuente",
       "titulo": "PLUS",
-      "precio": "Lista 99 · E1 89 · E2 92 · E3 94 USD / 365 días",
-      "puntos": [
-        "Bolsa A 36 / B 45 al mes (techo 2 / 3 al día).",
-        "A = no piloto (hacendado o proyecto). B = piloto o técnico.",
-        "Mismo precio; el perfil se declara al activar.",
-        "Cupo: 1800 altas pagadas por etapa visible."
+      "apodo": "Consecuente",
+      "tipo": "Preferible para microempresa (VSB / MEI) y profesionales o técnicos. También pilotos con más de 400 horas. Es guía, no exclusión.",
+      "preview": [
+        "Panel Mi perfil: completo.",
+        "Lista 99 USD / 365 días.",
+        "Etapa 1 (60 días): 89 USD (10 por ciento). Cupo 1800 registros, mundial.",
+        "Etapa 2 (60 días): 92 USD (7 por ciento). Cupo 1800, mundial.",
+        "Etapa 3 (60 días): 94 USD (5 por ciento). Cupo 1800, mundial."
+      ],
+      "extra": [
+        "Después de las etapas: tarifa de lista 99 USD / 365 días.",
+        "Simulador: 40 usos al mes. 5 usos extras gratis por día. Paquete de 10 usos a 10 USD.",
+        "VACANTES: 4 solicitudes al mes y 2 envíos extras.",
+        "USADOS: 8 avisos al mes y 2 avisos extras.",
+        "Puede ver, contactar y publicar en REGISTRADOS, USADOS, VACANTES y ANUNCIANTES.",
+        "Renovable a los 365 días. Al renovar elige plan y paga solo ese plan.",
+        "Misma cuenta para subdominios del portal que se vayan anexando, salvo privados.",
+        "Clubes Esperanza, Pelícano y Centros G: solicitud y aprobación.",
+        "Se podrán sumar beneficios según el uso real del site, sin compromiso de fecha ni de cuáles serán."
       ]
     },
     "pro": {
-      "apodo": "Amigo",
       "titulo": "PRO",
-      "precio": "Lista 263 · E1 224 · E2 231 · E3 237 USD / 365 días",
-      "puntos": [
-        "Bolsa A 72 / B 90 al mes (techo 8 / 8 al día).",
-        "A / B: mismo precio; perfil al activar.",
-        "Cupo: 1800 altas pagadas por etapa visible."
+      "apodo": "Amigo",
+      "tipo": "Preferible para pequeña y mediana empresa (SB, ME, EPP, MB, MiPyMEs), profesionales, técnicos y pilotos con más de 400 horas. Guía, no exclusión.",
+      "preview": [
+        "Panel Mi perfil: completo.",
+        "Lista 263 USD / 365 días.",
+        "Etapa 1 (60 días): 224 USD (15 por ciento). Cupo 1800 registros, mundial.",
+        "Etapa 2 (60 días): 231 USD (12 por ciento). Cupo 1800, mundial.",
+        "Etapa 3 (60 días): 237 USD (10 por ciento). Cupo 1800, mundial."
+      ],
+      "extra": [
+        "Después de las etapas: tarifa de lista 263 USD / 365 días.",
+        "Simulador: 50 usos al mes. 10 usos extras gratis por día. Paquete de 10 usos a 10 USD.",
+        "VACANTES: 9 solicitudes al mes y 3 envíos extras.",
+        "USADOS: 12 avisos al mes y 5 avisos extras.",
+        "Puede ver, contactar y publicar en REGISTRADOS, USADOS, VACANTES y ANUNCIANTES.",
+        "Renovable a los 365 días. Al renovar elige plan y paga solo ese plan.",
+        "Misma cuenta para subdominios del portal que se vayan anexando, salvo privados.",
+        "Clubes Esperanza, Pelícano y Centros G: solicitud y aprobación.",
+        "Se podrán sumar beneficios según el uso real del site, sin compromiso de fecha ni de cuáles serán."
       ]
     },
     "elite": {
-      "apodo": "Aliado",
       "titulo": "ÉLITE",
-      "precio": "Lista 329 · E1 263 · E2 273 · E3 280 USD / 365 días",
-      "puntos": [
-        "Bolsa A 96 / B 120 al mes (techo 15 / 15 al día).",
-        "A / B: mismo precio; perfil al activar.",
-        "Cupo: 1800 altas pagadas por etapa visible."
+      "apodo": "Aliado",
+      "tipo": "Preferible para corporaciones, anunciantes, patrocinadores y gran empresa (LE). Profesionales, técnicos y pilotos con más de 400 horas también pueden registrarse. No es excluyente.",
+      "preview": [
+        "Panel Mi perfil: completo.",
+        "Lista 329 USD / 365 días.",
+        "Etapa 1 (60 días): 263 USD (20 por ciento). Cupo 1800 registros, mundial.",
+        "Etapa 2 (60 días): 273 USD (17 por ciento). Cupo 1800, mundial.",
+        "Etapa 3 (60 días): 280 USD (15 por ciento). Cupo 1800, mundial."
+      ],
+      "extra": [
+        "Después de las etapas: tarifa de lista 329 USD / 365 días.",
+        "Simulador: 60 usos al mes. 15 usos extras gratis por día. Paquete de 10 usos a 10 USD.",
+        "VACANTES: 12 solicitudes al mes y 5 envíos extras.",
+        "USADOS: 16 avisos al mes y 9 avisos extras.",
+        "Puede ver, contactar y publicar en REGISTRADOS, USADOS, VACANTES y ANUNCIANTES.",
+        "Renovable a los 365 días. Al renovar elige plan y paga solo ese plan.",
+        "Misma cuenta para subdominios del portal que se vayan anexando, salvo privados.",
+        "Clubes Esperanza, Pelícano y Centros G: solicitud y aprobación.",
+        "Se podrán sumar beneficios según el uso real del site, sin compromiso de fecha ni de cuáles serán."
       ]
     }
   }

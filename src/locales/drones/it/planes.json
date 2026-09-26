@@ -1,69 +1,136 @@
 {
   "planes": {
     "h1": "PIANI",
-    "frasePago": "Il piano si paga per intero alla registrazione. Se la carta internazionale ammette rate, le condizioni le fissa la banca, non drones.orientese.com.",
-    "intro1": "Hub informativo. Non vende e non intermedia. Il piano si paga per intero a drones.orientese.com alla registrazione o all'attivazione. Se la carta internazionale ammette rate, il frazionamento lo fissa la banca. Registrazione e uso gratuiti: ottobre-dicembre 2026. Scadenza per attivare quelle registrazioni: 31-12-2026 UTC.",
-    "intro2": "Durata del piano: 365 giorni. Chi attiva l'1-1-2027 vale fino all'1-1-2028 con la tariffa di partenza. I rinnovi successivi usano la tariffa dell'anno precedente. Orologio del simulatore: mese di calendario. StandShowTour e Mentora: in produzione. Club: programmati.",
-    "etapasTitulo": "Tappe PLUS / PRO / ÉLITE",
-    "etapasTexto": "E1 (attivazione ≤ 31 dic 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Poi listino 99 / 263 / 329 USD. INICIANTE resta a 66 USD / 365 giorni. Quota visibile: 1800 iscrizioni pagate per piano (PLUS, PRO e ÉLITE), mondiale, per tappa.",
-    "extrasTitulo": "Extra (dalla viggenza del piano)",
-    "extrasTexto": "1) +2 usi quel giorno se si tocca il tetto giornaliero (PLUS–ÉLITE max. 8 giorni/mese; INICIANTE max. 4). 2) Borsa a 0: +50 % una volta al mese di calendario. 3) Pack 10 usi: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 pack/mese. Il visitatore non compra extra. In ott–dic 2026 la prova è senza extra. Bitácora, NOTAM e altimetro: solo parole in questa fase.",
-    "cambioTitulo": "Cambio di piano",
-    "cambioTexto": "Passare a un piano più economico può generare una differenza di prezzo addebitata al momento del cambio, a favore di drones.orientese.com in denaro o a favore di chi cambia piano, con più usi del simulatore di preventivi e/o più invii di richiesta di personale e/o di vendita di droni, pezzi o accessori in buono stato. Non si restituisce denaro. La casella «Ho già superato 400 h» abilita il passaggio a un piano superiore; non espelle.",
+    "beneficios": "Benefici",
+    "verMas": "Vedi di più",
+    "verMenos": "Vedi meno",
+    "btnProbar": "PROVA IL SITO",
     "btnRegistro": "REGISTRAZIONE",
-    "btnActivar": "ATTIVARE",
     "btnInicio": "HOME",
+        "panelSello": "MODALITÀ BETA",
+    "panelH1": "Prova il sito",
+    "panelIntro": "Non è un piano. Fino al 31-12-2026 potete usare il sito con quote basse. L'invio del pagamento è spento. Per diventare membro: REGISTRAZIONE e ATTIVARE entro quella data.",
+    "panelCupoSim": "Simulatore: fino a 3 usi al giorno.",
+    "panelCupoVagas": "OFFERTE: 1 avviso al giorno, massimo 6 in tutta la BETA. Scade il 31-12-2026. Solo avvisi veri.",
+    "panelCupoUsados": "USATI: 1 avviso al giorno, massimo 6 in tutta la BETA. Scade il 31-12-2026. Solo attrezzatura reale.",
+    "panelCupoAds": "INSERZIONISTI / SPONSOR: 1 pezzo al giorno, massimo 3 nella BETA. Visibile 2 giorni o fino al 31-12-2026.",
+    "atajo": {
+      "sim": { "t": "Preventivi", "d": "Provare il simulatore (3 usi al giorno)." },
+      "vagas": { "t": "Offerte", "d": "Vedere e pubblicare una richiesta di personale (quota BETA)." },
+      "usados": { "t": "Usati", "d": "Vedere e pubblicare avvisi di attrezzatura (quota BETA)." },
+      "anunciantes": { "t": "Inserzionisti", "d": "Vedere la vetrina e la quota annuncio BETA." },
+      "registro": { "t": "Registrazione", "d": "Scegliere un piano e diventare membro." },
+      "planes": { "t": "Piani", "d": "Vedere benefici e tariffe." }
+    },
+    "leyendaBeta": "Modalità BETA fino al 31-12-2026. Provare il sito non attiva un piano. Per diventare membro: REGISTRAZIONE e ATTIVARE entro quella data.",
+    "frasePago": "Il piano si paga per intero alla registrazione. Se la carta internazionale ammette rate, le condizioni le fissa la banca, non drones.orientese.com.",
+    "pagoTitulo": "Pagamenti",
+    "pagoExtra": "In BETA (ottobre-dicembre 2026) potete registrarvi e usare il piano prima della fatturazione. All'ATTIVAZIONE (limite 31-12-2026 UTC) pagate il totale. Fattura via e-mail quando la LLC è operativa. Il sito non fraziona le rate.",
+    "cambioTitulo": "Cambio di piano",
+    "cambioTexto": "Se chiedete un altro piano a metà dell'anno già pagato, la differenza è addebitata a favore di drones.orientese.com o compensata con più usi del simulatore e più invii di OFFERTE o USATI. Non si restituisce denaro. Al rinnovo (fine dei 365 giorni) scegliete il piano e pagate solo quello. INICIANTE non si rinnova di seguito: alla scadenza diventate Visitatore e potete tornare a INICIANTE solo un anno dopo, salvo passaggio a PLUS, PRO o ÉLITE.",
     "visitante": {
-      "apodo": "Visitatore",
       "titulo": "VISITANTE",
-      "precio": "Senza iscrizione a pagamento",
-      "puntos": [
-        "Consulta l'elenco e la vetrina.",
-        "Simulatore: 5 usi per mese di calendario (guida 1/giorno).",
-        "Casella avvisi.",
-        "Non compra extra."
+      "apodo": "Visitatore",
+      "tipo": "Chiunque entri nel sito senza iscrizione. Non è membro finché non si registra a un piano.",
+      "preview": [
+        "Accesso gratuito. Senza iscrizione a pagamento.",
+        "Pannello: non applicabile.",
+        "Simulatore: 8 usi al mese. In BETA, fino a 3 usi al giorno.",
+        "Non pubblica OFFERTE né USATI salvo la quota BETA (1 avviso di ciascun tipo al giorno, massimo 6 di ciascuno fino al 31-12-2026). Gli avvisi devono essere veri e scadono in quella data."
+      ],
+      "extra": [
+        "Può vedere ELENCO, USATI, OFFERTE e la vetrina INSERZIONISTI / SPONSOR e contattare.",
+        "Casella per avvisi di corsi e messaggi correlati.",
+        "In BETA potete vedere i moduli di registrazione; l'invio del pagamento è spento.",
+        "Potete registrarvi a un piano quando decidete."
       ]
     },
     "iniciante": {
-      "apodo": "Simpatizzante",
       "titulo": "INICIANTE",
-      "precio": "66 USD / 365 giorni (senza tappe di sconto)",
-      "puntos": [
-        "Una sola volta per persona. Non rinnovabile come Iniciante.",
-        "Simulatore: 10 usi / mese (max. 2/giorno).",
-        "Alla scadenza diventa Visitatore salvo attivazione PLUS, PRO o ÉLITE.",
-        "Dichiarazione (senza tribunale): neolaureato, meno di 400 h, impiegato o operaio."
+      "apodo": "Simpatizzante",
+      "tipo": "Preferibile per neolaureati, piloti con meno di 400 ore, impiegati, operai e dipendenti. Le ore si inseriscono nel modulo; non si verificano in tribunale.",
+      "preview": [
+        "Pannello Il mio profilo: base (potete aggiornare le ore di volo).",
+        "66 USD / 365 giorni. Senza tappe di sconto.",
+        "365 giorni. Non rinnovabile subito come Iniciante.",
+        "Simulatore: 30 usi al mese. 2 usi extra gratis al giorno. Pacchetto di 10 usi a 10 USD."
+      ],
+      "extra": [
+        "OFFERTE: non pubblica richieste di personale.",
+        "USATI: 2 avvisi al mese e 1 avviso extra. Solo attrezzatura reale in buono stato.",
+        "Può vedere e contattare ELENCO, USATI, OFFERTE e INSERZIONISTI.",
+        "Alla scadenza diventate Visitatore. Un anno dopo potete tornare a INICIANTE, o prima se attivate PLUS, PRO o ÉLITE.",
+        "Iscrizione INICIANTE. Accesso ad altri sottodomini del portale salvo i privati.",
+        "Si potranno aggiungere benefici secondo l'uso reale del sito, senza impegno di data né di quali saranno."
       ]
     },
     "plus": {
-      "apodo": "Coerente",
       "titulo": "PLUS",
-      "precio": "Listino 99 · E1 89 · E2 92 · E3 94 USD / 365 giorni",
-      "puntos": [
-        "Borsa A 36 / B 45 al mese (tetto 2 / 3 al giorno).",
-        "A = non pilota (agricoltore o progetto). B = pilota o tecnico.",
-        "Stesso prezzo; il profilo si dichiara all'attivazione.",
-        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      "apodo": "Coerente",
+      "tipo": "Preferibile per microimpresa (VSB / MEI) e professionisti o tecnici. Anche piloti con più di 400 ore. Guida, non esclusione.",
+      "preview": [
+        "Pannello Il mio profilo: completo.",
+        "Listino 99 USD / 365 giorni.",
+        "Tappa 1 (60 giorni): 89 USD (10 per cento). Quota 1800 iscrizioni, mondiale.",
+        "Tappa 2 (60 giorni): 92 USD (7 per cento). Quota 1800, mondiale.",
+        "Tappa 3 (60 giorni): 94 USD (5 per cento). Quota 1800, mondiale."
+      ],
+      "extra": [
+        "Dopo le tappe: tariffa di listino 99 USD / 365 giorni.",
+        "Simulatore: 40 usi al mese. 5 usi extra gratis al giorno. Pacchetto di 10 usi a 10 USD.",
+        "OFFERTE: 4 richieste al mese e 2 invii extra.",
+        "USATI: 8 avvisi al mese e 2 avvisi extra.",
+        "Può vedere, contattare e pubblicare in ELENCO, USATI, OFFERTE e INSERZIONISTI.",
+        "Rinnovabile a 365 giorni. Al rinnovo scegliete un piano e pagate solo quello.",
+        "Stesso account per i sottodomini del portale aggiunti in seguito, salvo i privati.",
+        "Club Esperanza, Pelícano e Centros G: richiesta e approvazione.",
+        "Si potranno aggiungere benefici secondo l'uso reale del sito, senza impegno di data né di quali saranno."
       ]
     },
     "pro": {
-      "apodo": "Amico",
       "titulo": "PRO",
-      "precio": "Listino 263 · E1 224 · E2 231 · E3 237 USD / 365 giorni",
-      "puntos": [
-        "Borsa A 72 / B 90 al mese (tetto 8 / 8 al giorno).",
-        "A / B: stesso prezzo; profilo all'attivazione.",
-        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      "apodo": "Amico",
+      "tipo": "Preferibile per piccola e media impresa (SB, ME, EPP, MB, MiPyMEs), professionisti, tecnici e piloti con più di 400 ore. Guida, non esclusione.",
+      "preview": [
+        "Pannello Il mio profilo: completo.",
+        "Listino 263 USD / 365 giorni.",
+        "Tappa 1 (60 giorni): 224 USD (15 per cento). Quota 1800 iscrizioni, mondiale.",
+        "Tappa 2 (60 giorni): 231 USD (12 per cento). Quota 1800, mondiale.",
+        "Tappa 3 (60 giorni): 237 USD (10 per cento). Quota 1800, mondiale."
+      ],
+      "extra": [
+        "Dopo le tappe: tariffa di listino 263 USD / 365 giorni.",
+        "Simulatore: 50 usi al mese. 10 usi extra gratis al giorno. Pacchetto di 10 usi a 10 USD.",
+        "OFFERTE: 9 richieste al mese e 3 invii extra.",
+        "USATI: 12 avvisi al mese e 5 avvisi extra.",
+        "Può vedere, contattare e pubblicare in ELENCO, USATI, OFFERTE e INSERZIONISTI.",
+        "Rinnovabile a 365 giorni. Al rinnovo scegliete un piano e pagate solo quello.",
+        "Stesso account per i sottodomini del portale aggiunti in seguito, salvo i privati.",
+        "Club Esperanza, Pelícano e Centros G: richiesta e approvazione.",
+        "Si potranno aggiungere benefici secondo l'uso reale del sito, senza impegno di data né di quali saranno."
       ]
     },
     "elite": {
-      "apodo": "Alleato",
       "titulo": "ÉLITE",
-      "precio": "Listino 329 · E1 263 · E2 273 · E3 280 USD / 365 giorni",
-      "puntos": [
-        "Borsa A 96 / B 120 al mese (tetto 15 / 15 al giorno).",
-        "A / B: stesso prezzo; profilo all'attivazione.",
-        "Quota: 1800 iscrizioni pagate per tappa visibile."
+      "apodo": "Alleato",
+      "tipo": "Preferibile per corporazioni, inserzionisti, sponsor e grande impresa (LE). Professionisti, tecnici e piloti con più di 400 ore possono registrarsi. Non è esclusivo.",
+      "preview": [
+        "Pannello Il mio profilo: completo.",
+        "Listino 329 USD / 365 giorni.",
+        "Tappa 1 (60 giorni): 263 USD (20 per cento). Quota 1800 iscrizioni, mondiale.",
+        "Tappa 2 (60 giorni): 273 USD (17 per cento). Quota 1800, mondiale.",
+        "Tappa 3 (60 giorni): 280 USD (15 per cento). Quota 1800, mondiale."
+      ],
+      "extra": [
+        "Dopo le tappe: tariffa di listino 329 USD / 365 giorni.",
+        "Simulatore: 60 usi al mese. 15 usi extra gratis al giorno. Pacchetto di 10 usi a 10 USD.",
+        "OFFERTE: 12 richieste al mese e 5 invii extra.",
+        "USATI: 16 avvisi al mese e 9 avvisi extra.",
+        "Può vedere, contattare e pubblicare in ELENCO, USATI, OFFERTE e INSERZIONISTI.",
+        "Rinnovabile a 365 giorni. Al rinnovo scegliete un piano e pagate solo quello.",
+        "Stesso account per i sottodomini del portale aggiunti in seguito, salvo i privati.",
+        "Club Esperanza, Pelícano e Centros G: richiesta e approvazione.",
+        "Si potranno aggiungere benefici secondo l'uso reale del sito, senza impegno di data né di quali saranno."
       ]
     }
   }

@@ -23,6 +23,7 @@ import Renovar from './drones/Renovar.jsx';
 import Planes from './drones/Planes.jsx';
 import SimuladorDuplo from '../components/drones/Simulador/SimuladorDuplo.jsx';
 
+import PanelBeta from './drones/PanelBeta.jsx';
 import Anunciantes from './drones/anunciantes.jsx';
 import Auxiliares from './drones/auxiliares.jsx';
 import Cadastro from './drones/cadastro/cadastro.jsx';
@@ -111,6 +112,9 @@ function DronesContent({ onNavigate }) {
       case 'ORÇAMENTOS':
       case 'ORCAMENTOS':
         return <SimuladorDuplo />;
+
+      case 'PROBAR':
+        return <PanelBeta setCurrentView={setCurrentView} />;
 
       case 'INÍCIO':
       case 'INICIO':

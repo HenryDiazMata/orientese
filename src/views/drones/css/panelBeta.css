@@ -1,0 +1,145 @@
+/* ==========================================
+   ARCHIVO: src/views/drones/css/panelBeta.css
+   ========================================== */
+
+.drones-beta-page {
+  width: 100%;
+  background: #ffffff !important;
+  color: #1A2330 !important;
+  padding: 28px 16px 56px;
+  box-sizing: border-box;
+}
+
+.drones-beta-wrap {
+  width: 80%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.drones-beta-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.drones-beta-sello {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1A8FD0;
+}
+
+.drones-beta-h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1A8FD0;
+}
+
+.drones-beta-intro {
+  margin: 0 auto;
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #334155;
+}
+
+.drones-beta-cupos {
+  margin: 0 0 22px;
+  padding: 16px 18px 16px 2rem;
+  background: #EAF6FB;
+  border: 1px solid #1A8FD0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.drones-beta-cupos li {
+  margin-bottom: 6px;
+}
+
+.drones-beta-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+@media (min-width: 720px) {
+  .drones-beta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.drones-beta-atajo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  padding: 16px;
+  text-align: left;
+  background: #ffffff;
+  border: 2px solid #1A8FD0;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #1A2330;
+  transition: all 0.2s ease;
+}
+
+.drones-beta-atajo:hover {
+  background: #40E0D0;
+  border-color: #40E0D0;
+}
+
+.drones-beta-atajo-t {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1A8FD0;
+}
+
+.drones-beta-atajo:hover .drones-beta-atajo-t {
+  color: #0f172a;
+}
+
+.drones-beta-atajo-d {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #334155;
+}
+
+.drones-beta-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.drones-beta-btn {
+  min-width: 160px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #1A8FD0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.drones-beta-btn:hover {
+  background: #40E0D0;
+  color: #0f172a;
+}
+
+@media (max-width: 767px) {
+  .drones-beta-wrap {
+    width: 92%;
+  }
+
+  .drones-beta-btn {
+    width: 100%;
+  }
+}

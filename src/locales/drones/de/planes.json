@@ -1,69 +1,136 @@
 {
   "planes": {
     "h1": "TARIFE",
-    "frasePago": "Der Tarif wird bei der Registrierung vollständig bezahlt. Wenn Ihre internationale Karte Raten zulässt, gelten die Bedingungen Ihrer Bank, nicht die von drones.orientese.com.",
-    "intro1": "Informatives Hub. Es verkauft nicht und vermittelt nicht. Der Tarif wird vollständig an drones.orientese.com bei Registrierung oder Aktivierung gezahlt. Lässt Ihre internationale Karte Raten zu, legt die Bank die Aufteilung fest. Kostenlose Registrierung und Nutzung: Oktober bis Dezember 2026. Frist zur Aktivierung dieser Registrierungen: 31-12-2026 UTC.",
-    "intro2": "Tarifdauer: 365 Tage. Aktivierung am 1-1-2027 gilt bis 1-1-2028 zum Einstiegstarif. Folgende Verlängerungen nutzen den Tarif des Vorjahres. Simulatoruhr: Kalendermonat. StandShowTour und Mentora: in Produktion. Clubs: geplant.",
-    "etapasTitulo": "Stufen PLUS / PRO / ÉLITE",
-    "etapasTexto": "E1 (Aktivierung ≤ 31. Dez. 2026 UTC): 10 / 15 / 20 % → 89 / 224 / 263 USD. E2: 7 / 12 / 17 % → 92 / 231 / 273 USD. E3: 5 / 10 / 15 % → 94 / 237 / 280 USD. Danach Listenpreise 99 / 263 / 329 USD. INICIANTE bleibt bei 66 USD / 365 Tagen. Sichtbares Kontingent: 1800 bezahlte Anmeldungen je Tarif (PLUS, PRO und ÉLITE), weltweit, je Stufe.",
-    "extrasTitulo": "Extras (ab Geltung des Tarifs)",
-    "extrasTexto": "1) +2 Nutzungen an diesem Tag bei Erreichen der Tagesgrenze (PLUS–ÉLITE max. 8 Tage/Monat; INICIANTE max. 4). 2) Beutel auf 0: +50 % einmal je Kalendermonat. 3) Pack 10 Nutzungen: INICIANTE 15 USD · PLUS 12 · PRO 10 · ÉLITE 8; max. 2 Packs/Monat. Besuchende kaufen keine Extras. Okt.–Dez. 2026 läuft der Test ohne Extras. Logbuch, NOTAM und Höhenmesser: in dieser Stufe nur Wörter.",
-    "cambioTitulo": "Tarifwechsel",
-    "cambioTexto": "Der Wechsel zu einem günstigeren Tarif kann eine Preisdifferenz erzeugen, die beim Wechsel berechnet wird, zugunsten von drones.orientese.com in Geld oder zugunsten der wechselnden Person durch mehr Simulatornutzungen und/oder mehr Sendungen von Personalanfragen und/oder Verkäufen von Drohnen, Teilen oder Zubehör in gutem Zustand. Keine Rückerstattung. Das Feld „Ich habe bereits 400 h überschritten“ ermöglicht ein Upgrade; es schließt niemanden aus.",
+    "beneficios": "Vorteile",
+    "verMas": "Mehr anzeigen",
+    "verMenos": "Weniger anzeigen",
+    "btnProbar": "SITE TESTEN",
     "btnRegistro": "REGISTRIERUNG",
-    "btnActivar": "AKTIVIEREN",
     "btnInicio": "START",
+        "panelSello": "BETA-MODUS",
+    "panelH1": "Site testen",
+    "panelIntro": "Das ist kein Tarif. Bis 31-12-2026 dürfen Sie die Site mit niedrigen Kontingenten nutzen. Der Zahlungsversand ist aus. Mitglied werden: REGISTRIERUNG und AKTIVIEREN spätestens an diesem Datum.",
+    "panelCupoSim": "Simulator: bis zu 3 Nutzungen pro Tag.",
+    "panelCupoVagas": "STELLEN: 1 Anzeige pro Tag, höchstens 6 in der gesamten BETA. Endet am 31-12-2026. Nur echte Anzeigen.",
+    "panelCupoUsados": "GEBRAUCHT: 1 Anzeige pro Tag, höchstens 6 in der gesamten BETA. Endet am 31-12-2026. Nur echte Geräte.",
+    "panelCupoAds": "INSERENTEN / SPONSOREN: 1 Stück pro Tag, höchstens 3 in der BETA. Sichtbar 2 Tage oder bis 31-12-2026.",
+    "atajo": {
+      "sim": { "t": "Angebote", "d": "Simulator testen (3 Nutzungen pro Tag)." },
+      "vagas": { "t": "Stellen", "d": "Personalanfrage ansehen und veröffentlichen (BETA-Kontingent)." },
+      "usados": { "t": "Gebraucht", "d": "Geräteanzeigen ansehen und veröffentlichen (BETA-Kontingent)." },
+      "anunciantes": { "t": "Inserenten", "d": "Vitrine und BETA-Anzeigenkontingent ansehen." },
+      "registro": { "t": "Registrierung", "d": "Tarif wählen und Mitglied werden." },
+      "planes": { "t": "Tarife", "d": "Vorteile und Preise ansehen." }
+    },
+    "leyendaBeta": "BETA-Modus bis 31-12-2026. Das Testen der Site aktiviert keinen Tarif. Mitglied werden: REGISTRIERUNG und AKTIVIEREN spätestens an diesem Datum.",
+    "frasePago": "Der Tarif wird bei der Registrierung vollständig bezahlt. Wenn Ihre internationale Karte Raten zulässt, gelten die Bedingungen Ihrer Bank, nicht die von drones.orientese.com.",
+    "pagoTitulo": "Zahlungen",
+    "pagoExtra": "In der BETA (Oktober bis Dezember 2026) können Sie sich registrieren und den Tarif nutzen, bevor die Rechnungsstellung läuft. Beim AKTIVIEREN (Frist 31-12-2026 UTC) zahlen Sie den Gesamtbetrag. Rechnung per E-Mail, sobald die LLC arbeitet. Die Site teilt keine Raten auf.",
+    "cambioTitulo": "Tarifwechsel",
+    "cambioTexto": "Wenn Sie mitten im bereits bezahlten Jahr den Tarif wechseln, wird die Differenz zugunsten von drones.orientese.com berechnet oder mit mehr Simulatornutzungen und mehr STELLEN- oder GEBRAUCHT-Anzeigen ausgeglichen. Keine Rückerstattung. Bei der Verlängerung (Ende der 365 Tage) wählen Sie den Tarif und zahlen nur diesen. INICIANTE wird nicht direkt verlängert: danach werden Sie Besucher und dürfen erst ein Jahr später wieder INICIANTE werden, außer Sie wechseln zu PLUS, PRO oder ÉLITE.",
     "visitante": {
-      "apodo": "Besucher",
       "titulo": "VISITANTE",
-      "precio": "Ohne bezahlte Mitgliedschaft",
-      "puntos": [
-        "Verzeichnis und Schaufenster ansehen.",
-        "Simulator: 5 Nutzungen je Kalendermonat (Richtwert 1/Tag).",
-        "Hinweisbox.",
-        "Kauft keine Extras."
+      "apodo": "Besucher",
+      "tipo": "Jede Person, die ohne Mitgliedschaft auf die Site kommt. Mitglied erst nach Registrierung für einen Tarif.",
+      "preview": [
+        "Kostenloser Zugang. Keine bezahlte Mitgliedschaft.",
+        "Profil: entfällt.",
+        "Simulator: 8 Nutzungen pro Monat. In der BETA bis zu 3 Nutzungen pro Tag.",
+        "Veröffentlicht keine STELLEN oder GEBRAUCHT außer dem BETA-Kontingent (1 Anzeige je Art pro Tag, höchstens 6 je Art bis 31-12-2026). Anzeigen müssen echt sein und enden an diesem Datum."
+      ],
+      "extra": [
+        "Darf VERZEICHNIS, GEBRAUCHT, STELLEN und die Vitrine INSERENTEN / SPONSOREN sehen und kontaktieren.",
+        "Postfach für Kurs- und ähnliche Hinweise.",
+        "In der BETA dürfen Registrierungsformulare angesehen werden; der Zahlungsversand ist aus.",
+        "Registrierung für einen Tarif jederzeit möglich."
       ]
     },
     "iniciante": {
-      "apodo": "Sympathisant",
       "titulo": "INICIANTE",
-      "precio": "66 USD / 365 Tage (ohne Stufenrabatt)",
-      "puntos": [
-        "Einmal je Person. Nicht als Iniciante verlängerbar.",
-        "Simulator: 10 Nutzungen / Monat (max. 2/Tag).",
-        "Nach Ablauf wird man Besucher, außer PLUS, PRO oder ÉLITE wird aktiviert.",
-        "Erklärung (ohne Gericht): frischer Abschluss, unter 400 h, Beamter oder Arbeiter."
+      "apodo": "Sympathisant",
+      "tipo": "Bevorzugt für frische Abschlüsse, Piloten unter 400 Stunden, Beamte, Arbeiter und Angestellte. Stunden stehen im Formular; sie werden nicht vor Gericht geprüft.",
+      "preview": [
+        "Mein Profil: Basis (Flugstunden können aktualisiert werden).",
+        "66 USD / 365 Tage. Keine Rabatstufen.",
+        "365 Tage. Nicht sofort als Iniciante verlängerbar.",
+        "Simulator: 30 Nutzungen pro Monat. 2 kostenlose Extra-Nutzungen pro Tag. Pack 10 Nutzungen zu 10 USD."
+      ],
+      "extra": [
+        "STELLEN: veröffentlicht keine Personalanfragen.",
+        "GEBRAUCHT: 2 Anzeigen pro Monat und 1 Extra-Anzeige. Nur echte Geräte in gutem Zustand.",
+        "Darf VERZEICHNIS, GEBRAUCHT, STELLEN und INSERENTEN sehen und kontaktieren.",
+        "Danach werden Sie Besucher. Ein Jahr später dürfen Sie zu INICIANTE zurück, oder früher mit PLUS, PRO oder ÉLITE.",
+        "Mitgliedschaft INICIANTE. Zugang zu anderen Portal-Subdomains außer privaten.",
+        "Weitere Vorteile können je nach realer Nutzung der Site hinzukommen, ohne Zusage von Datum oder Art."
       ]
     },
     "plus": {
-      "apodo": "Konsequent",
       "titulo": "PLUS",
-      "precio": "Liste 99 · E1 89 · E2 92 · E3 94 USD / 365 Tage",
-      "puntos": [
-        "Beutel A 36 / B 45 im Monat (Deckel 2 / 3 am Tag).",
-        "A = kein Pilot (Landwirt oder Projekt). B = Pilot oder Techniker.",
-        "Gleicher Preis; das Profil wird bei der Aktivierung erklärt.",
-        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      "apodo": "Konsequent",
+      "tipo": "Bevorzugt für Kleinstunternehmen (VSB / MEI) sowie Fachleute oder Techniker. Auch Piloten mit mehr als 400 Stunden. Leitfaden, kein Ausschluss.",
+      "preview": [
+        "Mein Profil: vollständig.",
+        "Liste 99 USD / 365 Tage.",
+        "Stufe 1 (60 Tage): 89 USD (10 Prozent). Kontingent 1800 Anmeldungen, weltweit.",
+        "Stufe 2 (60 Tage): 92 USD (7 Prozent). Kontingent 1800, weltweit.",
+        "Stufe 3 (60 Tage): 94 USD (5 Prozent). Kontingent 1800, weltweit."
+      ],
+      "extra": [
+        "Nach den Stufen: Listenpreis 99 USD / 365 Tage.",
+        "Simulator: 40 Nutzungen pro Monat. 5 kostenlose Extra-Nutzungen pro Tag. Pack 10 Nutzungen zu 10 USD.",
+        "STELLEN: 4 Anfragen pro Monat und 2 Extra-Sendungen.",
+        "GEBRAUCHT: 8 Anzeigen pro Monat und 2 Extra-Anzeigen.",
+        "Darf VERZEICHNIS, GEBRAUCHT, STELLEN und INSERENTEN sehen, kontaktieren und veröffentlichen.",
+        "Verlängerbar nach 365 Tagen. Bei der Verlängerung wählen Sie einen Tarif und zahlen nur diesen.",
+        "Dasselbe Konto für später angehängte Portal-Subdomains, außer privaten.",
+        "Clubs Esperanza, Pelícano und Centros G: Antrag und Freigabe.",
+        "Weitere Vorteile können je nach realer Nutzung der Site hinzukommen, ohne Zusage von Datum oder Art."
       ]
     },
     "pro": {
-      "apodo": "Freund",
       "titulo": "PRO",
-      "precio": "Liste 263 · E1 224 · E2 231 · E3 237 USD / 365 Tage",
-      "puntos": [
-        "Beutel A 72 / B 90 im Monat (Deckel 8 / 8 am Tag).",
-        "A / B: gleicher Preis; Profil bei Aktivierung.",
-        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      "apodo": "Freund",
+      "tipo": "Bevorzugt für kleine und mittlere Unternehmen (SB, ME, EPP, MB, KMU), Fachleute, Techniker und Piloten mit mehr als 400 Stunden. Leitfaden, kein Ausschluss.",
+      "preview": [
+        "Mein Profil: vollständig.",
+        "Liste 263 USD / 365 Tage.",
+        "Stufe 1 (60 Tage): 224 USD (15 Prozent). Kontingent 1800 Anmeldungen, weltweit.",
+        "Stufe 2 (60 Tage): 231 USD (12 Prozent). Kontingent 1800, weltweit.",
+        "Stufe 3 (60 Tage): 237 USD (10 Prozent). Kontingent 1800, weltweit."
+      ],
+      "extra": [
+        "Nach den Stufen: Listenpreis 263 USD / 365 Tage.",
+        "Simulator: 50 Nutzungen pro Monat. 10 kostenlose Extra-Nutzungen pro Tag. Pack 10 Nutzungen zu 10 USD.",
+        "STELLEN: 9 Anfragen pro Monat und 3 Extra-Sendungen.",
+        "GEBRAUCHT: 12 Anzeigen pro Monat und 5 Extra-Anzeigen.",
+        "Darf VERZEICHNIS, GEBRAUCHT, STELLEN und INSERENTEN sehen, kontaktieren und veröffentlichen.",
+        "Verlängerbar nach 365 Tagen. Bei der Verlängerung wählen Sie einen Tarif und zahlen nur diesen.",
+        "Dasselbe Konto für später angehängte Portal-Subdomains, außer privaten.",
+        "Clubs Esperanza, Pelícano und Centros G: Antrag und Freigabe.",
+        "Weitere Vorteile können je nach realer Nutzung der Site hinzukommen, ohne Zusage von Datum oder Art."
       ]
     },
     "elite": {
-      "apodo": "Verbündeter",
       "titulo": "ÉLITE",
-      "precio": "Liste 329 · E1 263 · E2 273 · E3 280 USD / 365 Tage",
-      "puntos": [
-        "Beutel A 96 / B 120 im Monat (Deckel 15 / 15 am Tag).",
-        "A / B: gleicher Preis; Profil bei Aktivierung.",
-        "Kontingent: 1800 bezahlte Anmeldungen je sichtbarer Stufe."
+      "apodo": "Verbündeter",
+      "tipo": "Bevorzugt für Konzerne, Inserenten, Sponsoren und Großunternehmen (LE). Fachleute, Techniker und Piloten mit mehr als 400 Stunden dürfen sich ebenfalls anmelden. Nicht ausschließend.",
+      "preview": [
+        "Mein Profil: vollständig.",
+        "Liste 329 USD / 365 Tage.",
+        "Stufe 1 (60 Tage): 263 USD (20 Prozent). Kontingent 1800 Anmeldungen, weltweit.",
+        "Stufe 2 (60 Tage): 273 USD (17 Prozent). Kontingent 1800, weltweit.",
+        "Stufe 3 (60 Tage): 280 USD (15 Prozent). Kontingent 1800, weltweit."
+      ],
+      "extra": [
+        "Nach den Stufen: Listenpreis 329 USD / 365 Tage.",
+        "Simulator: 60 Nutzungen pro Monat. 15 kostenlose Extra-Nutzungen pro Tag. Pack 10 Nutzungen zu 10 USD.",
+        "STELLEN: 12 Anfragen pro Monat und 5 Extra-Sendungen.",
+        "GEBRAUCHT: 16 Anzeigen pro Monat und 9 Extra-Anzeigen.",
+        "Darf VERZEICHNIS, GEBRAUCHT, STELLEN und INSERENTEN sehen, kontaktieren und veröffentlichen.",
+        "Verlängerbar nach 365 Tagen. Bei der Verlängerung wählen Sie einen Tarif und zahlen nur diesen.",
+        "Dasselbe Konto für später angehängte Portal-Subdomains, außer privaten.",
+        "Clubs Esperanza, Pelícano und Centros G: Antrag und Freigabe.",
+        "Weitere Vorteile können je nach realer Nutzung der Site hinzukommen, ohne Zusage von Datum oder Art."
       ]
     }
   }
