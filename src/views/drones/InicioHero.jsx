@@ -318,6 +318,66 @@ export default function InicioHero({ setCurrentView }) {
         </div>
       </section>
 
+      {/* ========== CTAS INICIO: PROBAR / PLANES / REGISTRO ========== */}
+      {/* PROBAR = VISTA PANEL BETA (ID INTERNO PROBAR) */}
+      {/* CADASTRO = ID DE VISTA (ES=REGISTRO / PT=CADASTRO) */}
+      {/* HOVER: AQUAMARINA COMO EL MENU */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '0.6rem',
+          marginTop: '1.1rem',
+        }}
+      >
+        <button
+          type="button"
+          style={btn}
+          onClick={() => ir('PROBAR')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#40E0D0';
+            e.currentTarget.style.color = '#0f172a';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = AZUL;
+            e.currentTarget.style.color = BLANCO;
+          }}
+        >
+          {t('inicio.btnProbar')}
+        </button>
+        <button
+          type="button"
+          style={btn}
+          onClick={() => ir('PLANES')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#40E0D0';
+            e.currentTarget.style.color = '#0f172a';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = AZUL;
+            e.currentTarget.style.color = BLANCO;
+          }}
+        >
+          {t('inicio.btnPlanes')}
+        </button>
+        <button
+          type="button"
+          style={btn}
+          onClick={() => ir('CADASTRO')}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#40E0D0';
+            e.currentTarget.style.color = '#0f172a';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = AZUL;
+            e.currentTarget.style.color = BLANCO;
+          }}
+        >
+          {t('inicio.btnCadastro')}
+        </button>
+      </div>
+
       {/* ========== HUECOS ANUNCIANTES / PATROCINADORES (DEBAJO DEL CARRUSEL) ========== */}
       <aside
         className="drones-inicio-anunciantes"

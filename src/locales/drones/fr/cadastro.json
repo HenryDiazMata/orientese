@@ -1,0 +1,24 @@
+{
+  "cadastro": {
+    "sub": "Choisissez le type d'inscription. Remplir le formulaire crée votre panneau de profil.",
+    "seleccionar": "Sélectionner",
+    "tipoHacendado": "Exploitant / donneur d'ordre",
+    "paraHacendado": "Producteur rural, entreprise ou personne qui commande des services drones.",
+    "alcanceHacendado": "Fiche donneur d'ordre. Reste sur le plan choisi. Cesse d'être Visitante-BETA.",
+    "tipoPiloto": "Pilote",
+    "paraPiloto": "Personne qui fait voler des drones.",
+    "alcancePiloto": "Fiche pilote. Heures de vol et badge en formation ou avancé.",
+    "tipoAuxiliar": "Assistant",
+    "paraAuxiliar": "Soutien au sol, observateur, logistique de mission.",
+    "alcanceAuxiliar": "Fiche d'assistant de terrain. Visible selon le plan.",
+    "tipoManutencao": "Technicien de maintenance",
+    "paraManutencao": "Préventive, corrective, calibration et révision.",
+    "alcanceManutencao": "Fiche maintenance. Publication selon le plan.",
+    "tipoConserto": "Technicien de réparation",
+    "paraConserto": "Banc, atelier ou technicien de réparation de drones.",
+    "alcanceConserto": "Fiche réparation. Publication selon le plan.",
+    "tipoProfissional": "Professionnel",
+    "paraProfissional": "Métiers et formations liés au secteur, hors pilote et technicien.",
+    "alcanceProfissional": "Fiche professionnelle. Entre dans l'annuaire selon le plan."
+  }
+}

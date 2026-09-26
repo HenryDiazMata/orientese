@@ -1,0 +1,24 @@
+{
+  "cadastro": {
+    "sub": "Elija el tipo de registro. Al completar el formulario nace su panel de perfil.",
+    "seleccionar": "Seleccionar",
+    "tipoHacendado": "Hacendado / contratante",
+    "paraHacendado": "Productor rural, empresa o quien contrata servicios con drones.",
+    "alcanceHacendado": "Ficha de contratante. Queda en el plan elegido. Deja de ser Visitante-BETA.",
+    "tipoPiloto": "Piloto",
+    "paraPiloto": "Quien opera drones en vuelo.",
+    "alcancePiloto": "Ficha de piloto. Horas de vuelo y sello de formación o avanzado.",
+    "tipoAuxiliar": "Auxiliar",
+    "paraAuxiliar": "Apoyo de suelo, observador, logística de misión.",
+    "alcanceAuxiliar": "Ficha de auxiliar de campo. Aparece en el directorio según el plan.",
+    "tipoManutencao": "Técnico de mantenimiento",
+    "paraManutencao": "Preventiva, correctiva, calibración y revisión.",
+    "alcanceManutencao": "Ficha técnica de mantenimiento. Publica según el plan.",
+    "tipoConserto": "Técnico de reparación",
+    "paraConserto": "Bancada, oficina o técnico de conserto de drones.",
+    "alcanceConserto": "Ficha de reparación. Publica según el plan.",
+    "tipoProfissional": "Profesional",
+    "paraProfissional": "Oficios y formaciones afines al sector, que no son piloto ni técnico.",
+    "alcanceProfissional": "Ficha profesional. Entra al directorio según el plan."
+  }
+}

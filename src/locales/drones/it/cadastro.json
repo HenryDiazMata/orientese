@@ -1,0 +1,24 @@
+{
+  "cadastro": {
+    "sub": "Scegli il tipo di registrazione. Completando il modulo nasce il pannello del profilo.",
+    "seleccionar": "Seleziona",
+    "tipoHacendado": "Agricoltore / committente",
+    "paraHacendado": "Produttore rurale, azienda o chi commissiona servizi con droni.",
+    "alcanceHacendado": "Scheda committente. Resta nel piano scelto. Smette di essere Visitante-BETA.",
+    "tipoPiloto": "Pilota",
+    "paraPiloto": "Chi opera droni in volo.",
+    "alcancePiloto": "Scheda pilota. Ore di volo e sigillo in formazione o avanzato.",
+    "tipoAuxiliar": "Assistente",
+    "paraAuxiliar": "Supporto a terra, osservatore, logistica di missione.",
+    "alcanceAuxiliar": "Scheda assistente di campo. Compare in elenco secondo il piano.",
+    "tipoManutencao": "Tecnico di manutenzione",
+    "paraManutencao": "Preventiva, correttiva, calibrazione e revisione.",
+    "alcanceManutencao": "Scheda manutenzione. Pubblica secondo il piano.",
+    "tipoConserto": "Tecnico di riparazione",
+    "paraConserto": "Banco, officina o tecnico di riparazione droni.",
+    "alcanceConserto": "Scheda riparazione. Pubblica secondo il piano.",
+    "tipoProfissional": "Professionista",
+    "paraProfissional": "Mestieri e formazioni affini al settore, non pilota né tecnico.",
+    "alcanceProfissional": "Scheda professionale. Entra in elenco secondo il piano."
+  }
+}

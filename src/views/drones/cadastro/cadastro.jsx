@@ -1,107 +1,126 @@
 // ==========================================
-// CASCARÓN WIZARD CADASTRO
-// PASOS: PLANOS → CADASTROS → FICHA → PAGAMENTO
-// VISITANTE NO AVANZA A FICHA NI A PAGO
-// NO TOCA HEADER / FOOTER / APP.CSS DEL PORTAL
-// UI EN PT. COMENTARIOS EN CASTELLANO Y MAYÚSCULAS
+// HUB CADASTRO / REGISTRO
+// ID DE VISTA EN EL ORQUESTADOR: CADASTRO
+// ES = REGISTRO | PT = CADASTRO
+// ELIGE TIPO → MONTA EL FORMULARIO YA EXISTENTE
+// NO MUESTRA PRECIOS. NO HAY PASO PAGAMENTO.
+// VISITANTE-BETA NO SE OFRECE AQUI.
+// AL COMPLETAR EL FORMULARIO NACE EL PANEL DE PERFIL.
+// COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
 import { useState } from 'react';
-import './Cadastro.css';
-import { planoEsPago } from './cadastroPlanes';
-import CadastroPaso1 from './CadastroPaso1';
-import CadastroPaso2 from './CadastroPaso2';
-import CadastroFicha from './CadastroFicha';
-import CadastroPago from './CadastroPago';
+import { useTranslation } from 'react-i18next';
+import i18nDrones from '../../../components/drones/i18n';
+import '../css/Cadastro.css';
+import { TIPOS_CADASTRO } from './cadastroPlanes';
 
-export default function Cadastro() {
-  const [paso, setPaso] = useState(1);
-  const [planoId, setPlanoId] = useState(null);
-  const [tipoCadastro, setTipoCadastro] = useState(null);
+import CadastroUsuario from '../../../components/drones/formularios/CadastroUsuario.jsx';
+import CadastroPiloto from '../../../components/drones/formularios/CadastroPiloto.jsx';
+import CadastroAuxiliar from '../../../components/drones/formularios/CadastroAuxiliar.jsx';
+import CadastroManutencao from '../../../components/drones/formularios/CadastroManutencao.jsx';
+import CadastroConserto from '../../../components/drones/formularios/CadastroConserto.jsx';
+import CadastroProfissionais from '../../../components/drones/formularios/CadastroProfissionais.jsx';
 
-  const pago = planoEsPago(planoId);
-  const tipoValido =
-    tipoCadastro && !(pago && tipoCadastro === 'visitante');
-  const esVisitante = tipoCadastro === 'visitante' && !pago;
+const FRASE_PAGO =
+  'El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.';
 
-  const handlePlano = (id) => {
-    setPlanoId(id);
-    const nuevoPago = planoEsPago(id);
-    if (nuevoPago && tipoCadastro === 'visitante') {
-      setTipoCadastro(null);
+export default function Cadastro({ setCurrentView }) {
+  // ==========================================
+  // INSTANCIA PROPIA. NO CAER AL FALLBACK PT-BR DEL PORTAL
+  // ==========================================
+  const { t } = useTranslation('translation', { i18n: i18nDrones });
+  const [tipoId, setTipoId] = useState(null);
+
+  const titulo = t('nav.register', {
+    defaultValue: t('inicio.btnCadastro', { defaultValue: 'REGISTRO' }),
+  });
+
+  // ==========================================
+  // AL GUARDAR FICHA: SALE DEL BETA Y ENTRA AL PERFIL
+  // ==========================================
+  const irPerfil = () => {
+    if (typeof setCurrentView === 'function') {
+      setCurrentView('PERFIL');
     }
   };
 
-  const irSiguiente = () => {
-    if (paso === 1 && !planoId) return;
-    if (paso === 2 && !tipoValido) return;
-    if (paso === 2 && esVisitante) return;
-    if (paso < 4) setPaso(paso + 1);
-  };
+  const renderFicha = () => {
+    const volver = () => setTipoId(null);
 
-  const irAnterior = () => {
-    if (paso > 1) setPaso(paso - 1);
+    if (tipoId === 'hacendado') {
+      return <CadastroUsuario onSalvar={irPerfil} onCancelar={volver} />;
+    }
+    if (tipoId === 'piloto') {
+      return <CadastroPiloto onSalvar={irPerfil} />;
+    }
+    if (tipoId === 'auxiliar') {
+      return <CadastroAuxiliar onSalvar={irPerfil} onCancelar={volver} />;
+    }
+    if (tipoId === 'manutencao') {
+      return <CadastroManutencao onSalvar={irPerfil} onCancelar={volver} />;
+    }
+    if (tipoId === 'conserto') {
+      return <CadastroConserto onSalvar={irPerfil} onCancelar={volver} />;
+    }
+    if (tipoId === 'profissional') {
+      return (
+        <CadastroProfissionais
+          onSalvar={irPerfil}
+          onCancelar={volver}
+          onVerLista={() => setCurrentView && setCurrentView('PROFISSIONAIS')}
+        />
+      );
+    }
+    return null;
   };
 
   return (
-    <div className="cadastro-wizard">
-      <header className="cadastro-wizard-header">
-        <h1>Cadastro</h1>
-        <ol className="cadastro-pasos-nav">
-          <li className={paso === 1 ? 'ativo' : ''}>Planos</li>
-          <li className={paso === 2 ? 'ativo' : ''}>Cadastros</li>
-          <li className={paso === 3 ? 'ativo' : ''}>Ficha</li>
-          <li className={paso === 4 ? 'ativo' : ''}>Pagamento</li>
-        </ol>
-      </header>
-
-      {paso === 1 && (
-        <CadastroPaso1 planoId={planoId} onSelecionarPlano={handlePlano} />
-      )}
-
-      {paso === 2 && (
-        <CadastroPaso2
-          planoId={planoId}
-          tipoCadastro={tipoCadastro}
-          onSelecionarTipo={setTipoCadastro}
-        />
-      )}
-
-      {paso === 3 && (
-        <CadastroFicha planoId={planoId} tipoCadastro={tipoCadastro} />
-      )}
-
-      {paso === 4 && (
-        <CadastroPago planoId={planoId} tipoCadastro={tipoCadastro} />
-      )}
-
-      <footer className="cadastro-wizard-acciones">
-        {paso > 1 && (
-          <button type="button" className="cadastro-card-cta" onClick={irAnterior}>
-            Voltar
-          </button>
-        )}
-
-        {paso === 2 && esVisitante && (
-          <p className="cadastro-paso-sub">
-            Visitante não preenche ficha nem pagamento. Use o aviso de cursos
-            se quiser receber novidades.
+    <div className="cad-page">
+      <div className="cad-top">
+        <div>
+          <h1>{titulo}</h1>
+          <p className="cad-sub">
+            {t('cadastro.sub', {
+              defaultValue:
+                'Elija el tipo de registro. Al completar el formulario nace su panel de perfil.',
+            })}
           </p>
-        )}
+        </div>
+      </div>
 
-        {paso < 4 && !esVisitante && (
-          <button
-            type="button"
-            className="cadastro-card-cta"
-            disabled={
-              (paso === 1 && !planoId) || (paso === 2 && !tipoValido)
-            }
-            onClick={irSiguiente}
-          >
-            Continuar
+      <p className="cad-frase-pago">
+        {t('inicio.frasePago', { defaultValue: FRASE_PAGO })}
+      </p>
+
+      {tipoId ? (
+        <div className="cad-ficha-wrap">
+          <button type="button" className="cad-volver" onClick={() => setTipoId(null)}>
+            {t('common.back', { defaultValue: 'Volver' })}
           </button>
-        )}
-      </footer>
+          {renderFicha()}
+        </div>
+      ) : (
+        <div className="cad-grid-tipos">
+          {TIPOS_CADASTRO.map((tipo) => (
+            <article
+              key={tipo.id}
+              className={`cad-card-tipo ${tipoId === tipo.id ? 'is-on' : ''}`}
+            >
+              <h3>{t(tipo.nomeKey, { defaultValue: tipo.id })}</h3>
+              <p>{t(tipo.paraKey, { defaultValue: '' })}</p>
+              <p>{t(tipo.alcanceKey, { defaultValue: '' })}</p>
+              <button
+                type="button"
+                className="cad-card-cta"
+                onClick={() => setTipoId(tipo.id)}
+              >
+                {t('cadastro.seleccionar', { defaultValue: 'Seleccionar' })}
+              </button>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

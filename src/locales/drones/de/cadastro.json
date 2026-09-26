@@ -1,0 +1,24 @@
+{
+  "cadastro": {
+    "sub": "Wählen Sie die Art der Registrierung. Mit dem Formular entsteht Ihr Profilbereich.",
+    "seleccionar": "Auswählen",
+    "tipoHacendado": "Landwirt / Auftraggeber",
+    "paraHacendado": "Landwirt, Unternehmen oder wer Drohnendienste beauftragt.",
+    "alcanceHacendado": "Auftraggeberakte. Bleibt im gewählten Tarif. Ist nicht mehr Visitante-BETA.",
+    "tipoPiloto": "Pilot",
+    "paraPiloto": "Wer Drohnen fliegt.",
+    "alcancePiloto": "Pilotenakte. Flugstunden und Siegel in Ausbildung oder fortgeschritten.",
+    "tipoAuxiliar": "Helfer",
+    "paraAuxiliar": "Bodenhilfe, Beobachter, Missionslogistik.",
+    "alcanceAuxiliar": "Feldhelferakte. Erscheint im Verzeichnis je nach Tarif.",
+    "tipoManutencao": "Wartungstechniker",
+    "paraManutencao": "Vorbeugend, korrektur, Kalibrierung und Prüfung.",
+    "alcanceManutencao": "Wartungsakte. Veröffentlichung laut Tarif.",
+    "tipoConserto": "Reparaturtechniker",
+    "paraConserto": "Werkbank, Werkstatt oder Drohnenreparatur.",
+    "alcanceConserto": "Reparaturakte. Veröffentlichung laut Tarif.",
+    "tipoProfissional": "Fachkraft",
+    "paraProfissional": "Berufe und Ausbildungen rund um die Branche, die nicht Pilot oder Techniker sind.",
+    "alcanceProfissional": "Fachakte. Kommt ins Verzeichnis laut Tarif."
+  }
+}

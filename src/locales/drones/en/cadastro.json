@@ -1,0 +1,24 @@
+{
+  "cadastro": {
+    "sub": "Choose the registration type. Completing the form creates your profile panel.",
+    "seleccionar": "Select",
+    "tipoHacendado": "Landowner / contractor",
+    "paraHacendado": "Rural producer, company, or anyone hiring drone services.",
+    "alcanceHacendado": "Contractor file. Stays on the chosen plan. Stops being Visitante-BETA.",
+    "tipoPiloto": "Pilot",
+    "paraPiloto": "Anyone who flies drones.",
+    "alcancePiloto": "Pilot file. Flight hours and in-training or advanced badge.",
+    "tipoAuxiliar": "Assistant",
+    "paraAuxiliar": "Ground support, observer, mission logistics.",
+    "alcanceAuxiliar": "Field assistant file. Listed according to the plan.",
+    "tipoManutencao": "Maintenance technician",
+    "paraManutencao": "Preventive, corrective, calibration and service.",
+    "alcanceManutencao": "Maintenance file. Publishing follows the plan.",
+    "tipoConserto": "Repair technician",
+    "paraConserto": "Bench, workshop or drone repair technician.",
+    "alcanceConserto": "Repair file. Publishing follows the plan.",
+    "tipoProfissional": "Professional",
+    "paraProfissional": "Related trades and training who are not pilots or technicians.",
+    "alcanceProfissional": "Professional file. Enters the directory according to the plan."
+  }
+}

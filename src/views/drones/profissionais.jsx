@@ -16,7 +16,7 @@ import {
   POR_PAGINA_PADRAO,
   lerCadastrosLocais,
 } from '../../components/drones/formularios/profissionaisListaDados';
-import './profissionais.css';
+import './css/profissionais.css';
 
 export default function Profissionais({ abaAtiva, setAbaAtiva }) {
   const [buscaNome, setBuscaNome] = useState('');
