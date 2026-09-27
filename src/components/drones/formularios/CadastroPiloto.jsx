@@ -6,7 +6,7 @@
 // 400 H NO EXPULSA: SOLO SELLO EN DIRECTORIO
 // UI SIN DARK — SIN data-theme — SIN STYLE INLINE
 // ESTILO: CadastroForm.css
-// VOLVER SUPERIOR IZQUIERDO + INFERIOR DERECHO → VISTA CADASTRO
+// VOLVER SUPERIOR IZQUIERDO + INFERIOR DERECHO → HUB CADASTRO
 // IMPORT i18n: src/components/drones/i18n
 // ==========================================
 
@@ -75,6 +75,7 @@ const FORMAS_PAGO = ['pix', 'credito', 'debito', 'boleto'];
 export default function CadastroPiloto({
   pilotoParaEditar = null,
   onSalvar,
+  onCancelar,
   setCurrentView,
 }) {
   const { t } = useTranslation('translation', { i18n: i18nDrones });
@@ -221,8 +222,13 @@ export default function CadastroPiloto({
 
   // ==========================================
   // VOLVER AL HUB REGISTRO / CADASTRO — NO AL INICIO DEL SITE
+  // EL HUB CIERRA LA FICHA CON onCancelar → setTipoId(null)
   // ==========================================
   const handleVolver = () => {
+    if (typeof onCancelar === 'function') {
+      onCancelar();
+      return;
+    }
     if (typeof setCurrentView === 'function') {
       setCurrentView('CADASTRO');
     }
@@ -263,9 +269,14 @@ export default function CadastroPiloto({
     <div className="cadastro-container">
       {/* ==========================================
           VOLVER — SUPERIOR IZQUIERDO
+          MISMA CLASE QUE EL INFERIOR
           ========================================== */}
       <div className="cadastro-header-nav">
-        <button type="button" className="btn-volver-inicio" onClick={handleVolver}>
+        <button
+          type="button"
+          className="btn-volver-inicio"
+          onClick={handleVolver}
+        >
           {t('cadastroUsuario.volver')}
         </button>
       </div>

@@ -1,87 +1,198 @@
-import React, { useEffect, useState } from 'react';
-import { useTheme } from "../../../context/drones/ThemeContext";
+// ==========================================
+// ARCHIVO: src/components/drones/formularios/CadastroAuxiliar.jsx
+// FICHA INFORMATIVA DE AUXILIAR DE CAMPO — NO COBRA
+// UNA CUENTA PORTAL / UNA CLAVE DRONES SI NO EXISTE / VARIOS ROLES
+// PAIS EN DATOS PERSONALES (PROMOS Y RELANZAMIENTO)
+// EJE: SUELO / OBSERVADOR / LOGISTICA — SIN 400 H DE PILOTO
+// UI SIN DARK — SIN data-theme — SIN STYLE INLINE
+// ESTILO: CadastroForm.css
+// VOLVER SUPERIOR IZQUIERDO + INFERIOR DERECHO → HUB CADASTRO
+// IMPORT i18n: src/components/drones/i18n
+// ==========================================
+
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../context/drones/AuthContext';
+import i18nDrones from '../i18n';
 import './CadastroForm.css';
 
+// ==========================================
+// UF BRASIL — SOLO SI PAIS = BR
+// ==========================================
 const ESTADOS_BRASIL = [
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
   'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
-  'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+  'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ];
 
-const TIPOS_DRONE = ['Multirotor', 'Asa Fixa', 'FPV', 'Híbrido', 'Outros'];
+// ==========================================
+// PAISES ALINEADOS AL CRITERIO DEL SIMULADOR
+// AQUI NO HAY PRECIOS; SOLO CODIGO Y MONEDA DE REFERENCIA
+// ==========================================
+const PAISES = [
+  { code: 'BR', labelKey: 'paisBR', moeda: 'BRL' },
+  { code: 'AR', labelKey: 'paisAR', moeda: 'ARS' },
+  { code: 'UY', labelKey: 'paisUY', moeda: 'UYU' },
+  { code: 'PY', labelKey: 'paisPY', moeda: 'PYG' },
+  { code: 'CL', labelKey: 'paisCL', moeda: 'CLP' },
+  { code: 'BO', labelKey: 'paisBO', moeda: 'BOB' },
+  { code: 'PE', labelKey: 'paisPE', moeda: 'PEN' },
+  { code: 'CO', labelKey: 'paisCO', moeda: 'COP' },
+  { code: 'EC', labelKey: 'paisEC', moeda: 'USD' },
+  { code: 'VE', labelKey: 'paisVE', moeda: 'VES' },
+  { code: 'MX', labelKey: 'paisMX', moeda: 'MXN' },
+  { code: 'US', labelKey: 'paisUS', moeda: 'USD' },
+  { code: 'ES', labelKey: 'paisES', moeda: 'EUR' },
+  { code: 'PT', labelKey: 'paisPT', moeda: 'EUR' },
+  { code: 'IT', labelKey: 'paisIT', moeda: 'EUR' },
+  { code: 'FR', labelKey: 'paisFR', moeda: 'EUR' },
+  { code: 'DE', labelKey: 'paisDE', moeda: 'EUR' },
+  { code: 'OT', labelKey: 'paisOT', moeda: '' },
+];
 
+// ==========================================
+// TIPOS DE DRONE CON LOS QUE APOYA EN SUELO
+// CARD PROPIA — DOS COLUMNAS
+// ==========================================
+const TIPOS_DRONE = [
+  'multirotor',
+  'asaFixa',
+  'fpv',
+  'hibrido',
+  'outros',
+];
+
+// ==========================================
+// AREAS DE ACTUACION DE SUELO — OBLIGATORIO AL MENOS UNA
+// CARD PROPIA — DOS COLUMNAS
+// ==========================================
 const AREAS_ATUACAO = [
-  'Observador Visual (EVLOS)',
-  'Troca de Baterias',
-  'Radio Operador (VHF)',
-  'Apoio de Solo / Logística',
-  'Mapeamento / Fotogrametria',
-  'Inspeção',
-  'Pulverização / Agrícola',
-  'Audiovisual / Eventos',
-  'Busca e Resgate',
-  'Outros'
+  'observadorEvlos',
+  'trocaBaterias',
+  'radioVhf',
+  'apoioSolo',
+  'logisticaMissao',
+  'mapeamento',
+  'inspecao',
+  'pulverizacao',
+  'audiovisual',
+  'buscaResgate',
+  'outros',
 ];
 
 const MODALIDADES = [
-  'Diária / por hora',
-  'Por contrato (PJ / RPA)',
-  'Por temporada / projetos'
+  'autonomo',
+  'contrato',
+  'zafra',
+  'cltBrasil',
+  'porDias',
+  'porHora',
+  'empregadoFijo',
+  'temporal',
 ];
 
-const estadoVazio = {
-  nomeCompleto: '',
-  nomeProfissional: '',
-  fotoPerfil: null,
-  whatsapp: '',
-  email: '',
-  senha: '',
-  confirmarSenha: '',
-  cidade: '',
-  uf: 'SP',
-  atendeOutrasRegioes: false,
-  anosExperiencia: '',
-  tiposDrone: [],
-  areasAtuacao: [],
-  modalidades: [],
-  valorAproximado: '',
-  possuiEquipamento: false,
-  disponibilidade: 'Disponível',
-  apresentacao: ''
-};
+const FORMAS_PAGO = ['pix', 'credito', 'debito', 'boleto'];
 
 export default function CadastroAuxiliar({
+  auxiliarParaEditar = null,
   onSalvar,
   onCancelar,
-  auxiliarParaEditar = null
+  setCurrentView,
 }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { t } = useTranslation('translation', { i18n: i18nDrones });
+  const { user } = useAuth();
   const isEditing = Boolean(auxiliarParaEditar);
 
-  const [formData, setFormData] = useState(estadoVazio);
-  const [fotoPreview, setFotoPreview] = useState(null);
-  const [erro, setErro] = useState('');
+  // ==========================================
+  // SSO PORTAL: NOMBRE Y EMAIL SOLO LECTURA
+  // ==========================================
+  const nomeSso =
+    (user && (user.nomeCompleto || user.nome)) ||
+    (auxiliarParaEditar && auxiliarParaEditar.nomeCompleto) ||
+    '';
+  const emailSso =
+    (user && user.email) ||
+    (auxiliarParaEditar && auxiliarParaEditar.email) ||
+    '';
 
-  useEffect(() => {
-    if (!auxiliarParaEditar) return;
-    setFormData({
-      ...estadoVazio,
-      ...auxiliarParaEditar,
-      tiposDrone: auxiliarParaEditar.tiposDrone || [],
-      areasAtuacao: auxiliarParaEditar.areasAtuacao || [],
-      modalidades: auxiliarParaEditar.modalidades || [],
-      senha: '',
-      confirmarSenha: ''
-    });
-    setFotoPreview(auxiliarParaEditar.foto || auxiliarParaEditar.fotoUrl || null);
-  }, [auxiliarParaEditar]);
+  // ==========================================
+  // PRELLENO PAIS: PORTAL → SESION SIMULADOR → BR
+  // ==========================================
+  const paisInicial = (() => {
+    if (auxiliarParaEditar && auxiliarParaEditar.pais) return auxiliarParaEditar.pais;
+    if (user && (user.pais || user.country)) return user.pais || user.country;
+    try {
+      const sim = window.localStorage.getItem('drones.simulador.pais');
+      if (sim) return sim;
+    } catch (e) {
+      /* SIN STORAGE */
+    }
+    return 'BR';
+  })();
+
+  const yaTieneClaveDrones = Boolean(
+    (user && (user.dronesKey || user.claveDrones || user.temClaveDrones)) ||
+      (auxiliarParaEditar && auxiliarParaEditar.claveDrones)
+  );
+
+  const [formData, setFormData] = useState(
+    auxiliarParaEditar || {
+      nomeCompleto: nomeSso,
+      email: emailSso,
+      dataNascimento: '',
+      pais: paisInicial,
+      fotoPerfil: null,
+      telegram: '',
+      telefone1: '',
+      telefone2: '',
+      endereco: {
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cep: '',
+        cidade: '',
+        estado: 'SP',
+      },
+      tiposDrone: [],
+      areasAtuacao: [],
+      experienciasCampo: '',
+      anosExperiencia: '',
+      temEquipoPropio: false,
+      equiposPropios: '',
+      modalidades: [],
+      regioesAtendimento: [],
+      horarioAtendimento: '',
+      formasPagamento: [],
+      emiteNotaFiscal: 'Sim',
+      aceptaPropuestasEmail: true,
+      contactoComercialAmplio: true,
+      observacoesParticulares: '',
+      crearClaveDrones: !yaTieneClaveDrones,
+    }
+  );
+
+  const [fotoPreview, setFotoPreview] = useState(
+    (auxiliarParaEditar && auxiliarParaEditar.fotoUrl) || null
+  );
+  const [cadastroResultado, setCadastroResultado] = useState(null);
+  const [erroForm, setErroForm] = useState('');
+
+  const esBrasil = formData.pais === 'BR';
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleEnderecoChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      endereco: { ...prev.endereco, [name]: value },
     }));
   };
 
@@ -93,160 +204,296 @@ export default function CadastroAuxiliar({
         ...prev,
         [category]: exists
           ? currentList.filter((item) => item !== value)
-          : [...currentList, value]
+          : [...currentList, value],
       };
     });
   };
 
   const handleFotoChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setFormData((prev) => ({ ...prev, fotoPerfil: file }));
-    setFotoPreview(URL.createObjectURL(file));
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, fotoPerfil: file }));
+      setFotoPreview(URL.createObjectURL(file));
+    }
+  };
+
+  // ==========================================
+  // CODIGO LOCAL DE IDENTIFICACION — NO ES COBRO
+  // PREFIJO A = AUXILIAR
+  // ==========================================
+  const generarCodigoCadastro = (dataNasc) => {
+    const tipo = 'A';
+    let nascFormateada = '00000000';
+    if (dataNasc) {
+      const parts = dataNasc.split('-');
+      if (parts.length === 3) nascFormateada = `${parts[2]}${parts[1]}${parts[0]}`;
+    }
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    return `${tipo}-${nascFormateada}-${dia}${mes}${ano}-1`;
+  };
+
+  // ==========================================
+  // VOLVER AL HUB REGISTRO / CADASTRO — NO AL INICIO DEL SITE
+  // EL HUB CIERRA LA FICHA CON onCancelar → setTipoId(null)
+  // ==========================================
+  const handleVolver = () => {
+    if (typeof onCancelar === 'function') {
+      onCancelar();
+      return;
+    }
+    if (typeof setCurrentView === 'function') {
+      setCurrentView('CADASTRO');
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isEditing) {
-      if ((formData.senha || '').length < 8) {
-        setErro('A senha deve ter no mínimo 8 caracteres.');
-        return;
-      }
-      if (formData.senha !== formData.confirmarSenha) {
-        setErro('As senhas não coincidem.');
-        return;
-      }
-    }
     if ((formData.areasAtuacao || []).length === 0) {
-      setErro('Selecione ao menos uma área de atuação.');
+      setErroForm(t('cadastroAuxiliar.erroAreas'));
       return;
     }
-    setErro('');
-    const { confirmarSenha, ...registro } = formData;
-    if (onSalvar) {
-      onSalvar({
-        ...registro,
-        foto: fotoPreview || registro.foto || null,
-        nomeProfissional: registro.nomeProfissional || registro.nomeCompleto
-      });
-    }
+    setErroForm('');
+
+    const registroCompleto = {
+      ...formData,
+      nomeCompleto: nomeSso || formData.nomeCompleto,
+      email: emailSso || formData.email,
+      codigoRegistro:
+        formData.codigoRegistro || generarCodigoCadastro(formData.dataNascimento),
+      dataCadastro: formData.dataCadastro || new Date().toISOString(),
+      disponibilidadePainel: 'editar_en_panel',
+      tipo: 'auxiliar',
+      listaDestino: 'auxiliares',
+      fotoUrl: fotoPreview || formData.fotoUrl || null,
+      crearClaveDrones: yaTieneClaveDrones ? false : Boolean(formData.crearClaveDrones),
+    };
+
+    setCadastroResultado(registroCompleto);
+    if (onSalvar) onSalvar(registroCompleto);
   };
 
+  const paisOptions = useMemo(() => PAISES, []);
+
   return (
-    <div className="cadastro-container" data-theme={isDark ? 'dark' : 'light'}>
-      <div className="cadastro-header">
-        <h2>{isEditing ? 'Editar auxiliar de campo' : 'Cadastro de auxiliar de campo'}</h2>
-        <p>
-          {isEditing
-            ? 'Atualize suas informações cadastrais'
-            : 'Cadastre-se para atuar em solo nas missões de drones'}
-        </p>
+    <div className="cadastro-container">
+      {/* ==========================================
+          VOLVER — SUPERIOR IZQUIERDO
+          MISMA CLASE QUE EL INFERIOR
+          ========================================== */}
+      <div className="cadastro-header-nav">
+        <button
+          type="button"
+          className="btn-volver-inicio"
+          onClick={handleVolver}
+        >
+          {t('cadastroUsuario.volver')}
+        </button>
       </div>
 
+      <div className="cadastro-header">
+        <h2>
+          {isEditing
+            ? t('cadastroAuxiliar.tituloEditar')
+            : t('cadastroAuxiliar.titulo')}
+        </h2>
+        <p>{t('cadastroAuxiliar.subtitulo')}</p>
+      </div>
+
+      {/* ==========================================
+          VERACIDAD + LEYENDA INFORMATIVA
+          ========================================== */}
       <div className="aviso-box">
-        <strong>Declaração de veracidade das informações</strong>
-        <p>
-          Ao preencher este formulário, você declara que todas as informações prestadas
-          são verdadeiras, exatas e de sua inteira responsabilidade. O fornecimento de
-          dados falsos poderá acarretar a suspensão do perfil no sistema.
-        </p>
+        <strong>{t('cadastroAuxiliar.veracidadTitulo')}</strong>
+        <p>{t('cadastroAuxiliar.veracidadTexto')}</p>
+      </div>
+      <div className="aviso-box">
+        <strong>{t('cadastroAuxiliar.leyendaTitulo')}</strong>
+        <p>{t('cadastroAuxiliar.leyendaTexto')}</p>
       </div>
 
       <form onSubmit={handleSubmit}>
+        {/* 1. DATOS PERSONALES + PAIS + SSO */}
         <section className="form-section">
-          <h3>1. Dados pessoais e contato</h3>
+          <h3>{t('cadastroAuxiliar.bloque1')}</h3>
           <div className="form-grid">
-            <div className="form-group full-width">
-              <label>Nome completo *</label>
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.nomePortal')}</label>
+              <input type="text" value={nomeSso || formData.nomeCompleto} readOnly />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.emailPortal')}</label>
+              <input type="email" value={emailSso || formData.email} readOnly />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.dataNascimento')} *</label>
               <input
-                type="text"
-                name="nomeCompleto"
-                value={formData.nomeCompleto}
+                type="date"
+                name="dataNascimento"
+                value={formData.dataNascimento}
                 onChange={handleChange}
                 required
-                placeholder="Ex: Lucas Silva"
-              />
-            </div>
-            <div className="form-group full-width">
-              <label>Nome profissional / apelido (opcional)</label>
-              <input
-                type="text"
-                name="nomeProfissional"
-                value={formData.nomeProfissional}
-                onChange={handleChange}
-                placeholder="Ex: Lucas Campo"
               />
             </div>
             <div className="form-group">
-              <label>WhatsApp (com DDD) *</label>
+              <label>{t('cadastroAuxiliar.pais')} *</label>
+              <select name="pais" value={formData.pais} onChange={handleChange} required>
+                {paisOptions.map((p) => (
+                  <option key={p.code} value={p.code}>
+                    {t(`cadastroAuxiliar.${p.labelKey}`)}
+                    {p.moeda ? ` (${p.moeda})` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroAuxiliar.foto')}</label>
+              <input type="file" accept="image/*" onChange={handleFotoChange} />
+              {fotoPreview && <img src={fotoPreview} alt="" className="preview-photo" />}
+            </div>
+            {!yaTieneClaveDrones && (
+              <label className="checkbox-item full-width">
+                <input
+                  type="checkbox"
+                  name="crearClaveDrones"
+                  checked={formData.crearClaveDrones}
+                  onChange={handleChange}
+                />
+                {t('cadastroAuxiliar.crearClave')}
+              </label>
+            )}
+          </div>
+        </section>
+
+        {/* 2. CONTACTO Y DIRECCION */}
+        <section className="form-section">
+          <h3>{t('cadastroAuxiliar.bloque2')}</h3>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.telefone1')} *</label>
               <input
                 type="tel"
-                name="whatsapp"
-                value={formData.whatsapp}
+                name="telefone1"
+                value={formData.telefone1}
                 onChange={handleChange}
                 required
                 placeholder="(00) 90000-0000"
               />
             </div>
             <div className="form-group">
-              <label>E-mail *</label>
+              <label>{t('cadastroAuxiliar.telefone2')}</label>
               <input
-                type="email"
-                name="email"
-                value={formData.email}
+                type="tel"
+                name="telefone2"
+                value={formData.telefone2}
                 onChange={handleChange}
-                required
-                disabled={isEditing}
               />
             </div>
             <div className="form-group">
-              <label>Foto de perfil (opcional)</label>
-              <input type="file" accept="image/*" onChange={handleFotoChange} />
-              {fotoPreview && <img src={fotoPreview} alt="Preview" className="preview-photo" />}
+              <label>{t('cadastroAuxiliar.telegram')}</label>
+              <input
+                type="text"
+                name="telegram"
+                value={formData.telegram}
+                onChange={handleChange}
+                placeholder="@usuario"
+              />
             </div>
-          </div>
-        </section>
-
-        <section className="form-section">
-          <h3>2. Endereço e área de atuação</h3>
-          <div className="form-grid">
             <div className="form-group">
-              <label>Cidade *</label>
+              <label>
+                {t('cadastroAuxiliar.cep')}
+                {esBrasil ? ' *' : ''}
+              </label>
+              <input
+                type="text"
+                name="cep"
+                value={formData.endereco.cep}
+                onChange={handleEnderecoChange}
+                required={esBrasil}
+              />
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroAuxiliar.logradouro')} *</label>
+              <input
+                type="text"
+                name="logradouro"
+                value={formData.endereco.logradouro}
+                onChange={handleEnderecoChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.cidade')} *</label>
               <input
                 type="text"
                 name="cidade"
-                value={formData.cidade}
-                onChange={handleChange}
+                value={formData.endereco.cidade}
+                onChange={handleEnderecoChange}
                 required
               />
             </div>
-            <div className="form-group">
-              <label>Estado (UF) *</label>
-              <select name="uf" value={formData.uf} onChange={handleChange}>
-                {ESTADOS_BRASIL.map((uf) => (
-                  <option key={uf} value={uf}>{uf}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group full-width">
-              <label className="checkbox-item">
-                <input
-                  type="checkbox"
-                  name="atendeOutrasRegioes"
-                  checked={formData.atendeOutrasRegioes}
-                  onChange={handleChange}
-                />
-                Atende outras regiões / estados
-              </label>
-            </div>
+            {esBrasil && (
+              <div className="form-group">
+                <label>{t('cadastroAuxiliar.estado')} *</label>
+                <select
+                  name="estado"
+                  value={formData.endereco.estado}
+                  onChange={handleEnderecoChange}
+                >
+                  {ESTADOS_BRASIL.map((uf) => (
+                    <option key={uf} value={uf}>{uf}</option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </section>
 
+        {/* 3. TIPOS DE DRONE — CARD PROPIA */}
         <section className="form-section">
-          <h3>3. Experiência e qualificações</h3>
+          <h3>{t('cadastroAuxiliar.bloque3')}</h3>
+          <p className="help-text">{t('cadastroAuxiliar.tiposAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {TIPOS_DRONE.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.tiposDrone || []).includes(key)}
+                  onChange={() => handleArrayToggle('tiposDrone', key)}
+                />
+                {t(`cadastroAuxiliar.drone.${key}`)}
+              </label>
+            ))}
+          </div>
+        </section>
+
+        {/* 4. AREAS DE SUELO — CARD PROPIA — OBLIGATORIO */}
+        <section className="form-section">
+          <h3>{t('cadastroAuxiliar.bloque4')}</h3>
+          <p className="help-text">{t('cadastroAuxiliar.areasAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {AREAS_ATUACAO.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.areasAtuacao || []).includes(key)}
+                  onChange={() => handleArrayToggle('areasAtuacao', key)}
+                />
+                {t(`cadastroAuxiliar.area.${key}`)}
+              </label>
+            ))}
+          </div>
+        </section>
+
+        {/* 5. EXPERIENCIA DE CAMPO — SIN 400 H */}
+        <section className="form-section">
+          <h3>{t('cadastroAuxiliar.bloque5')}</h3>
+          <p className="help-text">{t('cadastroAuxiliar.expAyuda')}</p>
           <div className="form-grid">
             <div className="form-group">
-              <label>Anos de experiência com drones</label>
+              <label>{t('cadastroAuxiliar.anosExperiencia')}</label>
               <input
                 type="number"
                 min="0"
@@ -255,139 +502,171 @@ export default function CadastroAuxiliar({
                 onChange={handleChange}
               />
             </div>
-            <div className="form-group">
-              <label>Disponibilidade</label>
-              <select
-                name="disponibilidade"
-                value={formData.disponibilidade}
+            <div className="form-group full-width">
+              <label>{t('cadastroAuxiliar.experienciasCampo')}</label>
+              <textarea
+                name="experienciasCampo"
+                rows="3"
+                value={formData.experienciasCampo}
                 onChange={handleChange}
-              >
-                <option value="Disponível">Disponível</option>
-                <option value="Em Missão">Em Missão</option>
-              </select>
-            </div>
-            <div className="form-group full-width">
-              <label>Tipos de drones que opera</label>
-              <div className="checkbox-group">
-                {TIPOS_DRONE.map((item) => (
-                  <label key={item} className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      checked={(formData.tiposDrone || []).includes(item)}
-                      onChange={() => handleArrayToggle('tiposDrone', item)}
-                    />
-                    {item}
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div className="form-group full-width">
-              <label>Principais áreas de atuação *</label>
-              <div className="checkbox-group">
-                {AREAS_ATUACAO.map((item) => (
-                  <label key={item} className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      checked={(formData.areasAtuacao || []).includes(item)}
-                      onChange={() => handleArrayToggle('areasAtuacao', item)}
-                    />
-                    {item}
-                  </label>
-                ))}
-              </div>
+                placeholder={t('cadastroAuxiliar.experienciasPh')}
+              />
             </div>
           </div>
         </section>
 
+        {/* 6. MODALIDADES + EQUIPO PROPIO */}
         <section className="form-section">
-          <h3>4. Condições de trabalho</h3>
-          <div className="form-grid">
-            <div className="form-group full-width">
-              <label>Modalidade de trabalho</label>
-              <div className="checkbox-group">
-                {MODALIDADES.map((item) => (
-                  <label key={item} className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      checked={(formData.modalidades || []).includes(item)}
-                      onChange={() => handleArrayToggle('modalidades', item)}
-                    />
-                    {item}
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Valor aproximado</label>
-              <input
-                type="text"
-                name="valorAproximado"
-                value={formData.valorAproximado}
-                onChange={handleChange}
-                placeholder="R$ 180 / diária ou A combinar"
-              />
-            </div>
-            <div className="form-group">
-              <label className="checkbox-item" style={{ marginTop: 28 }}>
+          <h3>{t('cadastroAuxiliar.bloque6')}</h3>
+          <p className="help-text">{t('cadastroAuxiliar.modalidadesAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {MODALIDADES.map((key) => (
+              <label key={key} className="checkbox-item">
                 <input
                   type="checkbox"
-                  name="possuiEquipamento"
-                  checked={formData.possuiEquipamento}
-                  onChange={handleChange}
+                  checked={(formData.modalidades || []).includes(key)}
+                  onChange={() => handleArrayToggle('modalidades', key)}
                 />
-                Possui equipamento próprio
+                {t(`cadastroAuxiliar.mod.${key}`)}
               </label>
-            </div>
+            ))}
+          </div>
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              name="temEquipoPropio"
+              checked={formData.temEquipoPropio}
+              onChange={handleChange}
+            />
+            {t('cadastroAuxiliar.temEquipo')}
+          </label>
+          {formData.temEquipoPropio && (
             <div className="form-group full-width">
-              <label>Apresentação profissional</label>
+              <label>{t('cadastroAuxiliar.equiposCuales')}</label>
               <textarea
-                name="apresentacao"
-                rows="3"
-                value={formData.apresentacao}
+                name="equiposPropios"
+                rows="2"
+                value={formData.equiposPropios}
                 onChange={handleChange}
-                placeholder="Breve descrição da experiência em campo"
+                placeholder={t('cadastroAuxiliar.equiposPh')}
               />
             </div>
-          </div>
+          )}
         </section>
 
-        {!isEditing && (
+        {/* 7. REGION UF — SOLO BRASIL */}
+        {esBrasil && (
           <section className="form-section">
-            <h3>5. Credenciais de acesso (login)</h3>
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Senha *</label>
-                <input
-                  type="password"
-                  name="senha"
-                  value={formData.senha}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Confirmar senha *</label>
-                <input
-                  type="password"
-                  name="confirmarSenha"
-                  value={formData.confirmarSenha}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <p className="help-text full-width">
-                A senha deve ter no mínimo 8 caracteres.
-              </p>
+            <h3>{t('cadastroAuxiliar.bloque7')}</h3>
+            <div className="checkbox-group cols-3">
+              {ESTADOS_BRASIL.map((uf) => (
+                <label key={uf} className="checkbox-item">
+                  <input
+                    type="checkbox"
+                    checked={(formData.regioesAtendimento || []).includes(uf)}
+                    onChange={() => handleArrayToggle('regioesAtendimento', uf)}
+                  />
+                  {uf}
+                </label>
+              ))}
             </div>
           </section>
         )}
 
-        {erro && <p className="erro">{erro}</p>}
+        {/* 8. COMERCIAL — SIN PRECIOS */}
+        <section className="form-section">
+          <h3>{t('cadastroAuxiliar.bloque8')}</h3>
+          <p className="help-text">{t('cadastroAuxiliar.panelNota')}</p>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.horario')}</label>
+              <input
+                type="text"
+                name="horarioAtendimento"
+                value={formData.horarioAtendimento}
+                onChange={handleChange}
+                placeholder={t('cadastroAuxiliar.horarioPh')}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroAuxiliar.notaFiscal')}</label>
+              <select
+                name="emiteNotaFiscal"
+                value={formData.emiteNotaFiscal}
+                onChange={handleChange}
+              >
+                <option value="Sim">{t('cadastroAuxiliar.nfSim')}</option>
+                <option value="Não">{t('cadastroAuxiliar.nfNao')}</option>
+              </select>
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroAuxiliar.formasPago')}</label>
+              <div className="checkbox-group checkbox-group-2col">
+                {FORMAS_PAGO.map((key) => (
+                  <label key={key} className="checkbox-item">
+                    <input
+                      type="checkbox"
+                      checked={(formData.formasPagamento || []).includes(key)}
+                      onChange={() => handleArrayToggle('formasPagamento', key)}
+                    />
+                    {t(`cadastroAuxiliar.pago.${key}`)}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <label className="checkbox-item full-width">
+              <input
+                type="checkbox"
+                name="aceptaPropuestasEmail"
+                checked={formData.aceptaPropuestasEmail}
+                onChange={handleChange}
+              />
+              {t('cadastroAuxiliar.propuestasEmail')}
+            </label>
+            <label className="checkbox-item full-width">
+              <input
+                type="checkbox"
+                name="contactoComercialAmplio"
+                checked={formData.contactoComercialAmplio}
+                onChange={handleChange}
+              />
+              {t('cadastroAuxiliar.contactoAmplio')}
+            </label>
+            <div className="form-group full-width">
+              <label>{t('cadastroAuxiliar.observacoes')}</label>
+              <textarea
+                name="observacoesParticulares"
+                rows="3"
+                value={formData.observacoesParticulares}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </section>
 
-        <button type="submit" className="btn-submit">
-          {isEditing ? 'Salvar alterações do perfil' : 'Finalizar e criar conta'}
-        </button>
+        <p className="help-text">{t('cadastroAuxiliar.leyendaFinal')}</p>
+        {erroForm && <p className="erro">{erroForm}</p>}
+
+        {/* CTA ANCHO + VOLVER ABAJO A LA DERECHA */}
+        <div className="cadastro-acciones-final">
+          <button type="submit" className="btn-submit">
+            {isEditing
+              ? t('cadastroAuxiliar.ctaEditar')
+              : t('cadastroAuxiliar.ctaFinalizar')}
+          </button>
+          <button type="button" className="btn-volver-inicio" onClick={handleVolver}>
+            {t('cadastroUsuario.volver')}
+          </button>
+        </div>
       </form>
+
+      {cadastroResultado && (
+        <div className="success-card">
+          <h3>{t('cadastroAuxiliar.enviado')}</h3>
+          <p>{t('cadastroAuxiliar.codigo')}</p>
+          <div className="code-badge">{cadastroResultado.codigoRegistro}</div>
+        </div>
+      )}
     </div>
   );
 }

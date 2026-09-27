@@ -538,27 +538,54 @@
   }
 }
 
+/* ============================================================
+   BOTÓN VOLVER — MISMO DIBUJO ARRIBA Y ABAJO
+   EL SUPERIOR DEBE USAR .btn-volver-inicio
+   (ANTES ERA GRIS NATIVO; AHORA IGUAL AL INFERIOR)
+   ============================================================ */
 .cadastro-header-nav {
   display: flex;
   justify-content: flex-start;
-  margin: 0 0 12px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
+.btn-volver-inicio {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #ffffff;
+  color: #1A8FD0;
+  border: 2px solid #1A8FD0;
+  border-radius: 8px;
+  padding: 10px 36px;
+  min-width: 168px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-volver-inicio:hover,
+.btn-volver-inicio:focus {
+  background: #ffffff;
+  color: #1679b3;
+  border-color: #1679b3;
+}
+
+.btn-volver-inicio:active {
+  background: #f4fbff;
+}
+
+/* EL DEL HEADER NO PUEDE HEREDAR ESTILO GRIS DE BUTTON */
 .cadastro-header-nav .btn-volver-inicio {
-  width: auto;
-  min-width: 140px;
+  background: #ffffff;
+  color: #1A8FD0;
+  border: 2px solid #1A8FD0;
 }
 
-/* =========================================================
-   NAV SUPERIOR IZQUIERDO — BOTON VOLVER
-   ========================================================= */
-.cadastro-header-nav {
+.cadastro-acciones-final .fila-volver {
   display: flex;
-  justify-content: flex-start;
-  margin: 0 0 12px;
-}
-
-.cadastro-header-nav .btn-volver-inicio {
-  width: auto;
-  min-width: 140px;
+  justify-content: flex-end;
 }

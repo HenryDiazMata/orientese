@@ -26,6 +26,31 @@ const ESTADOS_BRASIL = [
   'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ];
 
+// ==========================================
+// PAISES DE LA FICHA (PROMOS + UF SOLO SI BR)
+// VALOR = CODIGO. ETIQUETA = I18N cadastroPiloto.pais*
+// ==========================================
+const PAISES = [
+  { value: 'BR', labelKey: 'cadastroPiloto.paisBR' },
+  { value: 'AR', labelKey: 'cadastroPiloto.paisAR' },
+  { value: 'UY', labelKey: 'cadastroPiloto.paisUY' },
+  { value: 'PY', labelKey: 'cadastroPiloto.paisPY' },
+  { value: 'CL', labelKey: 'cadastroPiloto.paisCL' },
+  { value: 'BO', labelKey: 'cadastroPiloto.paisBO' },
+  { value: 'PE', labelKey: 'cadastroPiloto.paisPE' },
+  { value: 'CO', labelKey: 'cadastroPiloto.paisCO' },
+  { value: 'EC', labelKey: 'cadastroPiloto.paisEC' },
+  { value: 'VE', labelKey: 'cadastroPiloto.paisVE' },
+  { value: 'MX', labelKey: 'cadastroPiloto.paisMX' },
+  { value: 'US', labelKey: 'cadastroPiloto.paisUS' },
+  { value: 'ES', labelKey: 'cadastroPiloto.paisES' },
+  { value: 'PT', labelKey: 'cadastroPiloto.paisPT' },
+  { value: 'IT', labelKey: 'cadastroPiloto.paisIT' },
+  { value: 'FR', labelKey: 'cadastroPiloto.paisFR' },
+  { value: 'DE', labelKey: 'cadastroPiloto.paisDE' },
+  { value: 'OT', labelKey: 'cadastroPiloto.paisOT' },
+];
+
 const TIPOS_USUARIO = [
   'Fazendeiro / Produtor Rural',
   'Construtora / Incorporadora',
@@ -55,6 +80,21 @@ const SERVICOS_SOLICITADOS = [
 // CLAVE: SIN ESPACIOS, COMILLAS NI BARRA INVERTIDA
 // ==========================================
 const REGEX_CARACTERES_INVALIDOS = /[ "'\\]/;
+
+// ==========================================
+// PAIS DEL REGISTRO YA HECHO (PORTAL / SESION / EDICION)
+// NO SE INVENTA OTRA FUENTE. EL SIMULADOR PUEDE REUSAR ESTE CAMPO DESPUES
+// ==========================================
+function leerPaisRegistro(user, usuarioParaEditar) {
+  const bruto =
+    (usuarioParaEditar && (usuarioParaEditar.pais || usuarioParaEditar.country || usuarioParaEditar.paisCodigo)) ||
+    (user && (user.pais || user.country || user.paisCodigo)) ||
+    '';
+  const codigo = String(bruto).trim().toUpperCase();
+  if (!codigo) return '';
+  if (PAISES.some((p) => p.value === codigo)) return codigo;
+  return 'OT';
+}
 
 export default function CadastroUsuario({
   usuarioParaEditar = null,
@@ -88,6 +128,11 @@ export default function CadastroUsuario({
     null;
 
   // ==========================================
+  // PAIS PRECARGADO DEL REGISTRO. EDITABLE
+  // ==========================================
+  const paisRegistro = leerPaisRegistro(user, usuarioParaEditar);
+
+  // ==========================================
   // CLAVE DE DRONES: SOLO EN EL PRIMER ROL DEL SUBDOMINIO
   // ==========================================
   const yaTieneClaveDrones = Boolean(user && (user.hasDronesPassword || user.senhaDrones));
@@ -103,6 +148,7 @@ export default function CadastroUsuario({
       cpf: '',
       cnpj: '',
       dataNascimento: '',
+      pais: paisRegistro,
       fotoPerfil: null,
       tipoUsuario: '',
       servicosSolicitados: [],
@@ -122,7 +168,7 @@ export default function CadastroUsuario({
         bairro: '',
         cep: '',
         cidade: '',
-        estado: 'SP',
+        estado: paisRegistro === 'BR' ? 'SP' : '',
       },
       email: emailPortal,
       telefone1: '',
@@ -145,15 +191,24 @@ export default function CadastroUsuario({
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [mostrarConfirmacaoRetiro, setMostrarConfirmacaoRetiro] = useState(false);
 
+  const paisActual = formData.pais || paisRegistro;
+  const esBrasil = paisActual === 'BR';
+
   // ==========================================
   // CAMPOS SIMPLES + CHECKBOX
+  // SI CAMBIA EL PAIS Y DEJA DE SER BR: LIMPIAR UF
   // ==========================================
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    const next = type === 'checkbox' ? checked : value;
+    setFormData((prev) => {
+      const extra = {};
+      if (name === 'pais' && next !== 'BR' && ESTADOS_BRASIL.includes(prev.endereco?.estado)) {
+        extra.endereco = { ...prev.endereco, estado: '' };
+        extra.estadosInteresse = [];
+      }
+      return { ...prev, [name]: next, ...extra };
+    });
   };
 
   // ==========================================
@@ -257,6 +312,7 @@ export default function CadastroUsuario({
       usuario: usuarioFinal,
       nomeCompleto: nomePortal || formData.nomeCompleto,
       email: emailPortal || formData.email,
+      pais: formData.pais || paisRegistro || '',
       codigoRegistro: formData.codigoRegistro || generarCodigoCadastro(formData.tipoPessoa, formData.dataNascimento),
       dataCadastro: formData.dataCadastro || new Date().toLocaleString('pt-BR'),
       disponibilidade: formData.status || 'Ativo',
@@ -338,7 +394,7 @@ export default function CadastroUsuario({
 
       <form onSubmit={handleSubmit}>
         {/* ==========================================
-            BLOQUE 1: PF O PJ + DATOS CIVILES
+            BLOQUE 1: PF O PJ + DATOS CIVILES + PAIS
             ========================================== */}
         <section className="form-section">
           <h3>1. {t('cadastroUsuario.bloque1', { defaultValue: 'Datos del contratante' })}</h3>
@@ -388,6 +444,22 @@ export default function CadastroUsuario({
                 </div>
               </>
             )}
+
+            {/* ==========================================
+                PAIS: PRECARGADO DEL REGISTRO. PROMOS
+                ========================================== */}
+            <div className="form-group">
+              <label>{t('cadastroPiloto.pais', { defaultValue: 'País' })} *</label>
+              <select name="pais" value={paisActual} onChange={handleChange} required>
+                <option value="">{t('cadastroUsuario.seleccione', { defaultValue: 'Seleccione...' })}</option>
+                {PAISES.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {t(p.labelKey)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="form-group full-width">
               <label>{t('cadastroUsuario.foto', { defaultValue: 'Foto / logo (opcional)' })}</label>
               <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFotoChange} />
@@ -399,6 +471,7 @@ export default function CadastroUsuario({
 
         {/* ==========================================
             BLOQUE 2: CONTACTO. TELEFONO 2 = TELEGRAM
+            UF BRASIL SOLO SI PAIS = BR
             ========================================== */}
         <section className="form-section">
           <h3>2. {t('cadastroUsuario.bloque2', { defaultValue: 'Contacto y dirección' })}</h3>
@@ -428,12 +501,27 @@ export default function CadastroUsuario({
               <input type="text" name="cidade" value={formData.endereco.cidade} onChange={handleEnderecoChange} required />
             </div>
             <div className="form-group">
-              <label>{t('cadastroUsuario.estado', { defaultValue: 'Estado (UF)' })} *</label>
-              <select name="estado" value={formData.endereco.estado} onChange={handleEnderecoChange}>
-                {ESTADOS_BRASIL.map((uf) => (
-                  <option key={uf} value={uf}>{uf}</option>
-                ))}
-              </select>
+              <label>
+                {esBrasil
+                  ? t('cadastroUsuario.estado', { defaultValue: 'Estado (UF)' })
+                  : t('cadastroUsuario.estadoRegion', { defaultValue: 'Estado / región' })}
+                {' *'}
+              </label>
+              {esBrasil ? (
+                <select name="estado" value={formData.endereco.estado} onChange={handleEnderecoChange} required>
+                  {ESTADOS_BRASIL.map((uf) => (
+                    <option key={uf} value={uf}>{uf}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  name="estado"
+                  value={formData.endereco.estado}
+                  onChange={handleEnderecoChange}
+                  required
+                />
+              )}
             </div>
           </div>
         </section>
@@ -441,6 +529,7 @@ export default function CadastroUsuario({
         {/* ==========================================
             BLOQUE 3: USO. AREA Y ESTADOS SEPARADOS
             SERVICIOS Y UF EN DOS COLUMNAS
+            CHECKBOX DE UF SOLO SI PAIS = BR
             ========================================== */}
         <section className="form-section">
           <h3>3. {t('cadastroUsuario.bloque3', { defaultValue: 'Perfil de uso' })}</h3>
@@ -476,17 +565,19 @@ export default function CadastroUsuario({
               <option value="intensivo">{t('cadastroUsuario.freq3', { defaultValue: 'Intensivo (semanal o más)' })}</option>
             </select>
           </div>
-          <div className="form-group full-width">
-            <label>{t('cadastroUsuario.estados', { defaultValue: 'Estados de interés' })}</label>
-            <div className="checkbox-group checkbox-group-2col">
-              {ESTADOS_BRASIL.map((uf) => (
-                <label key={uf} className="checkbox-item">
-                  <input type="checkbox" checked={formData.estadosInteresse.includes(uf)} onChange={() => handleArrayToggle('estadosInteresse', uf)} />
-                  {uf}
-                </label>
-              ))}
+          {esBrasil && (
+            <div className="form-group full-width">
+              <label>{t('cadastroUsuario.estados', { defaultValue: 'Estados de interés' })}</label>
+              <div className="checkbox-group checkbox-group-2col">
+                {ESTADOS_BRASIL.map((uf) => (
+                  <label key={uf} className="checkbox-item">
+                    <input type="checkbox" checked={formData.estadosInteresse.includes(uf)} onChange={() => handleArrayToggle('estadosInteresse', uf)} />
+                    {uf}
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* ==========================================
@@ -658,7 +749,7 @@ export default function CadastroUsuario({
           </button>
           {onCancelar && (
             <button type="button" className="btn-volver-inicio" onClick={onCancelar}>
-              {t('cadastroUsuario.volver', { defaultValue: 'Volver al inicio' })}
+              {t('cadastroUsuario.volver', { defaultValue: 'Volver' })}
             </button>
           )}
         </div>

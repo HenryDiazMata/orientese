@@ -8,6 +8,7 @@
 // VISITANTE-BETA NO SE OFRECE AQUI
 // AL COMPLETAR EL FORMULARIO NACE EL PANEL DE PERFIL
 // TIEMPO ESTIMADO VA EN CADA CARD, NO DENTRO DE LA FICHA
+// VOLVER DE LA FICHA = GRID DE TIPOS (NO INICIO DEL SITE)
 // COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
@@ -45,40 +46,39 @@ export default function Cadastro({ setCurrentView }) {
   };
 
   // ==========================================
-  // VOLVER DEL FORM: INICIO DEL SUBDOMINIO
+  // VOLVER DE LA FICHA → HUB DE REGISTRO (GRID)
+  // NO IR A INICIO DEL SUBDOMINIO
   // ==========================================
-  const irInicio = () => {
-    if (typeof setCurrentView === 'function') {
-      setCurrentView('INICIO');
-    }
+  const volverHubCadastro = () => {
+    setTipoId(null);
+  };
+
+  const propsFicha = {
+    onSalvar: irPerfil,
+    onCancelar: volverHubCadastro,
+    setCurrentView,
   };
 
   const renderFicha = () => {
     if (tipoId === 'hacendado') {
-      return (
-        <CadastroUsuario
-          onSalvar={irPerfil}
-          onCancelar={irInicio}
-        />
-      );
+      return <CadastroUsuario {...propsFicha} />;
     }
     if (tipoId === 'piloto') {
-      return <CadastroPiloto onSalvar={irPerfil} onCancelar={irInicio} />;
+      return <CadastroPiloto {...propsFicha} />;
     }
     if (tipoId === 'auxiliar') {
-      return <CadastroAuxiliar onSalvar={irPerfil} onCancelar={irInicio} />;
+      return <CadastroAuxiliar {...propsFicha} />;
     }
     if (tipoId === 'manutencao') {
-      return <CadastroManutencao onSalvar={irPerfil} onCancelar={irInicio} />;
+      return <CadastroManutencao {...propsFicha} />;
     }
     if (tipoId === 'conserto') {
-      return <CadastroConserto onSalvar={irPerfil} onCancelar={irInicio} />;
+      return <CadastroConserto {...propsFicha} />;
     }
     if (tipoId === 'profissional') {
       return (
         <CadastroProfissionais
-          onSalvar={irPerfil}
-          onCancelar={irInicio}
+          {...propsFicha}
           onVerLista={() => setCurrentView && setCurrentView('PROFISSIONAIS')}
         />
       );
