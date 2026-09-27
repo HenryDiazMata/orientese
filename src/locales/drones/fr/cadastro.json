@@ -1,6 +1,13 @@
 {
   "cadastro": {
-    "sub": "Choisissez le type d'inscription. Remplir le formulaire crée votre panneau de profil.",
+
+    "tiempoHacendado": "Durée estimée: 8 à 12 minutes. Prenez votre temps.",
+    "tiempoPiloto": "Durée estimée: 10 à 15 minutes. Prenez votre temps.",
+    "tiempoAuxiliar": "Durée estimée: 8 à 12 minutes. Prenez votre temps.",
+    "tiempoManutencao": "Durée estimée: 10 à 15 minutes. Prenez votre temps.",
+    "tiempoConserto": "Durée estimée: 10 à 15 minutes. Prenez votre temps.",
+    "tiempoProfissional": "Durée estimée: 12 à 18 minutes. Prenez votre temps.",
+    "sub": "Remplir le formulaire crée votre panneau de profil.",
     "seleccionar": "Sélectionner",
     "tipoHacendado": "Exploitant / donneur d'ordre",
     "paraHacendado": "Producteur rural, entreprise ou personne qui commande des services drones.",
@@ -20,5 +27,8 @@
     "tipoProfissional": "Professionnel",
     "paraProfissional": "Métiers et formations liés au secteur, hors pilote et technicien.",
     "alcanceProfissional": "Fiche professionnelle. Entre dans l'annuaire selon le plan."
+  },
+  "cadastroUsuario": {
+    "volver": "Retour à l'accueil"
   }
 }

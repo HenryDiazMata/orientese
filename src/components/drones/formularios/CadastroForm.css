@@ -420,3 +420,145 @@
   font-size: 0.85rem;
   font-weight: 700;
 }
+
+/* =========================================================
+   DOS COLUMNAS EN LISTAS LARGAS. UNA COLUMNA EN MOVIL
+   BOTON VOLVER A LA DERECHA BAJO EL MARCO
+   ACENTO AZUL LOGO
+   ========================================================= */
+
+.checkbox-group-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.cadastro-acciones-final {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cadastro-acciones-final .btn-submit {
+  width: 100%;
+}
+
+.cadastro-acciones-final .btn-volver-inicio {
+  width: auto;
+  min-width: 200px;
+  margin-top: 0;
+  background: #ffffff;
+  color: #1A8FD0;
+  border: 2px solid #1A8FD0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cadastro-acciones-final .btn-volver-inicio:hover {
+  background: #BFE8F7;
+}
+
+.btn-submit,
+.btn-salvar {
+  background: #1A8FD0;
+}
+
+.btn-submit:hover,
+.btn-salvar:hover {
+  background: #1578b0;
+}
+
+@media (max-width: 640px) {
+  .checkbox-group-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-acciones-final {
+    align-items: stretch;
+  }
+
+  .cadastro-acciones-final .btn-volver-inicio {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   PILOTO: 2 Y 3 COLUMNAS / HORAS+NIVEL EN UNA LINEA
+   SIN STYLE INLINE EN EL JSX
+   ========================================================= */
+
+.checkbox-group.cols-2,
+.checkbox-group-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.checkbox-group.cols-3,
+.checkbox-group-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 12px;
+}
+
+.radio-group.inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.linea-horas-nivel {
+  align-items: end;
+}
+
+.linea-horas-nivel .radio-group.inline {
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .checkbox-group.cols-2,
+  .checkbox-group-2col,
+  .checkbox-group.cols-3,
+  .checkbox-group-3col {
+    grid-template-columns: 1fr;
+  }
+
+  .linea-horas-nivel {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-group.inline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.cadastro-header-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 12px;
+}
+
+.cadastro-header-nav .btn-volver-inicio {
+  width: auto;
+  min-width: 140px;
+}
+
+/* =========================================================
+   NAV SUPERIOR IZQUIERDO — BOTON VOLVER
+   ========================================================= */
+.cadastro-header-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 12px;
+}
+
+.cadastro-header-nav .btn-volver-inicio {
+  width: auto;
+  min-width: 140px;
+}

@@ -14,6 +14,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoHacendado',
     paraKey: 'cadastro.paraHacendado',
     alcanceKey: 'cadastro.alcanceHacendado',
+    tiempoKey: 'cadastro.tiempoHacendado',
   },
   {
     id: 'piloto',
@@ -21,6 +22,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoPiloto',
     paraKey: 'cadastro.paraPiloto',
     alcanceKey: 'cadastro.alcancePiloto',
+    tiempoKey: 'cadastro.tiempoPiloto',
   },
   {
     id: 'auxiliar',
@@ -28,6 +30,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoAuxiliar',
     paraKey: 'cadastro.paraAuxiliar',
     alcanceKey: 'cadastro.alcanceAuxiliar',
+    tiempoKey: 'cadastro.tiempoAuxiliar',
   },
   {
     id: 'manutencao',
@@ -35,6 +38,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoManutencao',
     paraKey: 'cadastro.paraManutencao',
     alcanceKey: 'cadastro.alcanceManutencao',
+    tiempoKey: 'cadastro.tiempoManutencao',
   },
   {
     id: 'conserto',
@@ -42,6 +46,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoConserto',
     paraKey: 'cadastro.paraConserto',
     alcanceKey: 'cadastro.alcanceConserto',
+    tiempoKey: 'cadastro.tiempoConserto',
   },
   {
     id: 'profissional',
@@ -49,6 +54,7 @@ export const TIPOS_CADASTRO = [
     nomeKey: 'cadastro.tipoProfissional',
     paraKey: 'cadastro.paraProfissional',
     alcanceKey: 'cadastro.alcanceProfissional',
+    tiempoKey: 'cadastro.tiempoProfissional',
   },
 ];
 

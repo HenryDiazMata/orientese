@@ -4,8 +4,10 @@
 // ES = REGISTRO | PT = CADASTRO
 // ELIGE TIPO → MONTA EL FORMULARIO YA EXISTENTE
 // NO MUESTRA PRECIOS. NO HAY PASO PAGAMENTO.
-// VISITANTE-BETA NO SE OFRECE AQUI.
-// AL COMPLETAR EL FORMULARIO NACE EL PANEL DE PERFIL.
+// SIN CAJA DE FRASE DE PAGO (ESA VA EN INICIO / PLANES / ACTIVAR)
+// VISITANTE-BETA NO SE OFRECE AQUI
+// AL COMPLETAR EL FORMULARIO NACE EL PANEL DE PERFIL
+// TIEMPO ESTIMADO VA EN CADA CARD, NO DENTRO DE LA FICHA
 // COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
@@ -21,9 +23,6 @@ import CadastroAuxiliar from '../../../components/drones/formularios/CadastroAux
 import CadastroManutencao from '../../../components/drones/formularios/CadastroManutencao.jsx';
 import CadastroConserto from '../../../components/drones/formularios/CadastroConserto.jsx';
 import CadastroProfissionais from '../../../components/drones/formularios/CadastroProfissionais.jsx';
-
-const FRASE_PAGO =
-  'El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.';
 
 export default function Cadastro({ setCurrentView }) {
   // ==========================================
@@ -45,29 +44,41 @@ export default function Cadastro({ setCurrentView }) {
     }
   };
 
-  const renderFicha = () => {
-    const volver = () => setTipoId(null);
+  // ==========================================
+  // VOLVER DEL FORM: INICIO DEL SUBDOMINIO
+  // ==========================================
+  const irInicio = () => {
+    if (typeof setCurrentView === 'function') {
+      setCurrentView('INICIO');
+    }
+  };
 
+  const renderFicha = () => {
     if (tipoId === 'hacendado') {
-      return <CadastroUsuario onSalvar={irPerfil} onCancelar={volver} />;
+      return (
+        <CadastroUsuario
+          onSalvar={irPerfil}
+          onCancelar={irInicio}
+        />
+      );
     }
     if (tipoId === 'piloto') {
-      return <CadastroPiloto onSalvar={irPerfil} />;
+      return <CadastroPiloto onSalvar={irPerfil} onCancelar={irInicio} />;
     }
     if (tipoId === 'auxiliar') {
-      return <CadastroAuxiliar onSalvar={irPerfil} onCancelar={volver} />;
+      return <CadastroAuxiliar onSalvar={irPerfil} onCancelar={irInicio} />;
     }
     if (tipoId === 'manutencao') {
-      return <CadastroManutencao onSalvar={irPerfil} onCancelar={volver} />;
+      return <CadastroManutencao onSalvar={irPerfil} onCancelar={irInicio} />;
     }
     if (tipoId === 'conserto') {
-      return <CadastroConserto onSalvar={irPerfil} onCancelar={volver} />;
+      return <CadastroConserto onSalvar={irPerfil} onCancelar={irInicio} />;
     }
     if (tipoId === 'profissional') {
       return (
         <CadastroProfissionais
           onSalvar={irPerfil}
-          onCancelar={volver}
+          onCancelar={irInicio}
           onVerLista={() => setCurrentView && setCurrentView('PROFISSIONAIS')}
         />
       );
@@ -80,24 +91,21 @@ export default function Cadastro({ setCurrentView }) {
       <div className="cad-top">
         <div>
           <h1>{titulo}</h1>
-          <p className="cad-sub">
-            {t('cadastro.sub', {
-              defaultValue:
-                'Elija el tipo de registro. Al completar el formulario nace su panel de perfil.',
-            })}
-          </p>
+          {/* ==========================================
+              SUBTITULO SOLO EN EL GRID. NUNCA "ELIJA EL TIPO"
+              ========================================== */}
+          {!tipoId && (
+            <p className="cad-sub">
+              {t('cadastro.sub', {
+                defaultValue: 'Al completar el formulario nace su panel de perfil.',
+              })}
+            </p>
+          )}
         </div>
       </div>
 
-      <p className="cad-frase-pago">
-        {t('inicio.frasePago', { defaultValue: FRASE_PAGO })}
-      </p>
-
       {tipoId ? (
         <div className="cad-ficha-wrap">
-          <button type="button" className="cad-volver" onClick={() => setTipoId(null)}>
-            {t('common.back', { defaultValue: 'Volver' })}
-          </button>
           {renderFicha()}
         </div>
       ) : (
@@ -110,6 +118,14 @@ export default function Cadastro({ setCurrentView }) {
               <h3>{t(tipo.nomeKey, { defaultValue: tipo.id })}</h3>
               <p>{t(tipo.paraKey, { defaultValue: '' })}</p>
               <p>{t(tipo.alcanceKey, { defaultValue: '' })}</p>
+              {/* ==========================================
+                  TIEMPO ESTIMADO POR TIPO. CLAVE EN cadastroPlanes
+                  ========================================== */}
+              <p className="cad-tiempo">
+                {t(tipo.tiempoKey, {
+                  defaultValue: 'Tiempo estimado: tómese el tiempo con calma.',
+                })}
+              </p>
               <button
                 type="button"
                 className="cad-card-cta"

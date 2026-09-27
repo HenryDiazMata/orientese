@@ -1,6 +1,13 @@
 {
   "cadastro": {
-    "sub": "Scegli il tipo di registrazione. Completando il modulo nasce il pannello del profilo.",
+
+    "tiempoHacendado": "Tempo stimato: 8 a 12 minuti. Compilate con calma.",
+    "tiempoPiloto": "Tempo stimato: 10 a 15 minuti. Compilate con calma.",
+    "tiempoAuxiliar": "Tempo stimato: 8 a 12 minuti. Compilate con calma.",
+    "tiempoManutencao": "Tempo stimato: 10 a 15 minuti. Compilate con calma.",
+    "tiempoConserto": "Tempo stimato: 10 a 15 minuti. Compilate con calma.",
+    "tiempoProfissional": "Tempo stimato: 12 a 18 minuti. Compilate con calma.",
+    "sub": "Completando il modulo nasce il pannello del profilo.",
     "seleccionar": "Seleziona",
     "tipoHacendado": "Agricoltore / committente",
     "paraHacendado": "Produttore rurale, azienda o chi commissiona servizi con droni.",
@@ -20,5 +27,8 @@
     "tipoProfissional": "Professionista",
     "paraProfissional": "Mestieri e formazioni affini al settore, non pilota né tecnico.",
     "alcanceProfissional": "Scheda professionale. Entra in elenco secondo il piano."
+  },
+  "cadastroUsuario": {
+    "volver": "Torna all'inizio"
   }
 }

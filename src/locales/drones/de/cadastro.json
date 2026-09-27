@@ -1,6 +1,12 @@
 {
   "cadastro": {
-    "sub": "Wählen Sie die Art der Registrierung. Mit dem Formular entsteht Ihr Profilbereich.",
+    "tiempoHacendado": "Geschätzte Dauer: 8 bis 12 Minuten. Lassen Sie sich Zeit.",
+    "tiempoPiloto": "Geschätzte Dauer: 10 bis 15 Minuten. Lassen Sie sich Zeit.",
+    "tiempoAuxiliar": "Geschätzte Dauer: 8 bis 12 Minuten. Lassen Sie sich Zeit.",
+    "tiempoManutencao": "Geschätzte Dauer: 10 bis 15 Minuten. Lassen Sie sich Zeit.",
+    "tiempoConserto": "Geschätzte Dauer: 10 bis 15 Minuten. Lassen Sie sich Zeit.",
+    "tiempoProfissional": "Geschätzte Dauer: 12 bis 18 Minuten. Lassen Sie sich Zeit.",
+    "sub": "Mit dem Formular entsteht Ihr Profilbereich.",
     "seleccionar": "Auswählen",
     "tipoHacendado": "Landwirt / Auftraggeber",
     "paraHacendado": "Landwirt, Unternehmen oder wer Drohnendienste beauftragt.",
@@ -20,5 +26,8 @@
     "tipoProfissional": "Fachkraft",
     "paraProfissional": "Berufe und Ausbildungen rund um die Branche, die nicht Pilot oder Techniker sind.",
     "alcanceProfissional": "Fachakte. Kommt ins Verzeichnis laut Tarif."
+  },
+  "cadastroUsuario": {
+    "volver": "Zurück zum Start"
   }
 }
