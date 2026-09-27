@@ -1,657 +1,1012 @@
 // ==========================================
-// CADASTROCONSERTO.JSX
-// TECNICO / OFICINA DE CONSERTO DE DRONES
-// DATOS CIVILES: PORTAL / AUTH (SOLO LECTURA)
-// ESTILO UNIFICADO: CADASTROFORM.CSS
-// PUNTOS 8 Y 9: SIMULADOR Y VALIDACION DEL SISTEMA
-// NO USA REACT-ROUTER
+// ARCHIVO: src/components/drones/formularios/CadastroConserto.jsx
+// FICHA INFORMATIVA DE TECNICO / OFICINA DE CONSERTO — NO COBRA
+// UNA CUENTA PORTAL / UNA CLAVE DRONES SI NO EXISTE / VARIOS ROLES
+// PAIS EN DATOS PERSONALES (PROMOS Y RELANZAMIENTO)
+// EJE: BANCADA / TALLER / REPARACION MECANICA Y ELECTRONICA — SIN 400 H
+// DISTINTO DE MANTENIMIENTO (PREVENTIVA / CALIBRACION / REVISION)
+// UI SIN DARK — SIN data-theme — SIN STYLE INLINE
+// ESTILO: CadastroForm.css
+// VOLVER SUPERIOR IZQUIERDO + INFERIOR DERECHO → HUB CADASTRO
+// IMPORT i18n: src/components/drones/i18n
 // ==========================================
 
 import React, { useMemo, useState } from 'react';
-import { useTheme } from "../../../context/drones/ThemeContext";
-import { useAuth } from "../../../context/drones/AuthContext";
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../context/drones/AuthContext';
+import i18nDrones from '../i18n';
 import './CadastroForm.css';
 
-const STORAGE_KEY = 'cadastros_conserto';
+// ==========================================
+// UF BRASIL — SOLO SI PAIS = BR
+// ==========================================
+const ESTADOS_BRASIL = [
+  'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
+  'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
+  'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
+];
 
+// ==========================================
+// PAISES ALINEADOS AL CRITERIO DEL SIMULADOR
+// AQUI NO HAY PRECIOS; SOLO CODIGO Y MONEDA DE REFERENCIA
+// ==========================================
 const PAISES = [
-  { id: 'BR', label: 'Brasil', doc: 'CNPJ da oficina ou CPF profissional' },
-  { id: 'PT', label: 'Portugal', doc: 'NIF / NIPC' },
-  { id: 'ES', label: 'España', doc: 'NIF / CIF' },
-  { id: 'FR', label: 'France', doc: 'SIRET / TVA' },
-  { id: 'IT', label: 'Italia', doc: 'Partita IVA' },
-  { id: 'US', label: 'United States', doc: 'EIN / Tax ID' },
-  { id: 'MX', label: 'México', doc: 'RFC' },
-  { id: 'AR', label: 'Argentina', doc: 'CUIT / CUIL' },
-  { id: 'CO', label: 'Colombia', doc: 'NIT' },
-  { id: 'CL', label: 'Chile', doc: 'RUT' },
-  { id: 'PE', label: 'Perú', doc: 'RUC' },
-  { id: 'PY', label: 'Paraguay', doc: 'RUC' },
-  { id: 'UY', label: 'Uruguay', doc: 'RUT' },
-  { id: 'OTHER', label: 'Other / Otro / Autre / Altro', doc: 'Tax ID local' },
+  { code: 'BR', labelKey: 'paisBR', moeda: 'BRL' },
+  { code: 'AR', labelKey: 'paisAR', moeda: 'ARS' },
+  { code: 'UY', labelKey: 'paisUY', moeda: 'UYU' },
+  { code: 'PY', labelKey: 'paisPY', moeda: 'PYG' },
+  { code: 'CL', labelKey: 'paisCL', moeda: 'CLP' },
+  { code: 'BO', labelKey: 'paisBO', moeda: 'BOB' },
+  { code: 'PE', labelKey: 'paisPE', moeda: 'PEN' },
+  { code: 'CO', labelKey: 'paisCO', moeda: 'COP' },
+  { code: 'EC', labelKey: 'paisEC', moeda: 'USD' },
+  { code: 'VE', labelKey: 'paisVE', moeda: 'VES' },
+  { code: 'MX', labelKey: 'paisMX', moeda: 'MXN' },
+  { code: 'US', labelKey: 'paisUS', moeda: 'USD' },
+  { code: 'ES', labelKey: 'paisES', moeda: 'EUR' },
+  { code: 'PT', labelKey: 'paisPT', moeda: 'EUR' },
+  { code: 'IT', labelKey: 'paisIT', moeda: 'EUR' },
+  { code: 'FR', labelKey: 'paisFR', moeda: 'EUR' },
+  { code: 'DE', labelKey: 'paisDE', moeda: 'EUR' },
+  { code: 'OT', labelKey: 'paisOT', moeda: '' },
 ];
 
+// ==========================================
+// TIPOS DE DRONE QUE REPARA — CARD EQUIPOS — DOS COLUMNAS
+// ==========================================
 const TIPOS_DRON = [
-  { id: 'consumer', label: 'Consumer / selfie / mini' },
-  { id: 'pro', label: 'Pro / cinema' },
-  { id: 'agricola', label: 'Agrícola' },
-  { id: 'fpv', label: 'FPV / corrida' },
-  { id: 'mapeo', label: 'Mapeo / RTK / lidar' },
-  { id: 'vtol', label: 'VTOL / carga' },
+  'consumer',
+  'pro',
+  'agricola',
+  'fpv',
+  'mapeo',
+  'vtol',
 ];
 
+// ==========================================
+// PARTES / SUBSISTEMAS — CARD EQUIPOS — DOS COLUMNAS
+// ==========================================
 const SUBSISTEMAS = [
-  { id: 'fc', label: 'Controladora de voo / FC' },
-  { id: 'esc', label: 'ESC e motores' },
-  { id: 'gimbal', label: 'Gimbal e câmera' },
-  { id: 'radio', label: 'Rádio e enlace' },
-  { id: 'gnss', label: 'GNSS / IMU / compass' },
-  { id: 'bateria', label: 'Bateria e PDB' },
-  { id: 'frame', label: 'Frame, braços e hélices' },
-  { id: 'agric_bomba', label: 'Tanque / bomba agrícola' },
+  'fc',
+  'esc',
+  'gimbal',
+  'radio',
+  'gnss',
+  'bateria',
+  'frame',
+  'agric_bomba',
 ];
 
+// ==========================================
+// TIPOS / NIVELES DE REPARACION — CARD PROPIA — DOS COLUMNAS
+// ==========================================
 const NIVEIS = [
-  { id: 'diagnostico', label: 'Diagnóstico' },
-  { id: 'solda', label: 'Solda / SMD / micro solda' },
-  { id: 'firmware', label: 'Firmware e calibração' },
-  { id: 'optica', label: 'Óptica e alinhamento de gimbal' },
-  { id: 'recuperacao', label: 'Recuperação de dados / log' },
+  'diagnostico',
+  'solda',
+  'firmware',
+  'optica',
+  'recuperacao',
 ];
 
-const MARCAS = ['DJI', 'Autel', 'Skydio', 'Parrot', 'Yamaha', 'FPV artesanal', 'Outras'];
-
-const IDIOMAS = [
-  { id: 'pt', label: 'Português' },
-  { id: 'es', label: 'Español' },
-  { id: 'en', label: 'English' },
-  { id: 'fr', label: 'Français' },
-  { id: 'it', label: 'Italiano' },
+const MARCAS = [
+  'dji',
+  'autel',
+  'skydio',
+  'parrot',
+  'yamaha',
+  'fpv',
+  'outras',
 ];
 
-function paisConfig(paisId) {
-  return PAISES.find((item) => item.id === paisId) || PAISES[0];
-}
+const IDIOMAS_ATENCION = ['pt', 'es', 'en', 'fr', 'it'];
 
-function dadosPortal(user) {
-  return {
-    provedor: 'Portal SSO',
-    sessionId: user?.sessionId || user?.id || 'sso-sess-portal',
-    nome: user?.nomeCompleto || user?.nome || user?.name || 'Não informado no portal',
-    email: user?.email || 'Não informado no portal',
-    documento: user?.cpf || user?.documento || user?.taxId || 'Não informado no portal',
-    telefone: user?.telefone || user?.phone || 'Não informado no portal',
-    paisPortal: user?.pais || user?.country || 'BR',
-  };
-}
+const MODALIDADES = [
+  'autonomo',
+  'contrato',
+  'zafra',
+  'cltBrasil',
+  'porDias',
+  'porHora',
+  'empregadoFijo',
+  'temporal',
+];
 
-function toggleIn(lista, valor) {
-  const atual = Array.isArray(lista) ? lista : [];
-  return atual.includes(valor) ? atual.filter((item) => item !== valor) : [...atual, valor];
-}
+const FORMAS_PAGO = ['pix', 'credito', 'debito', 'boleto'];
 
-function calcularSimulacao(form) {
-  let valor = form.tipoAtor === 'oficina' ? 280 : 190;
-  valor += (form.tiposDron || []).length * 22;
-  valor += (form.subsistemas || []).length * 18;
-  valor += (form.niveis || []).length * 16;
-  valor += (form.marcas || []).length * 14;
-  valor += Math.min(Number(form.anosExperiencia) || 0, 20) * 10;
-  valor += form.autorizadoFabricante ? 70 : 0;
-  valor += form.bancadaPropria ? 40 : 0;
-  valor += form.piezas === 'original' ? 35 : form.piezas === 'mixta' ? 20 : 0;
-  valor += form.enviaInternacional ? 30 : 0;
-  valor += form.atendeCampo ? 20 : 0;
-  valor += form.seguroRC ? 25 : 0;
-  valor += Number(form.garantiaDias) >= 90 ? 25 : Number(form.garantiaDias) >= 30 ? 12 : 0;
-  valor += Number(form.prazoDiagnosticoDias) <= 2 ? 20 : 0;
-  if (form.pais !== 'BR') valor = Math.round(valor * 1.04);
-
-  return {
-    especialidadeLabel: (form.tiposDron || []).join(', ') || '—',
-    ticketBase: form.tipoAtor === 'oficina' ? 280 : 190,
-    valorReferencial: Math.max(130, Math.round(valor)),
-    observacao:
-      'Valor referencial emitido pelo simulador do subdomínio Consertos. Não é editável pelo usuário.',
-  };
-}
-
-function emitirValidacao(form, simulacao, portal) {
-  let pontuacao = 40;
-  if (portal.email && !String(portal.email).includes('Não informado')) pontuacao += 6;
-  if ((form.nomeComercial || '').trim().length >= 3) pontuacao += 8;
-  if ((form.cidade || '').trim().length >= 2) pontuacao += 6;
-  if ((form.tiposDron || []).length >= 1) pontuacao += 8;
-  if ((form.subsistemas || []).length >= 2) pontuacao += 6;
-  if (form.bancadaPropria) pontuacao += 4;
-  if (form.autorizadoFabricante) pontuacao += 6;
-  if (form.termoResponsabilidade) pontuacao += 6;
-  if (simulacao.valorReferencial >= 200) pontuacao += 6;
-  pontuacao = Math.min(100, pontuacao);
-
-  let status = 'em_analise';
-  if (!form.termoResponsabilidade || (form.tiposDron || []).length === 0) status = 'pendente';
-  else if (pontuacao >= 80) status = 'validado';
-  else if (pontuacao < 55) status = 'pendente';
-
-  return {
-    pontuacao,
-    status,
-    emitidoPor: 'sistema',
-    codigo: `VAL-CON-${Date.now().toString(36).toUpperCase()}`,
-    emitidoEm: new Date().toISOString(),
-    criterios: [
-      'Identidade recebida do Portal SSO',
-      'Completude dos campos do subdomínio Consertos',
-      'Valor referencial calculado pelo simulador',
-      'Pontuação e status gerados apenas pelo sistema',
-    ],
-  };
-}
-
-const INITIAL = {
-  tipoAtor: 'tecnico',
-  nomeComercial: '',
-  web: '',
-  whatsappComercial: '',
-  pais: 'BR',
-  documentoLocal: '',
-  cidade: '',
-  uf: '',
-  direccionTaller: '',
-  tiposDron: [],
-  subsistemas: [],
-  niveis: [],
-  marcas: [],
-  noHace: '',
-  anosExperiencia: 1,
-  credencialFabricante: '',
-  autorizadoFabricante: false,
-  bancadaPropria: false,
-  piezas: 'mixta',
-  stockPropio: false,
-  trazaSerie: true,
-  atendePresencial: true,
-  atendeRemessaNacional: true,
-  enviaInternacional: false,
-  atendeCampo: false,
-  clientePagaEnvio: true,
-  idiomasAtencion: ['pt'],
-  prazoDiagnosticoDias: 2,
-  prazoReparoDias: 7,
-  garantiaDias: 90,
-  garantiaCubre: 'ambos',
-  orcamentoPago: false,
-  osSimultaneas: 3,
-  seguroRC: false,
-  ndaFlota: false,
-  descarteBateria: false,
-  resumoTecnico: '',
-  termoResponsabilidade: false,
-};
-
-export default function CadastroConserto({ onSalvar, onCancelar }) {
-  const { theme } = useTheme();
+export default function CadastroConserto({
+  consertoParaEditar = null,
+  onSalvar,
+  onCancelar,
+  setCurrentView,
+}) {
+  const { t } = useTranslation('translation', { i18n: i18nDrones });
   const { user } = useAuth();
-  const isDark = theme === 'dark';
-  const portal = dadosPortal(user);
-  const [form, setForm] = useState({
-    ...INITIAL,
-    pais: portal.paisPortal === 'BR' ? 'BR' : portal.paisPortal || 'BR',
-  });
-  const [erro, setErro] = useState('');
-  const [enviado, setEnviado] = useState(null);
+  const isEditing = Boolean(consertoParaEditar);
 
-  const simulacao = useMemo(() => calcularSimulacao(form), [form]);
-  const previewValidacao = useMemo(
-    () => emitirValidacao(form, simulacao, portal),
-    [form, simulacao, portal]
+  // ==========================================
+  // SSO PORTAL: NOMBRE Y EMAIL SOLO LECTURA
+  // ==========================================
+  const nomeSso =
+    (user && (user.nomeCompleto || user.nome)) ||
+    (consertoParaEditar && consertoParaEditar.nomeCompleto) ||
+    '';
+  const emailSso =
+    (user && user.email) ||
+    (consertoParaEditar && consertoParaEditar.email) ||
+    '';
+
+  // ==========================================
+  // PRELLENO PAIS: PORTAL → SESION SIMULADOR → BR
+  // ==========================================
+  const paisInicial = (() => {
+    if (consertoParaEditar && consertoParaEditar.pais) return consertoParaEditar.pais;
+    if (user && (user.pais || user.country)) return user.pais || user.country;
+    try {
+      const sim = window.localStorage.getItem('drones.simulador.pais');
+      if (sim) return sim;
+    } catch (e) {
+      /* SIN STORAGE */
+    }
+    return 'BR';
+  })();
+
+  const yaTieneClaveDrones = Boolean(
+    (user && (user.dronesKey || user.claveDrones || user.temClaveDrones)) ||
+      (consertoParaEditar && consertoParaEditar.claveDrones)
   );
-  const docLabel = paisConfig(form.pais).doc;
 
-  function setField(name, value) {
-    setForm((prev) => ({ ...prev, [name]: value }));
-  }
+  const [formData, setFormData] = useState(
+    consertoParaEditar || {
+      nomeCompleto: nomeSso,
+      email: emailSso,
+      nomeProfissional: '',
+      tipoAtor: 'tecnico',
+      web: '',
+      whatsappComercial: '',
+      dataNascimento: '',
+      pais: paisInicial,
+      fotoPerfil: null,
+      telegram: '',
+      telefone1: '',
+      telefone2: '',
+      endereco: {
+        logradouro: '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cep: '',
+        cidade: '',
+        estado: 'SP',
+      },
+      direccionTaller: '',
+      tiposDron: [],
+      subsistemas: [],
+      niveis: [],
+      marcas: [],
+      noHace: '',
+      anosExperiencia: '',
+      certificacoes: '',
+      credencialFabricante: '',
+      autorizadoFabricante: false,
+      bancadaPropria: false,
+      piezas: 'mixta',
+      stockPropio: false,
+      trazaSerie: true,
+      atendePresencial: true,
+      atendeRemessaNacional: true,
+      enviaInternacional: false,
+      atendeCampo: false,
+      clientePagaEnvio: true,
+      idiomasAtencion: [],
+      prazoDiagnosticoDias: '',
+      prazoReparoDias: '',
+      garantiaDias: '',
+      garantiaCubre: 'ambos',
+      orcamentoPago: false,
+      osSimultaneas: '',
+      seguroRC: false,
+      ndaFlota: false,
+      descarteBateria: false,
+      resumoTecnico: '',
+      modalidades: [],
+      regioesAtendimento: [],
+      horarioAtendimento: '',
+      formasPagamento: [],
+      emiteNotaFiscal: 'Sim',
+      aceptaPropuestasEmail: true,
+      contactoComercialAmplio: true,
+      observacoesParticulares: '',
+      termoResponsabilidade: false,
+      crearClaveDrones: !yaTieneClaveDrones,
+    }
+  );
 
-  function toggle(campo, valor) {
-    setForm((prev) => ({ ...prev, [campo]: toggleIn(prev[campo], valor) }));
-  }
+  const [fotoPreview, setFotoPreview] = useState(
+    (consertoParaEditar && (consertoParaEditar.fotoUrl || consertoParaEditar.foto)) || null
+  );
+  const [cadastroResultado, setCadastroResultado] = useState(null);
+  const [erroForm, setErroForm] = useState('');
 
-  function handleSubmit(e) {
+  const esBrasil = formData.pais === 'BR';
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleEnderecoChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      endereco: { ...prev.endereco, [name]: value },
+    }));
+  };
+
+  const handleArrayToggle = (category, value) => {
+    setFormData((prev) => {
+      const currentList = prev[category] || [];
+      const exists = currentList.includes(value);
+      return {
+        ...prev,
+        [category]: exists
+          ? currentList.filter((item) => item !== value)
+          : [...currentList, value],
+      };
+    });
+  };
+
+  const handleFotoChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, fotoPerfil: file }));
+      setFotoPreview(URL.createObjectURL(file));
+    }
+  };
+
+  // ==========================================
+  // CODIGO LOCAL DE IDENTIFICACION — NO ES COBRO
+  // PREFIJO C = CONSERTO / REPARACION
+  // ==========================================
+  const generarCodigoCadastro = (dataNasc) => {
+    const tipo = 'C';
+    let nascFormateada = '00000000';
+    if (dataNasc) {
+      const parts = dataNasc.split('-');
+      if (parts.length === 3) nascFormateada = `${parts[2]}${parts[1]}${parts[0]}`;
+    }
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    return `${tipo}-${nascFormateada}-${dia}${mes}${ano}-1`;
+  };
+
+  // ==========================================
+  // VOLVER AL HUB REGISTRO / CADASTRO — NO AL INICIO DEL SITE
+  // EL HUB CIERRA LA FICHA CON onCancelar → setTipoId(null)
+  // ==========================================
+  const handleVolver = () => {
+    if (typeof onCancelar === 'function') {
+      onCancelar();
+      return;
+    }
+    if (typeof setCurrentView === 'function') {
+      setCurrentView('CADASTRO');
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setErro('');
+    if ((formData.tiposDron || []).length === 0) {
+      setErroForm(t('cadastroConserto.erroTipos'));
+      return;
+    }
+    if ((formData.subsistemas || []).length === 0) {
+      setErroForm(t('cadastroConserto.erroSubs'));
+      return;
+    }
+    if (!formData.termoResponsabilidade) {
+      setErroForm(t('cadastroConserto.erroTermo'));
+      return;
+    }
+    setErroForm('');
 
-    if (!(form.nomeComercial || '').trim()) {
-      setErro('Informe o nome comercial ou como o técnico será apresentado.');
-      return;
-    }
-    if (!(form.cidade || '').trim()) {
-      setErro('Informe a cidade de atuação da bancada ou do técnico.');
-      return;
-    }
-    if ((form.tiposDron || []).length === 0) {
-      setErro('Marque pelo menos um tipo de drone que você realmente conserta.');
-      return;
-    }
-    if ((form.subsistemas || []).length === 0) {
-      setErro('Marque pelo menos um subsistema (FC, gimbal, bateria...).');
-      return;
-    }
-    if ((form.idiomasAtencion || []).length === 0) {
-      setErro('Marque pelo menos um idioma de atendimento.');
-      return;
-    }
-    if (!form.termoResponsabilidade) {
-      setErro('Aceite o termo de responsabilidade técnica para enviar.');
-      return;
-    }
-
-    const validacao = emitirValidacao(form, simulacao, portal);
-    const registro = {
-      id: crypto.randomUUID(),
-      subdominio: 'consertos',
-      perfil: 'tecnico_conserto',
-      portal,
-      ...form,
-      valorReferencial: simulacao.valorReferencial,
-      simulacao,
-      validacao,
-      criadoEm: new Date().toISOString(),
+    const registroCompleto = {
+      ...formData,
+      nomeCompleto: nomeSso || formData.nomeCompleto,
+      email: emailSso || formData.email,
+      nomeProfissional: formData.nomeProfissional || nomeSso || formData.nomeCompleto,
+      codigoRegistro:
+        formData.codigoRegistro || generarCodigoCadastro(formData.dataNascimento),
+      dataCadastro: formData.dataCadastro || new Date().toISOString(),
+      disponibilidadePainel: 'editar_en_panel',
+      tipo: 'conserto',
+      listaDestino: 'conserto',
+      fotoUrl: fotoPreview || formData.fotoUrl || null,
+      crearClaveDrones: yaTieneClaveDrones ? false : Boolean(formData.crearClaveDrones),
     };
 
-    const atual = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([registro, ...atual]));
-    setEnviado(registro);
-    if (onSalvar) onSalvar(registro);
-  }
+    setCadastroResultado(registroCompleto);
+    if (onSalvar) onSalvar(registroCompleto);
+  };
 
-  /* PANTALLA DE EXITO DESPUES DE ENVIAR */
-  if (enviado) {
-    return (
-      <div className="cadastro-container" data-theme={isDark ? 'dark' : 'light'}>
-        <div className="success-card">
-          <h2>Cadastro de conserto enviado</h2>
-          <p>Protocolo: {enviado.id}</p>
-          <p>
-            Valor referencial:{' '}
-            {enviado.valorReferencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-          </p>
-          <p>Pontuação: {enviado.validacao.pontuacao}</p>
-          <p>Status: {enviado.validacao.status}</p>
-          <div className="code-badge">{enviado.validacao.codigo}</div>
-        </div>
-        <button type="button" className="btn-cancel" onClick={() => onCancelar && onCancelar()}>
-          Voltar para Área de Cadastros
-        </button>
-      </div>
-    );
-  }
+  const paisOptions = useMemo(() => PAISES, []);
 
   return (
-    <form className="cadastro-container" onSubmit={handleSubmit} data-theme={isDark ? 'dark' : 'light'}>
-      {/* CABECERA */}
-      <div className="cadastro-header">
-        <h2>Cadastro de técnico de conserto de drones</h2>
-        <p>Nome, e-mail, telefone e documento civil vêm do portal. Aqui só entra a capacidade real de conserto.</p>
+    <div className="cadastro-container">
+      {/* ==========================================
+          VOLVER — SUPERIOR IZQUIERDO
+          MISMA CLASE QUE EL INFERIOR
+          ========================================== */}
+      <div className="cadastro-header-nav">
+        <button
+          type="button"
+          className="btn-volver-inicio"
+          onClick={handleVolver}
+        >
+          {t('cadastroUsuario.volver')}
+        </button>
       </div>
 
-      {/* BLOQUE 1: DATOS DEL PORTAL, SOLO LECTURA */}
-      <section className="form-section">
-        <h3>1. Dados do Portal SSO</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Provedor</label>
-            <input value={portal.provedor} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Sessão</label>
-            <input value={portal.sessionId} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Nome</label>
-            <input value={portal.nome} readOnly />
-          </div>
-          <div className="form-group">
-            <label>E-mail</label>
-            <input value={portal.email} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Documento</label>
-            <input value={portal.documento} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Telefone</label>
-            <input value={portal.telefone} readOnly />
-          </div>
-        </div>
-      </section>
+      <div className="cadastro-header">
+        <h2>
+          {isEditing
+            ? t('cadastroConserto.tituloEditar')
+            : t('cadastroConserto.titulo')}
+        </h2>
+        <p>{t('cadastroConserto.subtitulo')}</p>
+      </div>
 
-      {/* BLOQUE 2: IDENTIDAD PROFESIONAL */}
-      <section className="form-section">
-        <h3>2. Identidade profissional de conserto</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Tipo de atuação</label>
-            <select value={form.tipoAtor} onChange={(e) => setField('tipoAtor', e.target.value)}>
-              <option value="tecnico">Técnico autônomo</option>
-              <option value="oficina">Oficina / bancada</option>
-            </select>
+      {/* ==========================================
+          VERACIDAD + LEYENDA INFORMATIVA
+          ========================================== */}
+      <div className="aviso-box">
+        <strong>{t('cadastroConserto.veracidadTitulo')}</strong>
+        <p>{t('cadastroConserto.veracidadTexto')}</p>
+      </div>
+      <div className="aviso-box">
+        <strong>{t('cadastroConserto.leyendaTitulo')}</strong>
+        <p>{t('cadastroConserto.leyendaTexto')}</p>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        {/* 1. DATOS PERSONALES + PAIS + SSO */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque1')}</h3>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroConserto.nomePortal')}</label>
+              <input type="text" value={nomeSso || formData.nomeCompleto} readOnly />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.emailPortal')}</label>
+              <input type="email" value={emailSso || formData.email} readOnly />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.tipoAtor')}</label>
+              <select name="tipoAtor" value={formData.tipoAtor} onChange={handleChange}>
+                <option value="tecnico">{t('cadastroConserto.tipoTecnico')}</option>
+                <option value="oficina">{t('cadastroConserto.tipoOficina')}</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.nomeProfissional')}</label>
+              <input
+                type="text"
+                name="nomeProfissional"
+                value={formData.nomeProfissional}
+                onChange={handleChange}
+                placeholder={t('cadastroConserto.nomeProfissionalPh')}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.web')}</label>
+              <input
+                type="text"
+                name="web"
+                value={formData.web}
+                onChange={handleChange}
+                placeholder={t('cadastroConserto.webPh')}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.dataNascimento')} *</label>
+              <input
+                type="date"
+                name="dataNascimento"
+                value={formData.dataNascimento}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.pais')} *</label>
+              <select name="pais" value={formData.pais} onChange={handleChange} required>
+                {paisOptions.map((p) => (
+                  <option key={p.code} value={p.code}>
+                    {t(`cadastroConserto.${p.labelKey}`)}
+                    {p.moeda ? ` (${p.moeda})` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.foto')}</label>
+              <input type="file" accept="image/*" onChange={handleFotoChange} />
+              {fotoPreview && <img src={fotoPreview} alt="" className="preview-photo" />}
+            </div>
+            {!yaTieneClaveDrones && (
+              <label className="checkbox-item full-width">
+                <input
+                  type="checkbox"
+                  name="crearClaveDrones"
+                  checked={formData.crearClaveDrones}
+                  onChange={handleChange}
+                />
+                {t('cadastroConserto.crearClave')}
+              </label>
+            )}
           </div>
-          <div className="form-group">
-            <label>Nome comercial</label>
-            <input value={form.nomeComercial} onChange={(e) => setField('nomeComercial', e.target.value)} />
+        </section>
+
+        {/* 2. CONTACTO Y DIRECCION */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque2')}</h3>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroConserto.telefone1')} *</label>
+              <input
+                type="tel"
+                name="telefone1"
+                value={formData.telefone1}
+                onChange={handleChange}
+                required
+                placeholder="(00) 90000-0000"
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.telefone2')}</label>
+              <input
+                type="tel"
+                name="telefone2"
+                value={formData.telefone2}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.whatsappComercial')}</label>
+              <input
+                type="tel"
+                name="whatsappComercial"
+                value={formData.whatsappComercial}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.telegram')}</label>
+              <input
+                type="text"
+                name="telegram"
+                value={formData.telegram}
+                onChange={handleChange}
+                placeholder="@usuario"
+              />
+            </div>
+            <div className="form-group">
+              <label>
+                {t('cadastroConserto.cep')}
+                {esBrasil ? ' *' : ''}
+              </label>
+              <input
+                type="text"
+                name="cep"
+                value={formData.endereco.cep}
+                onChange={handleEnderecoChange}
+                required={esBrasil}
+              />
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.logradouro')} *</label>
+              <input
+                type="text"
+                name="logradouro"
+                value={formData.endereco.logradouro}
+                onChange={handleEnderecoChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.cidade')} *</label>
+              <input
+                type="text"
+                name="cidade"
+                value={formData.endereco.cidade}
+                onChange={handleEnderecoChange}
+                required
+              />
+            </div>
+            {esBrasil && (
+              <div className="form-group">
+                <label>{t('cadastroConserto.estado')} *</label>
+                <select
+                  name="estado"
+                  value={formData.endereco.estado}
+                  onChange={handleEnderecoChange}
+                >
+                  {ESTADOS_BRASIL.map((uf) => (
+                    <option key={uf} value={uf}>{uf}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.enderecoRecepcion')}</label>
+              <input
+                type="text"
+                name="direccionTaller"
+                value={formData.direccionTaller}
+                onChange={handleChange}
+                placeholder={t('cadastroConserto.enderecoRecepcionPh')}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label>Site ou rede comercial</label>
-            <input value={form.web} onChange={(e) => setField('web', e.target.value)} />
+        </section>
+
+        {/* 3. TIPOS DE REPARACION — CARD PROPIA */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque3')}</h3>
+          <p className="help-text">{t('cadastroConserto.niveisAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {NIVEIS.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.niveis || []).includes(key)}
+                  onChange={() => handleArrayToggle('niveis', key)}
+                />
+                {t(`cadastroConserto.nivel.${key}`)}
+              </label>
+            ))}
           </div>
-          <div className="form-group">
-            <label>WhatsApp comercial</label>
-            <input value={form.whatsappComercial} onChange={(e) => setField('whatsappComercial', e.target.value)} />
+        </section>
+
+        {/* 4. EQUIPOS Y PARTES QUE REPARA — CARD PROPIA */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque4')}</h3>
+          <p className="help-text">{t('cadastroConserto.tiposAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {TIPOS_DRON.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.tiposDron || []).includes(key)}
+                  onChange={() => handleArrayToggle('tiposDron', key)}
+                />
+                {t(`cadastroConserto.dron.${key}`)}
+              </label>
+            ))}
           </div>
-          <div className="form-group">
-            <label>País de atuação</label>
-            <select value={form.pais} onChange={(e) => setField('pais', e.target.value)}>
-              {PAISES.map((pais) => (
-                <option key={pais.id} value={pais.id}>{pais.label}</option>
-              ))}
-            </select>
+          <p className="help-text">{t('cadastroConserto.subsAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {SUBSISTEMAS.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.subsistemas || []).includes(key)}
+                  onChange={() => handleArrayToggle('subsistemas', key)}
+                />
+                {t(`cadastroConserto.sub.${key}`)}
+              </label>
+            ))}
           </div>
-          <div className="form-group">
-            <label>{docLabel}</label>
-            <input value={form.documentoLocal} onChange={(e) => setField('documentoLocal', e.target.value)} />
-            <span className="help-text">Só se ainda não estiver no portal</span>
-          </div>
-          <div className="form-group">
-            <label>Cidade da bancada</label>
-            <input value={form.cidade} onChange={(e) => setField('cidade', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>{form.pais === 'BR' ? 'UF' : 'Estado / região'}</label>
-            <input value={form.uf} onChange={(e) => setField('uf', e.target.value)} />
+          <p className="help-text">{t('cadastroConserto.marcasAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {MARCAS.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.marcas || []).includes(key)}
+                  onChange={() => handleArrayToggle('marcas', key)}
+                />
+                {t(`cadastroConserto.marca.${key}`)}
+              </label>
+            ))}
           </div>
           <div className="form-group full-width">
-            <label>Endereço de recepção de equipamentos</label>
-            <input value={form.direccionTaller} onChange={(e) => setField('direccionTaller', e.target.value)} />
+            <label>{t('cadastroConserto.noRepara')}</label>
+            <textarea
+              name="noHace"
+              rows="3"
+              value={formData.noHace}
+              onChange={handleChange}
+              placeholder={t('cadastroConserto.noReparaPh')}
+            />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* BLOQUE 3: TIPOS DE DRONE Y SUBSISTEMAS */}
-      <section className="form-section">
-        <h3>3. Tipos de drone e subsistemas</h3>
-        <div className="form-group full-width">
-          <label>Tipos de drone</label>
-          <div className="checkbox-group">
-            {TIPOS_DRON.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.tiposDron || []).includes(item.id)}
-                  onChange={() => toggle('tiposDron', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Subsistemas</label>
-          <div className="checkbox-group">
-            {SUBSISTEMAS.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.subsistemas || []).includes(item.id)}
-                  onChange={() => toggle('subsistemas', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Nível técnico</label>
-          <div className="checkbox-group">
-            {NIVEIS.map((item) => (
-              <label key={item.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.niveis || []).includes(item.id)}
-                  onChange={() => toggle('niveis', item.id)}
-                />
-                {item.label}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>Marcas</label>
-          <div className="checkbox-group">
-            {MARCAS.map((marca) => (
-              <label key={marca} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(form.marcas || []).includes(marca)}
-                  onChange={() => toggle('marcas', marca)}
-                />
-                {marca}
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="form-group full-width">
-          <label>O que você NÃO conserta</label>
-          <textarea rows={3} value={form.noHace} onChange={(e) => setField('noHace', e.target.value)} />
-        </div>
-      </section>
-
-      {/* BLOQUE 4: BANCADA, PIEZAS Y CREDENCIALES */}
-      <section className="form-section">
-        <h3>4. Bancada, peças e credenciais</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Anos consertando drones</label>
-            <input type="number" min="0" value={form.anosExperiencia} onChange={(e) => setField('anosExperiencia', e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label>Origem das peças</label>
-            <select value={form.piezas} onChange={(e) => setField('piezas', e.target.value)}>
-              <option value="original">Só originais de fabricante</option>
-              <option value="mixta">Originais e compatíveis, com aviso ao cliente</option>
-              <option value="compativel">Principalmente compatíveis</option>
-            </select>
-          </div>
-        </div>
-        <div className="checkbox-group">
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.autorizadoFabricante} onChange={(e) => setField('autorizadoFabricante', e.target.checked)} />
-            Autorizado / credenciado por fabricante
-          </label>
-          {form.autorizadoFabricante && (
+        {/* 5. CERTIFICACIONES Y EXPERIENCIA — SIN 400 H */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque5')}</h3>
+          <p className="help-text">{t('cadastroConserto.expAyuda')}</p>
+          <div className="form-grid">
             <div className="form-group">
-              <label>Número da credencial</label>
-              <input value={form.credencialFabricante} onChange={(e) => setField('credencialFabricante', e.target.value)} />
+              <label>{t('cadastroConserto.anosExperiencia')}</label>
+              <input
+                type="number"
+                min="0"
+                name="anosExperiencia"
+                value={formData.anosExperiencia}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.piezas')}</label>
+              <select name="piezas" value={formData.piezas} onChange={handleChange}>
+                <option value="original">{t('cadastroConserto.piezasOriginal')}</option>
+                <option value="mixta">{t('cadastroConserto.piezasMixta')}</option>
+                <option value="compativel">{t('cadastroConserto.piezasCompativel')}</option>
+              </select>
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.certificacoes')}</label>
+              <textarea
+                name="certificacoes"
+                rows="2"
+                value={formData.certificacoes}
+                onChange={handleChange}
+                placeholder={t('cadastroConserto.certificacoesPh')}
+              />
+            </div>
+          </div>
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              name="autorizadoFabricante"
+              checked={formData.autorizadoFabricante}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.autorizadoFabricante')}
+          </label>
+          {formData.autorizadoFabricante && (
+            <div className="form-group">
+              <label>{t('cadastroConserto.credencialFabricante')}</label>
+              <input
+                type="text"
+                name="credencialFabricante"
+                value={formData.credencialFabricante}
+                onChange={handleChange}
+              />
             </div>
           )}
           <label className="checkbox-item">
-            <input type="checkbox" checked={form.bancadaPropria} onChange={(e) => setField('bancadaPropria', e.target.checked)} />
-            Bancada / laboratório próprio
+            <input
+              type="checkbox"
+              name="bancadaPropria"
+              checked={formData.bancadaPropria}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.bancadaPropria')}
           </label>
           <label className="checkbox-item">
-            <input type="checkbox" checked={form.stockPropio} onChange={(e) => setField('stockPropio', e.target.checked)} />
-            Mantenho estoque próprio
+            <input
+              type="checkbox"
+              name="stockPropio"
+              checked={formData.stockPropio}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.stockPropio')}
           </label>
           <label className="checkbox-item">
-            <input type="checkbox" checked={form.trazaSerie} onChange={(e) => setField('trazaSerie', e.target.checked)} />
-            Registro número de série do drone e da peça trocada
+            <input
+              type="checkbox"
+              name="trazaSerie"
+              checked={formData.trazaSerie}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.trazaSerie')}
           </label>
-        </div>
-      </section>
+          <div className="form-group full-width">
+            <label>{t('cadastroConserto.resumoTecnico')}</label>
+            <textarea
+              name="resumoTecnico"
+              rows="3"
+              value={formData.resumoTecnico}
+              onChange={handleChange}
+              placeholder={t('cadastroConserto.resumoPh')}
+            />
+          </div>
+        </section>
 
-      {/* BLOQUE 5: LOGISTICA E IDIOMAS */}
-      <section className="form-section">
-        <h3>5. Logística e idiomas de atendimento</h3>
-        <div className="checkbox-group">
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendePresencial} onChange={(e) => setField('atendePresencial', e.target.checked)} />
-            Retirada presencial
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendeRemessaNacional} onChange={(e) => setField('atendeRemessaNacional', e.target.checked)} />
-            Envio nacional
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.enviaInternacional} onChange={(e) => setField('enviaInternacional', e.target.checked)} />
-            Envio internacional (aduana por conta do cliente)
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.atendeCampo} onChange={(e) => setField('atendeCampo', e.target.checked)} />
-            Atendimento em campo / fazenda / obra
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.clientePagaEnvio} onChange={(e) => setField('clientePagaEnvio', e.target.checked)} />
-            Cliente paga ida e volta do equipamento
-          </label>
-        </div>
-        <div className="form-group full-width">
-          <label>Idiomas de atendimento</label>
-          <div className="checkbox-group">
-            {IDIOMAS.map((idioma) => (
-              <label key={idioma.id} className="checkbox-item">
+        {/* 6. CONDICIONES DE ATENCION + LOGISTICA + MODALIDADES */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque6')}</h3>
+          <p className="help-text">{t('cadastroConserto.modalidadesAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {MODALIDADES.map((key) => (
+              <label key={key} className="checkbox-item">
                 <input
                   type="checkbox"
-                  checked={(form.idiomasAtencion || []).includes(idioma.id)}
-                  onChange={() => toggle('idiomasAtencion', idioma.id)}
+                  checked={(formData.modalidades || []).includes(key)}
+                  onChange={() => handleArrayToggle('modalidades', key)}
                 />
-                {idioma.label}
+                {t(`cadastroConserto.mod.${key}`)}
               </label>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* BLOQUE 6: PLAZOS, PRESUPUESTO Y GARANTIA */}
-      <section className="form-section">
-        <h3>6. Prazo, orçamento e garantia</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Prazo de diagnóstico (dias)</label>
-            <input type="number" min="1" value={form.prazoDiagnosticoDias} onChange={(e) => setField('prazoDiagnosticoDias', e.target.value)} />
+          <div className="checkbox-group checkbox-group-2col">
+            <label className="checkbox-item">
+              <input
+                type="checkbox"
+                name="atendePresencial"
+                checked={formData.atendePresencial}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.atendePresencial')}
+            </label>
+            <label className="checkbox-item">
+              <input
+                type="checkbox"
+                name="atendeRemessaNacional"
+                checked={formData.atendeRemessaNacional}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.atendeRemessaNacional')}
+            </label>
+            <label className="checkbox-item">
+              <input
+                type="checkbox"
+                name="enviaInternacional"
+                checked={formData.enviaInternacional}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.enviaInternacional')}
+            </label>
+            <label className="checkbox-item">
+              <input
+                type="checkbox"
+                name="atendeCampo"
+                checked={formData.atendeCampo}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.atendeCampo')}
+            </label>
+            <label className="checkbox-item">
+              <input
+                type="checkbox"
+                name="clientePagaEnvio"
+                checked={formData.clientePagaEnvio}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.clientePagaEnvio')}
+            </label>
           </div>
-          <div className="form-group">
-            <label>Prazo médio de reparo (dias)</label>
-            <input type="number" min="1" value={form.prazoReparoDias} onChange={(e) => setField('prazoReparoDias', e.target.value)} />
+          <p className="help-text">{t('cadastroConserto.idiomasAyuda')}</p>
+          <div className="checkbox-group checkbox-group-2col">
+            {IDIOMAS_ATENCION.map((key) => (
+              <label key={key} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={(formData.idiomasAtencion || []).includes(key)}
+                  onChange={() => handleArrayToggle('idiomasAtencion', key)}
+                />
+                {t(`cadastroConserto.idioma.${key}`)}
+              </label>
+            ))}
           </div>
-          <div className="form-group">
-            <label>Garantia do serviço (dias)</label>
-            <input type="number" min="0" value={form.garantiaDias} onChange={(e) => setField('garantiaDias', e.target.value)} />
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroConserto.prazoDiagnostico')}</label>
+              <input
+                type="number"
+                min="0"
+                name="prazoDiagnosticoDias"
+                value={formData.prazoDiagnosticoDias}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.prazoReparo')}</label>
+              <input
+                type="number"
+                min="0"
+                name="prazoReparoDias"
+                value={formData.prazoReparoDias}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.garantiaDias')}</label>
+              <input
+                type="number"
+                min="0"
+                name="garantiaDias"
+                value={formData.garantiaDias}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.garantiaCubre')}</label>
+              <select name="garantiaCubre" value={formData.garantiaCubre} onChange={handleChange}>
+                <option value="mao">{t('cadastroConserto.garantiaMao')}</option>
+                <option value="peca">{t('cadastroConserto.garantiaPeca')}</option>
+                <option value="ambos">{t('cadastroConserto.garantiaAmbos')}</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.osSimultaneas')}</label>
+              <input
+                type="number"
+                min="0"
+                name="osSimultaneas"
+                value={formData.osSimultaneas}
+                onChange={handleChange}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label>A garantia cobre</label>
-            <select value={form.garantiaCubre} onChange={(e) => setField('garantiaCubre', e.target.value)}>
-              <option value="mao">Só mão de obra</option>
-              <option value="peca">Só peça fornecida por mim</option>
-              <option value="ambos">Mão de obra e peça</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>OS simultâneas</label>
-            <input type="number" min="1" value={form.osSimultaneas} onChange={(e) => setField('osSimultaneas', e.target.value)} />
-          </div>
-        </div>
-        <label className="checkbox-item">
-          <input type="checkbox" checked={form.orcamentoPago} onChange={(e) => setField('orcamentoPago', e.target.checked)} />
-          Diagnóstico / orçamento é pago (desconta se o cliente aceitar)
-        </label>
-      </section>
-
-      {/* BLOQUE 7: RIESGO, FLOTA Y RESIDUOS */}
-      <section className="form-section">
-        <h3>7. Risco, flota e resíduos</h3>
-        <div className="checkbox-group">
           <label className="checkbox-item">
-            <input type="checkbox" checked={form.seguroRC} onChange={(e) => setField('seguroRC', e.target.checked)} />
-            Tenho seguro de responsabilidade civil
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.ndaFlota} onChange={(e) => setField('ndaFlota', e.target.checked)} />
-            Aceito NDA / sigilo de mapas e imagens do cliente
-          </label>
-          <label className="checkbox-item">
-            <input type="checkbox" checked={form.descarteBateria} onChange={(e) => setField('descarteBateria', e.target.checked)} />
-            Faço descarte correto de baterias e placas
-          </label>
-        </div>
-        <div className="form-group full-width">
-          <label>Resumo técnico</label>
-          <textarea rows={4} value={form.resumoTecnico} onChange={(e) => setField('resumoTecnico', e.target.value)} />
-        </div>
-      </section>
-
-      {/* BLOQUE 8: SIMULADOR */}
-      <section className="form-section">
-        <h3>8. Simulador — valor referencial</h3>
-        <p className="help-text">{simulacao.observacao}</p>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Tipos considerados</label>
-            <input value={simulacao.especialidadeLabel} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Ticket base do simulador</label>
-            <input value={simulacao.ticketBase} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Valor referencial</label>
             <input
-              value={simulacao.valorReferencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              readOnly
+              type="checkbox"
+              name="orcamentoPago"
+              checked={formData.orcamentoPago}
+              onChange={handleChange}
             />
+            {t('cadastroConserto.orcamentoPago')}
+          </label>
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              name="seguroRC"
+              checked={formData.seguroRC}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.seguroRC')}
+          </label>
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              name="ndaFlota"
+              checked={formData.ndaFlota}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.ndaFlota')}
+          </label>
+          <label className="checkbox-item">
+            <input
+              type="checkbox"
+              name="descarteBateria"
+              checked={formData.descarteBateria}
+              onChange={handleChange}
+            />
+            {t('cadastroConserto.descarteBateria')}
+          </label>
+        </section>
+
+        {/* 7. REGION UF — SOLO BRASIL */}
+        {esBrasil && (
+          <section className="form-section">
+            <h3>{t('cadastroConserto.bloque7')}</h3>
+            <div className="checkbox-group cols-3">
+              {ESTADOS_BRASIL.map((uf) => (
+                <label key={uf} className="checkbox-item">
+                  <input
+                    type="checkbox"
+                    checked={(formData.regioesAtendimento || []).includes(uf)}
+                    onChange={() => handleArrayToggle('regioesAtendimento', uf)}
+                  />
+                  {uf}
+                </label>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 8. COMERCIAL — SIN PRECIOS */}
+        <section className="form-section">
+          <h3>{t('cadastroConserto.bloque8')}</h3>
+          <p className="help-text">{t('cadastroConserto.panelNota')}</p>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>{t('cadastroConserto.horario')}</label>
+              <input
+                type="text"
+                name="horarioAtendimento"
+                value={formData.horarioAtendimento}
+                onChange={handleChange}
+                placeholder={t('cadastroConserto.horarioPh')}
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('cadastroConserto.notaFiscal')}</label>
+              <select
+                name="emiteNotaFiscal"
+                value={formData.emiteNotaFiscal}
+                onChange={handleChange}
+              >
+                <option value="Sim">{t('cadastroConserto.nfSim')}</option>
+                <option value="Não">{t('cadastroConserto.nfNao')}</option>
+              </select>
+            </div>
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.formasPago')}</label>
+              <div className="checkbox-group checkbox-group-2col">
+                {FORMAS_PAGO.map((key) => (
+                  <label key={key} className="checkbox-item">
+                    <input
+                      type="checkbox"
+                      checked={(formData.formasPagamento || []).includes(key)}
+                      onChange={() => handleArrayToggle('formasPagamento', key)}
+                    />
+                    {t(`cadastroConserto.pago.${key}`)}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <label className="checkbox-item full-width">
+              <input
+                type="checkbox"
+                name="aceptaPropuestasEmail"
+                checked={formData.aceptaPropuestasEmail}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.propuestasEmail')}
+            </label>
+            <label className="checkbox-item full-width">
+              <input
+                type="checkbox"
+                name="contactoComercialAmplio"
+                checked={formData.contactoComercialAmplio}
+                onChange={handleChange}
+              />
+              {t('cadastroConserto.contactoAmplio')}
+            </label>
+            <div className="form-group full-width">
+              <label>{t('cadastroConserto.observacoes')}</label>
+              <textarea
+                name="observacoesParticulares"
+                rows="3"
+                value={formData.observacoesParticulares}
+                onChange={handleChange}
+              />
+            </div>
           </div>
+        </section>
+
+        <label className="checkbox-item">
+          <input
+            type="checkbox"
+            name="termoResponsabilidade"
+            checked={formData.termoResponsabilidade}
+            onChange={handleChange}
+          />
+          {t('cadastroConserto.termo')}
+        </label>
+
+        <p className="help-text">{t('cadastroConserto.leyendaFinal')}</p>
+        {erroForm && <p className="erro">{erroForm}</p>}
+
+        {/* CTA ANCHO + VOLVER ABAJO — SIN CANCELAR */}
+        <div className="cadastro-acciones-final">
+          <button type="submit" className="btn-submit">
+            {isEditing
+              ? t('cadastroConserto.ctaEditar')
+              : t('cadastroConserto.ctaFinalizar')}
+          </button>
+          <button type="button" className="btn-volver-inicio" onClick={handleVolver}>
+            {t('cadastroUsuario.volver')}
+          </button>
         </div>
-      </section>
+      </form>
 
-      {/* BLOQUE 9: PUNTUACION Y VALIDACION */}
-      <section className="form-section">
-        <h3>9. Pontuação e validação emitidas pelo sistema</h3>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Pontuação</label>
-            <input value={previewValidacao.pontuacao} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Status</label>
-            <input value={previewValidacao.status} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Emitido por</label>
-            <input value={previewValidacao.emitidoPor} readOnly />
-          </div>
+      {cadastroResultado && (
+        <div className="success-card">
+          <h3>{t('cadastroConserto.enviado')}</h3>
+          <p>{t('cadastroConserto.codigo')}</p>
+          <div className="code-badge">{cadastroResultado.codigoRegistro}</div>
         </div>
-        <ul className="criterios-lista">
-          {previewValidacao.criterios.map((criterio) => (
-            <li key={criterio}>{criterio}</li>
-          ))}
-        </ul>
-      </section>
-
-      {/* TERMINO DE RESPONSABILIDAD */}
-      <label className="checkbox-item">
-        <input
-          type="checkbox"
-          checked={form.termoResponsabilidade}
-          onChange={(e) => setField('termoResponsabilidade', e.target.checked)}
-        />
-        Declaro que os tipos de drone e subsistemas marcados correspondem à minha capacidade real e assumo a responsabilidade técnica do conserto.
-      </label>
-
-      {erro ? <p className="erro">{erro}</p> : null}
-
-      <button type="submit" className="btn-submit">Enviar cadastro de conserto</button>
-      <button type="button" className="btn-cancel" onClick={() => onCancelar && onCancelar()}>
-        Cancelar
-      </button>
-    </form>
+      )}
+    </div>
   );
 }
