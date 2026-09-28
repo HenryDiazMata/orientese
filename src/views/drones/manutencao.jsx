@@ -1,11 +1,52 @@
+// ==========================================
+// MANUTENCAO.JSX
+// LISTADO DE SOLICITUDES (NO ES DIRECTORIO DE TECNICOS)
+// TIPO PERSONA = DEL CLIENTE DE LA SOLICITUD
+// PEDIDO = SolicitarManutencao.jsx
+// CadastroManutencao QUEDA EN EL HUB DE REGISTRO DE TECNICO — NO TOCAR
+// MOCKS = src/data/drones/manutencao.json
+// ==========================================
+
 import React, { useState, useMemo, useEffect } from "react";
-import CadastroManutencao from "../../components/drones/formularios/CadastroManutencao";
+import SolicitarManutencao from "../../components/drones/formularios/SolicitarManutencao";
+import SOLICITACOES_MOCK from "../../data/drones/manutencao.json";
+
+// BETA: PEDIDOS DEL NAVEGADOR. NO ES BASE NI ARCHIVO DEL REPO
+const STORAGE_KEY = "drones.manutencao.solicitacoes.beta";
+
+function normalizarTipoPersona(valor) {
+  const t = String(valor || "").toLowerCase().trim();
+  if (t === "juridica" || t === "jurídica" || t === "pj") return "juridica";
+  return "fisica";
+}
+
+function lerPedidosLocais() {
+  try {
+    const bruto = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(bruto)) return [];
+    return bruto.map((item) => ({
+      ...item,
+      tipoPersona: normalizarTipoPersona(item.tipoPersona),
+      origem: "local"
+    }));
+  } catch (e) {
+    return [];
+  }
+}
+
+function gravarPedidosLocais(lista) {
+  try {
+    const soLocais = (lista || []).filter((item) => item.origem === "local");
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(soLocais));
+  } catch (e) {
+    /* SIN STORAGE */
+  }
+}
 
 export default function Manutencao({
   openFormOnMount = false,
   onFormOpened,
 }) {
-  // "lista" = solicitudes | "pedir" = formulario de cadastro
   const [activeTab, setActiveTab] = useState("lista");
   const [solicitacaoSucesso, setSolicitacaoSucesso] = useState(false);
 
@@ -13,39 +54,17 @@ export default function Manutencao({
   const [selectedEstado, setSelectedEstado] = useState("");
   const [selectedCategoria, setSelectedCategoria] = useState("");
   const [urgenciaFiltro, setUrgenciaFiltro] = useState("");
+  const [filtroTipoPersona, setFiltroTipoPersona] = useState("TODOS");
 
-  const [solicitacoes, setSolicitacoes] = useState([
-    {
-      id: 1,
-      titulo: "Revisão Preventiva Dji Mavic 3",
-      cliente: "Carlos Silva",
-      categoria: "Preventiva",
-      equipamento: "DJI Mavic 3 Enterprise",
-      estado: "SP",
-      cidade: "São Paulo",
-      urgencia: "Media",
-      descricao: "Necessito de verificação geral dos motores e calibração de sensores IMU.",
-      data: "2026-03-28",
-      contatoWhatsApp: "11999999999",
-      orcamentosRecebidos: 2
-    },
-    {
-      id: 2,
-      titulo: "Troca de Braço Frontal Matrice 300",
-      cliente: "AgroFly Soluções",
-      categoria: "Corretiva",
-      equipamento: "DJI Matrice 300 RTK",
-      estado: "PR",
-      cidade: "Cascavel",
-      urgencia: "Alta",
-      descricao: "Queda leve danificou o brazo frontal esquerdo. Pouso forçado.",
-      data: "2026-03-29",
-      contatoWhatsApp: "45988888888",
-      orcamentosRecebidos: 5
-    }
-  ]);
+  const [solicitacoes, setSolicitacoes] = useState(() => {
+    const mocks = (SOLICITACOES_MOCK || []).map((item) => ({
+      ...item,
+      tipoPersona: normalizarTipoPersona(item.tipoPersona),
+      origem: "mock"
+    }));
+    return [...lerPedidosLocais(), ...mocks];
+  });
 
-  // Si llegamos desde CADASTRO, abrir la pestaña del formulario
   useEffect(() => {
     if (openFormOnMount) {
       setActiveTab("pedir");
@@ -53,14 +72,33 @@ export default function Manutencao({
     }
   }, [openFormOnMount, onFormOpened]);
 
+  const hayFiltrosActivos =
+    searchTerm.trim() !== "" ||
+    selectedEstado !== "" ||
+    selectedCategoria !== "" ||
+    urgenciaFiltro !== "" ||
+    filtroTipoPersona !== "TODOS";
+
+  const handleLimparFiltros = () => {
+    setSearchTerm("");
+    setSelectedEstado("");
+    setSelectedCategoria("");
+    setUrgenciaFiltro("");
+    setFiltroTipoPersona("TODOS");
+  };
+
   const handleSuccessCadastro = (novoRegistro) => {
     const registroFormatado = {
       ...novoRegistro,
+      tipoPersona: normalizarTipoPersona(novoRegistro.tipoPersona),
       id: Date.now(),
       data: new Date().toISOString().split("T")[0],
-      orcamentosRecebidos: 0
+      orcamentosRecebidos: 0,
+      origem: "local"
     };
-    setSolicitacoes([registroFormatado, ...solicitacoes]);
+    const proxima = [registroFormatado, ...solicitacoes];
+    setSolicitacoes(proxima);
+    gravarPedidosLocais(proxima);
     setSolicitacaoSucesso(true);
     setTimeout(() => {
       setSolicitacaoSucesso(false);
@@ -71,31 +109,43 @@ export default function Manutencao({
   const solicitacoesFiltradas = useMemo(() => {
     return solicitacoes.filter((item) => {
       const matchSearch =
-        item.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.equipamento.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.descricao.toLowerCase().includes(searchTerm.toLowerCase());
+        (item.titulo || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.equipamento || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.descricao || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.cliente || "").toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchEstado = selectedEstado ? item.estado === selectedEstado : true;
       const matchCategoria = selectedCategoria ? item.categoria === selectedCategoria : true;
       const matchUrgencia = urgenciaFiltro ? item.urgencia === urgenciaFiltro : true;
+      const tipo = normalizarTipoPersona(item.tipoPersona);
+      const matchTipo = filtroTipoPersona === "TODOS" || tipo === filtroTipoPersona;
 
-      return matchSearch && matchEstado && matchCategoria && matchUrgencia;
+      return matchSearch && matchEstado && matchCategoria && matchUrgencia && matchTipo;
     });
-  }, [solicitacoes, searchTerm, selectedEstado, selectedCategoria, urgenciaFiltro]);
+  }, [solicitacoes, searchTerm, selectedEstado, selectedCategoria, urgenciaFiltro, filtroTipoPersona]);
 
   return (
     <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ textAlign: "center", marginBottom: "30px" }}>
-        <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "10px" }}>
-          Manutenção de Drones
-        </h1>
-        <p style={{ color: "var(--text-muted)", fontSize: "1.1rem" }}>
-          Conecte seu equipamento com assistências técnicas e mecânicos especializados.
-        </p>
-      </div>
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        gap: "16px",
+        flexWrap: "wrap",
+        marginBottom: "24px"
+      }}>
+        <div style={{ textAlign: "left" }}>
+          <h1 style={{ fontSize: "1.75rem", fontWeight: 800, margin: 0, color: "#0f172a" }}>
+            Manutenção de Drones
+          </h1>
+          <p style={{ color: "#64748b", fontSize: 15, margin: "6px 0 0 0" }}>
+            Solicitações de manutenção. O tipo de pessoa é do cliente do pedido, não um técnico.
+          </p>
+        </div>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "30px" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", flexWrap: "wrap" }}>
         <button
+          type="button"
           onClick={() => setActiveTab("lista")}
           style={{
             padding: "10px 24px",
@@ -111,6 +161,7 @@ export default function Manutencao({
         </button>
 
         <button
+          type="button"
           onClick={() => setActiveTab("pedir")}
           style={{
             padding: "10px 24px",
@@ -124,6 +175,7 @@ export default function Manutencao({
         >
           🛠️ Solicitar Manutenção
         </button>
+        </div>
       </div>
 
       {activeTab === "lista" && (
@@ -133,16 +185,27 @@ export default function Manutencao({
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               gap: "15px",
-              marginBottom: "25px",
-              backgroundColor: "var(--bg-card)",
+              marginBottom: "12px",
+              backgroundColor: "#ffffff",
               padding: "15px",
               borderRadius: "10px",
-              border: "1px solid var(--border-color)"
+              border: "1px solid #e2e8f0"
             }}
           >
+            <select
+              value={filtroTipoPersona}
+              onChange={(e) => setFiltroTipoPersona(e.target.value)}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#fff" }}
+              aria-label="Tipo de pessoa do cliente"
+            >
+              <option value="TODOS">Tipo de pessoa (cliente)</option>
+              <option value="fisica">Cliente pessoa física</option>
+              <option value="juridica">Cliente pessoa jurídica</option>
+            </select>
+
             <input
               type="text"
-              placeholder="Buscar por equipo o falla..."
+              placeholder="Buscar por equipo, cliente ou falla..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -155,7 +218,7 @@ export default function Manutencao({
             <select
               value={selectedEstado}
               onChange={(e) => setSelectedEstado(e.target.value)}
-              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#fff" }}
             >
               <option value="">Todos os Estados</option>
               <option value="SP">São Paulo (SP)</option>
@@ -167,7 +230,7 @@ export default function Manutencao({
             <select
               value={selectedCategoria}
               onChange={(e) => setSelectedCategoria(e.target.value)}
-              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#fff" }}
             >
               <option value="">Todas as Categorias</option>
               <option value="Preventiva">Preventiva</option>
@@ -178,13 +241,31 @@ export default function Manutencao({
             <select
               value={urgenciaFiltro}
               onChange={(e) => setUrgenciaFiltro(e.target.value)}
-              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+              style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#fff" }}
             >
               <option value="">Qualquer Urgência</option>
               <option value="Alta">Alta</option>
               <option value="Media">Média</option>
               <option value="Baixa">Baixa</option>
             </select>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
+            <button
+              type="button"
+              onClick={handleLimparFiltros}
+              disabled={!hayFiltrosActivos}
+              style={{
+                background: "none",
+                border: "none",
+                color: hayFiltrosActivos ? "#C46B6B" : "#94a3b8",
+                cursor: hayFiltrosActivos ? "pointer" : "default",
+                fontWeight: 600,
+                fontSize: 13
+              }}
+            >
+              Limpar Filtros
+            </button>
           </div>
 
           {solicitacoesFiltradas.length === 0 ? (
@@ -199,13 +280,15 @@ export default function Manutencao({
                 gap: "20px"
               }}
             >
-              {solicitacoesFiltradas.map((item) => (
+              {solicitacoesFiltradas.map((item) => {
+                const tipo = normalizarTipoPersona(item.tipoPersona);
+                return (
                 <div
                   key={item.id}
                   className="card"
                   style={{
-                    backgroundColor: "var(--bg-card)",
-                    border: "1px solid var(--border-color)",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e2e8f0",
                     borderRadius: "12px",
                     padding: "20px",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
@@ -215,7 +298,7 @@ export default function Manutencao({
                   }}
                 >
                   <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", flexWrap: "wrap", gap: 6 }}>
                       <span
                         style={{
                           backgroundColor: "#dbeafe",
@@ -228,6 +311,30 @@ export default function Manutencao({
                       >
                         {item.categoria}
                       </span>
+                      <span
+                        style={{
+                          backgroundColor: tipo === "juridica" ? "#e0f2fe" : "#f1f5f9",
+                          color: tipo === "juridica" ? "#0369a1" : "#475569",
+                          padding: "4px 8px",
+                          borderRadius: "12px",
+                          fontSize: "11px",
+                          fontWeight: 700
+                        }}
+                      >
+                        {tipo === "juridica" ? "Cliente PJ" : "Cliente PF"}
+                      </span>
+                      {item.origem === "local" && (
+                        <span style={{
+                          backgroundColor: "#EAF7FC",
+                          color: "#1A8FD0",
+                          padding: "4px 8px",
+                          borderRadius: "12px",
+                          fontSize: "11px",
+                          fontWeight: 700
+                        }}>
+                          Beta — neste navegador
+                        </span>
+                      )}
                       <span
                         style={{
                           backgroundColor: item.urgencia === "Alta" ? "#fee2e2" : "#fef3c7",
@@ -245,7 +352,10 @@ export default function Manutencao({
                     <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "8px" }}>
                       {item.titulo}
                     </h3>
-                    <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+                    <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: "4px" }}>
+                      👤 {item.cliente}
+                    </p>
+                    <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: "4px" }}>
                       📍 {item.cidade} - {item.estado}
                     </p>
                     <p style={{ fontSize: "0.95rem", fontWeight: "500", marginBottom: "12px" }}>
@@ -257,9 +367,9 @@ export default function Manutencao({
                     </p>
                   </div>
 
-                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px", marginTop: "10px" }}>
+                  <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "12px", marginTop: "10px" }}>
                     <a
-                      href={`https://wa.me/55${item.contatoWhatsApp.replace(/\D/g, "")}`}
+                      href={`https://wa.me/55${String(item.contatoWhatsApp || "").replace(/\D/g, "")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-whatsapp"
@@ -278,7 +388,8 @@ export default function Manutencao({
                     </a>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -301,7 +412,10 @@ export default function Manutencao({
               ✅ Solicitação enviada com sucesso! Redirecionando...
             </div>
           )}
-          <CadastroManutencao onSuccess={handleSuccessCadastro} />
+          <SolicitarManutencao
+            onSuccess={handleSuccessCadastro}
+            onCancelar={() => setActiveTab("lista")}
+          />
         </div>
       )}
     </div>

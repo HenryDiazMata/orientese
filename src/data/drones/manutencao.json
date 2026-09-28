@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "tipoPersona": "fisica",
+    "titulo": "Revisão Preventiva Dji Mavic 3",
+    "cliente": "Carlos Silva",
+    "categoria": "Preventiva",
+    "equipamento": "DJI Mavic 3 Enterprise",
+    "estado": "SP",
+    "cidade": "São Paulo",
+    "urgencia": "Media",
+    "descricao": "Necessito de verificação geral dos motores e calibração de sensores IMU.",
+    "data": "2026-03-28",
+    "contatoWhatsApp": "11999999999",
+    "orcamentosRecebidos": 2
+  },
+  {
+    "id": 2,
+    "tipoPersona": "juridica",
+    "titulo": "Troca de Braço Frontal Matrice 300",
+    "cliente": "AgroFly Soluções",
+    "categoria": "Corretiva",
+    "equipamento": "DJI Matrice 300 RTK",
+    "estado": "PR",
+    "cidade": "Cascavel",
+    "urgencia": "Alta",
+    "descricao": "Queda leve danificou o brazo frontal esquerdo. Pouso forçado.",
+    "data": "2026-03-29",
+    "contatoWhatsApp": "45988888888",
+    "orcamentosRecebidos": 5
+  },
+  {
+    "id": 3,
+    "tipoPersona": "fisica",
+    "titulo": "Calibração de câmera térmica",
+    "cliente": "Fernanda Dias",
+    "categoria": "Calibração",
+    "equipamento": "DJI Mavic 2 Enterprise Dual",
+    "estado": "RJ",
+    "cidade": "Niterói",
+    "urgencia": "Baixa",
+    "descricao": "Preciso recalibrar o sensor térmico após atualização de firmware.",
+    "data": "2026-04-02",
+    "contatoWhatsApp": "21977776666",
+    "orcamentosRecebidos": 1
+  }
+]

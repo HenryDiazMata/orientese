@@ -1,8 +1,15 @@
 // ==========================================
 // AUXILIARES.JSX
-// LISTA DE AUXILIARES
+// LISTA / DIRECTORIO DE AUXILIARES (ROL)
 // EL FORMULARIO NO ESTA AQUI: ESTA EN CADASTROAUXILIAR.JSX
 // CADASTRO Y EDICION: PAGINA COMPLETA, SIN MODAL
+//
+// REGLAS DIRECTORIO:
+// - TIPO DE PERSONA (FISICA / JURIDICA) ES CAMPO + FILTRO + SELLO EN LA CARD
+// - NUNCA ES ITEM NUEVO DEL SIDEBAR NI CARPETA FISICOS/ JURIDICOS/
+// - MOCKS FUERA DE ESTA VISTA: src/data/drones/auxiliares.json
+// - NO TOCAR CADASTROAUXILIAR NI AUTHCONTEXT / SSO
+// - DATOS ACTUALES = FICTICIOS DE IA; EN PRODUCCION HAY QUE CAMBIAR LA FUENTE
 // ==========================================
 
 import React, { useState, useMemo, useEffect } from 'react';
@@ -11,9 +18,12 @@ import {
   CheckCircle, Clock, MapPin, Phone, Mail,
   Edit3, PauseCircle, PlayCircle, AlertTriangle,
   X, Award, Briefcase, DollarSign, Package,
-  Eye, EyeOff, Trash2
+  Eye, EyeOff, Trash2, Building2, User
 } from 'lucide-react';
 import CadastroAuxiliar from "../../components/drones/formularios/CadastroAuxiliar";
+
+// MOCK DEL DIRECTORIO (NO ES BASE REAL)
+import AUXILIARES_MOCK from '../../data/drones/auxiliares.json';
 
 let useThemeSafe = () => ({ theme: 'light' });
 try {
@@ -39,75 +49,48 @@ const AREAS_ATUACAO = [
   'Outros'
 ];
 
-const INITIAL_AUXILIARES = [
-  {
-    id: 'AUX-001',
-    nomeCompleto: 'Lucas Silva',
-    nomeProfissional: 'Lucas Campo',
-    foto: null,
-    whatsapp: '11987654321',
-    email: 'lucas.silva@email.com',
-    cidade: 'São Paulo',
-    uf: 'SP',
-    atendeOutrasRegioes: true,
-    anosExperiencia: 3,
-    areasAtuacao: ['Observador Visual (EVLOS)', 'Troca de Baterias', 'Apoio de Solo / Logística'],
-    modalidades: ['Diária / por hora'],
-    valorAproximado: 'R$ 180 / diária',
-    possuiEquipamento: true,
-    apresentacao: 'Auxiliar de campo com experiência em missões EVLOS.',
-    statusConta: 'Activa',
-    disponibilidade: 'Disponível'
-  },
-  {
-    id: 'AUX-002',
-    nomeCompleto: 'Mariana Rocha',
-    nomeProfissional: 'Mari Rocha',
-    foto: null,
-    whatsapp: '21976543210',
-    email: 'marianarocha@email.com',
-    cidade: 'Niterói',
-    uf: 'RJ',
-    atendeOutrasRegioes: false,
-    anosExperiencia: 2,
-    areasAtuacao: ['Radio Operador (VHF)', 'Apoio de Solo / Logística'],
-    modalidades: ['Por contrato (PJ / RPA)'],
-    valorAproximado: 'A combinar',
-    possuiEquipamento: false,
-    apresentacao: 'Apoio de solo e comunicação VHF.',
-    statusConta: 'Activa',
-    disponibilidade: 'Em Missão'
-  },
-  {
-    id: 'AUX-003',
-    nomeCompleto: 'Carlos Eduardo',
-    nomeProfissional: 'Cadu',
-    foto: null,
-    whatsapp: '31965432109',
-    email: 'carlos.eduardo@email.com',
-    cidade: 'Belo Horizonte',
-    uf: 'MG',
-    atendeOutrasRegioes: true,
-    anosExperiencia: 5,
-    areasAtuacao: ['Observador Visual (EVLOS)', 'Mapeamento / Fotogrametria'],
-    modalidades: ['Por temporada / projetos'],
-    valorAproximado: 'R$ 220 / diária',
-    possuiEquipamento: true,
-    apresentacao: 'Mais de 5 anos de experiência.',
-    statusConta: 'Pausada',
-    disponibilidade: 'Disponível'
-  }
-];
+// NORMALIZA TIPO PARA FILTRO Y SELLO (FISICA POR DEFECTO SI FALTA EL CAMPO)
+function normalizarTipoPersona(valor) {
+  const t = String(valor || '').toLowerCase().trim();
+  if (t === 'juridica' || t === 'jurídica' || t === 'pj') return 'juridica';
+  return 'fisica';
+}
+
+// DISPONIBILIDAD PUBLICA DEL DIRECTORIO
+// Disponível | Em Missão | Em Pausa
+// "Em Pausa" = EL AUXILIAR SE AUTO-SUSPENDIO (VACACIONES, VIAJE, ENFERMO, ETC.)
+// SI statusConta === Pausada Y NO TRAE disponibilidade, SE MUESTRA COMO Em Pausa
+function normalizarDisponibilidade(item) {
+  const d = String(item?.disponibilidade || '').trim();
+  if (d === 'Em Pausa' || d === 'Pausada' || d === 'Em pausa') return 'Em Pausa';
+  if (d === 'Em Missão' || d === 'Em Missao') return 'Em Missão';
+  if (d === 'Disponível' || d === 'Disponivel') return 'Disponível';
+  if (item?.statusConta === 'Pausada') return 'Em Pausa';
+  return 'Disponível';
+}
+
+function estaEnPausa(item) {
+  return normalizarDisponibilidade(item) === 'Em Pausa' || item?.statusConta === 'Pausada';
+}
 
 export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
   const { theme } = useThemeSafe();
   const isDark = theme === 'dark';
 
-  const [auxiliares, setAuxiliares] = useState(INITIAL_AUXILIARES);
+  // ESTADO INICIAL DESDE JSON EXTERNO (COPIA PARA NO MUTAR EL IMPORT)
+  const [auxiliares, setAuxiliares] = useState(() =>
+    (AUXILIARES_MOCK || []).map((item) => ({
+      ...item,
+      tipoPersona: normalizarTipoPersona(item.tipoPersona),
+      disponibilidade: normalizarDisponibilidade(item)
+    }))
+  );
   const [search, setSearch] = useState('');
   const [filtroUF, setFiltroUF] = useState('TODOS');
   const [filtroArea, setFiltroArea] = useState('TODAS');
   const [filtroDisp, setFiltroDisp] = useState('TODAS');
+  // FILTRO TIPO DE PESSOA: TODOS | fisica | juridica
+  const [filtroTipo, setFiltroTipo] = useState('TODOS');
   const [userLogueado, setUserLogueado] = useState(null);
 
   const [vistaCadastro, setVistaCadastro] = useState(false);
@@ -135,6 +118,7 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
   const handleSalvarNovo = (registro) => {
     const novo = {
       ...registro,
+      tipoPersona: normalizarTipoPersona(registro.tipoPersona),
       id: registro.id || `AUX-${String(auxiliares.length + 1).padStart(3, '0')}`
     };
     setAuxiliares([novo, ...auxiliares]);
@@ -143,7 +127,11 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
   };
 
   const handleSalvarEdicao = (registro) => {
-    const updated = { ...userLogueado, ...registro };
+    const updated = {
+      ...userLogueado,
+      ...registro,
+      tipoPersona: normalizarTipoPersona(registro.tipoPersona || userLogueado.tipoPersona)
+    };
     setUserLogueado(updated);
     setAuxiliares((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
     setVistaEditar(false);
@@ -163,8 +151,13 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
   };
 
   const handleTogglePausar = () => {
-    const novoStatus = userLogueado.statusConta === 'Pausada' ? 'Activa' : 'Pausada';
-    const updated = { ...userLogueado, statusConta: novoStatus };
+    const vaiPausar = userLogueado.statusConta !== 'Pausada';
+    const novoStatus = vaiPausar ? 'Pausada' : 'Activa';
+    const updated = {
+      ...userLogueado,
+      statusConta: novoStatus,
+      disponibilidade: vaiPausar ? 'Em Pausa' : 'Disponível'
+    };
     setUserLogueado(updated);
     setAuxiliares((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
   };
@@ -177,18 +170,38 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
     }
   };
 
+  // LIMPIA BUSQUEDA Y SELECTS DEL DIRECTORIO (NO TOCA SESION NI CADASTRO)
+  const hayFiltrosActivos =
+    search.trim() !== '' ||
+    filtroUF !== 'TODOS' ||
+    filtroArea !== 'TODAS' ||
+    filtroDisp !== 'TODAS' ||
+    filtroTipo !== 'TODOS';
+
+  const handleLimparFiltros = () => {
+    setSearch('');
+    setFiltroUF('TODOS');
+    setFiltroArea('TODAS');
+    setFiltroDisp('TODAS');
+    setFiltroTipo('TODOS');
+  };
+
   const auxiliaresFiltrados = useMemo(() => {
     return auxiliares.filter((item) => {
       const matchText =
         (item.nomeCompleto || '').toLowerCase().includes(search.toLowerCase()) ||
         (item.nomeProfissional || '').toLowerCase().includes(search.toLowerCase()) ||
+        (item.razaoSocial || '').toLowerCase().includes(search.toLowerCase()) ||
         (item.cidade || '').toLowerCase().includes(search.toLowerCase());
       const matchUF = filtroUF === 'TODOS' || item.uf === filtroUF;
       const matchArea = filtroArea === 'TODAS' || (item.areasAtuacao || []).includes(filtroArea);
-      const matchDisp = filtroDisp === 'TODAS' || item.disponibilidade === filtroDisp;
-      return matchText && matchUF && matchArea && matchDisp;
+      const disp = normalizarDisponibilidade(item);
+      const matchDisp = filtroDisp === 'TODAS' || disp === filtroDisp;
+      const tipo = normalizarTipoPersona(item.tipoPersona);
+      const matchTipo = filtroTipo === 'TODOS' || tipo === filtroTipo;
+      return matchText && matchUF && matchArea && matchDisp && matchTipo;
     });
-  }, [auxiliares, search, filtroUF, filtroArea, filtroDisp]);
+  }, [auxiliares, search, filtroUF, filtroArea, filtroDisp, filtroTipo]);
 
   const inputStyle = {
     width: '100%',
@@ -201,7 +214,7 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
     outline: 'none'
   };
 
-  // CADASTRO: USA CADASTROAUXILIAR, SIN MODAL
+  // CADASTRO: USA CADASTROAUXILIAR, SIN MODAL — NO MODIFICAR EL WIZARD
   if (vistaCadastro) {
     return (
       <CadastroAuxiliar
@@ -211,7 +224,7 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
     );
   }
 
-  // EDICION: USA CADASTROAUXILIAR, SIN MODAL
+  // EDICION: USA CADASTROAUXILIAR, SIN MODAL — NO MODIFICAR EL WIZARD
   if (vistaEditar && userLogueado) {
     return (
       <CadastroAuxiliar
@@ -286,12 +299,52 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
           <option value="TODAS">Qualquer Disponibilidade</option>
           <option value="Disponível">Disponível</option>
           <option value="Em Missão">Em Missão</option>
+          <option value="Em Pausa">Em pausa</option>
         </select>
+        {/* FILTRO TIPO DE PESSOA — DENTRO DEL LISTADO, NO EN EL MENU */}
+        <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} style={{ ...inputStyle, width: 'auto' }} aria-label="Tipo de pessoa">
+          <option value="TODOS">Tipo de pessoa</option>
+          <option value="fisica">Pessoa física</option>
+          <option value="juridica">Pessoa jurídica</option>
+        </select>
+        <button
+          type="button"
+          onClick={handleLimparFiltros}
+          disabled={!hayFiltrosActivos}
+          style={{
+            marginLeft: 'auto',
+            background: 'none',
+            border: 'none',
+            cursor: hayFiltrosActivos ? 'pointer' : 'default',
+            color: hayFiltrosActivos ? '#C46B6B' : '#94a3b8',
+            fontWeight: 600,
+            fontSize: 13,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 4px'
+          }}
+        >
+          <X size={14} /> Limpar Filtros
+        </button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 20 }}>
-        {auxiliaresFiltrados.map((aux) => (
-          <div key={aux.id} style={{ background: bgCard, borderRadius: 16, border: `1px solid ${border}`, padding: 20, display: 'flex', flexDirection: 'column', opacity: aux.statusConta === 'Pausada' ? 0.65 : 1 }}>
+        {auxiliaresFiltrados.map((aux) => {
+          const tipo = normalizarTipoPersona(aux.tipoPersona);
+          const esJuridica = tipo === 'juridica';
+          const disp = normalizarDisponibilidade(aux);
+          const enPausa = estaEnPausa(aux);
+          return (
+          <div key={aux.id} style={{
+            background: enPausa ? '#EAF7FC' : bgCard,
+            borderRadius: 16,
+            border: `1px solid ${enPausa ? '#1A8FD0' : border}`,
+            padding: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            opacity: 1
+          }}>
             <div style={{ display: 'flex', gap: 14, marginBottom: 14 }}>
               <div style={{ width: 64, height: 64, borderRadius: '50%', background: bgMain, overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {aux.foto ? (
@@ -307,15 +360,35 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
                 <div style={{ fontSize: 13, color: textMuted, display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                   <MapPin size={13} /> {aux.cidade} - {aux.uf}
                 </div>
-                <span style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 12, fontWeight: 600,
-                  padding: '3px 10px', borderRadius: 20,
-                  background: aux.disponibilidade === 'Disponível' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)',
-                  color: aux.disponibilidade === 'Disponível' ? '#10b981' : '#f59e0b'
-                }}>
-                  {aux.disponibilidade === 'Disponível' ? <CheckCircle size={12} /> : <Clock size={12} />}
-                  {aux.disponibilidade}
-                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                  {/* SELLO TIPO DE PESSOA EN LA FICHA */}
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700,
+                    padding: '3px 10px', borderRadius: 20,
+                    background: esJuridica ? 'rgba(26,143,208,0.15)' : 'rgba(15,23,42,0.08)',
+                    color: esJuridica ? '#1A8FD0' : textMain
+                  }}>
+                    {esJuridica ? <Building2 size={12} /> : <User size={12} />}
+                    {esJuridica ? 'Pessoa jurídica' : 'Pessoa física'}
+                  </span>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600,
+                    padding: '3px 10px', borderRadius: 20,
+                    background: disp === 'Disponível'
+                      ? 'rgba(16,185,129,0.15)'
+                      : disp === 'Em Pausa'
+                        ? 'rgba(26,143,208,0.18)'
+                        : 'rgba(245,158,11,0.15)',
+                    color: disp === 'Disponível'
+                      ? '#10b981'
+                      : disp === 'Em Pausa'
+                        ? '#1A8FD0'
+                        : '#f59e0b'
+                  }}>
+                    {disp === 'Disponível' ? <CheckCircle size={12} /> : disp === 'Em Pausa' ? <PauseCircle size={12} /> : <Clock size={12} />}
+                    {disp}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -345,7 +418,8 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
               </a>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {auxiliaresFiltrados.length === 0 && (

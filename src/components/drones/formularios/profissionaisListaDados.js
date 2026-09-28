@@ -1,79 +1,32 @@
 // ==========================================
 // PROFISSIONAISLISTADADOS.JS
 // DATOS Y HELPERS DE LA LISTA (NO ES UI)
-// MOCK + LECTURA DE LOCALSTORAGE
+// MOCK EN src/data/drones/profissionais.json
+// LECTURA DE LOCALSTORAGE
 // PAGINACION: CONSTANTES 6 / 15 / 30
+// TIPO PERSONA VIAJA EN EL OBJETO; NO ES UN ROL NUEVO
+// WIZARD CadastroProfissionais NO SE TOCA AQUI
 // ==========================================
+
+import PROFISSIONAIS_JSON from '../../../data/drones/profissionais.json';
 
 export const STORAGE_KEY = 'cadastros_profissionais';
 export const OPCOES_POR_PAGINA = [6, 15, 30];
 export const POR_PAGINA_PADRAO = 15;
 
+function normalizarTipoPersona(valor) {
+  const t = String(valor || '').toLowerCase().trim();
+  if (t === 'juridica' || t === 'jurídica' || t === 'pj') return 'juridica';
+  return 'fisica';
+}
+
 // ==========================================
 // CATALOGO MOCK (HASTA CONECTAR BD DRONES)
 // ==========================================
-export const MOCK_PROFISSIONAIS = [
-  {
-    id: 1,
-    nome: 'Carlos Eduardo',
-    especialidade: 'Piloto de Drone',
-    estado: 'SP',
-    cidade: 'Ribeirão Preto',
-    registro: 'ANAC-10293',
-    experiencia: '100h+',
-    pagamento: 'PJ / NF',
-    disponibilidade: 'Imediata',
-    certificacao: 'Autorizado / Certificado',
-    garantia: '3 Meses',
-    whatsapp: '5516999998888',
-    email: 'carlos.piloto@example.com'
-  },
-  {
-    id: 2,
-    nome: 'Mariana Silva',
-    especialidade: 'Agrônomo',
-    estado: 'MG',
-    cidade: 'Uberlândia',
-    registro: 'CREA-98765',
-    experiencia: 'Especialista',
-    pagamento: 'CLT / Diária',
-    disponibilidade: 'Finais de Semana',
-    certificacao: 'Autônomo / Independente',
-    garantia: 'Sem Garantia',
-    whatsapp: '5534988887777',
-    email: 'mariana.agro@example.com'
-  },
-  {
-    id: 3,
-    nome: 'Roberto Alves',
-    especialidade: 'Técnico em Manutenção',
-    estado: 'PR',
-    cidade: 'Cascavel',
-    registro: 'CREA-43210',
-    experiencia: 'Especialista',
-    pagamento: 'PJ / NF',
-    disponibilidade: 'Imediata',
-    certificacao: 'Autorizado / Certificado',
-    garantia: '6 Meses',
-    whatsapp: '5545977776666',
-    email: 'roberto.fix@example.com'
-  },
-  {
-    id: 4,
-    nome: 'Ana Souza',
-    especialidade: 'Fotógrafo / Videomaker',
-    estado: 'SP',
-    cidade: 'Campinas',
-    registro: 'Portfólio',
-    experiencia: 'Estagiário',
-    pagamento: 'Diária',
-    disponibilidade: 'Sob Consulta',
-    certificacao: 'Autônomo / Independente',
-    garantia: '1 Mês',
-    whatsapp: '5519966665555',
-    email: 'ana.foto@example.com'
-  }
-];
+export const MOCK_PROFISSIONAIS = (PROFISSIONAIS_JSON || []).map((item) => ({
+  ...item,
+  tipoPersona: normalizarTipoPersona(item.tipoPersona)
+}));
 
 // ==========================================
 // VAGAS MOCK (MURAL; CADASTROVAGAS AUN NO CONECTADO)
@@ -86,6 +39,7 @@ export const MOCK_VAGAS = [
 
 // ==========================================
 // MAPEA ALTAS LOCALES AL FORMATO DE CARD
+// TIPO PERSONA DEL CLIENTE/PROFESIONAL SI VIENE EN EL ALTA
 // ==========================================
 export function lerCadastrosLocais() {
   try {
@@ -93,6 +47,7 @@ export function lerCadastrosLocais() {
     if (!Array.isArray(bruto)) return [];
     return bruto.map((item) => ({
       id: item.id,
+      tipoPersona: normalizarTipoPersona(item.tipoPersona || item.tipoPessoa),
       nome: item.nomeApresentacao || item.pessoaisPortal?.nome || 'Profissional',
       especialidade: (item.areasSetor && item.areasSetor[0]) || 'Profissional afim',
       estado: item.uf || '',

@@ -1,7 +1,9 @@
 // ==========================================
 // PROFISSIONAIS.JSX
 // VISTA: FILTROS + GRID + PAGINACION
-// DATOS EN profissionaisListaDados.js
+// DATOS: profissionaisListaDados.js + src/data/drones/profissionais.json
+// TIPO PERSONA = FILTRO Y SELLO. NO ES ITEM DEL SIDEBAR
+// WIZARD CadastroProfissionais NO TOCAR
 // ==========================================
 
 import { useMemo, useState } from 'react';
@@ -18,6 +20,42 @@ import {
 } from '../../components/drones/formularios/profissionaisListaDados';
 import './css/profissionais.css';
 
+function normalizarTipoPersona(valor) {
+  const t = String(valor || '').toLowerCase().trim();
+  if (t === 'juridica' || t === 'jurídica' || t === 'pj') return 'juridica';
+  return 'fisica';
+}
+
+// AREAS DEL DIRECTORIO (FILTRO). NO ES EL WIZARD.
+// EL MATCH ES POR INCLUSION PARA CUBRIR "Agrônomo" vs "Agrônomo / Mapeamento"
+const AREAS_ESPECIALIDADE = [
+  'Piloto de Drone',
+  'Agrônomo',
+  'Mapeamento / Fotogrametria',
+  'Topografia / Ortomosaico',
+  'Pulverização / Agrícola',
+  'Inspeção Predial / Industrial',
+  'Inspeção de Linhas / Torres',
+  'Técnico em Manutenção',
+  'Consertos / Reparos',
+  'Fotógrafo / Videomaker',
+  'Audiovisual / Eventos',
+  'Observador Visual (EVLOS)',
+  'Radio Operador (VHF)',
+  'Apoio de Solo / Logística',
+  'Busca e Resgate',
+  'Instrutor / Treinamento',
+  'Consultoria / Projetos'
+];
+
+function coincideEspecialidade(especialidade, categoria) {
+  if (!categoria || categoria === 'todas') return true;
+  const esp = String(especialidade || '').toLowerCase();
+  const cat = String(categoria).toLowerCase();
+  if (!esp) return false;
+  return esp.includes(cat) || cat.includes(esp);
+}
+
 export default function Profissionais({ abaAtiva, setAbaAtiva }) {
   const [buscaNome, setBuscaNome] = useState('');
   const [estadoUF, setEstadoUF] = useState('todos');
@@ -28,15 +66,33 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
   const [disponibilidade, setDisponibilidade] = useState('todas');
   const [certificacao, setCertificacao] = useState('todas');
   const [garantia, setGarantia] = useState('todas');
+  const [filtroTipoPersona, setFiltroTipoPersona] = useState('TODOS');
   const [buscaVaga, setBuscaVaga] = useState('');
   const [modalDados, setModalDados] = useState(null);
   const [tickLista, setTickLista] = useState(0);
   const [porPagina, setPorPagina] = useState(POR_PAGINA_PADRAO);
   const [pagina, setPagina] = useState(1);
+  // recomendadas = MAYOR avaliacao; alfabetica = NOMBRE
+  const [ordenarPor, setOrdenarPor] = useState('recomendadas');
 
   const baseProfissionais = useMemo(() => {
-    return [...lerCadastrosLocais(), ...MOCK_PROFISSIONAIS];
+    return [...lerCadastrosLocais(), ...MOCK_PROFISSIONAIS].map((pro) => ({
+      ...pro,
+      tipoPersona: normalizarTipoPersona(pro.tipoPersona)
+    }));
   }, [tickLista]);
+
+  const hayFiltrosActivos =
+    buscaNome.trim() !== '' ||
+    estadoUF !== 'todos' ||
+    cidade.trim() !== '' ||
+    categoria !== 'todas' ||
+    experiencia !== 'todos' ||
+    formaPagamento !== 'todas' ||
+    disponibilidade !== 'todas' ||
+    certificacao !== 'todas' ||
+    garantia !== 'todas' ||
+    filtroTipoPersona !== 'TODOS';
 
   const limparFiltros = () => {
     setBuscaNome('');
@@ -48,6 +104,7 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
     setDisponibilidade('todas');
     setCertificacao('todas');
     setGarantia('todas');
+    setFiltroTipoPersona('TODOS');
     setPagina(1);
   };
 
@@ -56,15 +113,25 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
       const matchNome = String(pro.nome || '').toLowerCase().includes(buscaNome.toLowerCase());
       const matchUF = estadoUF === 'todos' || pro.estado === estadoUF;
       const matchCidade = String(pro.cidade || '').toLowerCase().includes(cidade.toLowerCase());
-      const matchCat = categoria === 'todas' || pro.especialidade === categoria;
+      const matchCat = coincideEspecialidade(pro.especialidade, categoria);
       const matchExp = experiencia === 'todos' || pro.experiencia === experiencia;
       const matchPag = formaPagamento === 'todas' || String(pro.pagamento || '').includes(formaPagamento);
       const matchDisp = disponibilidade === 'todas' || pro.disponibilidade === disponibilidade;
       const matchCert = certificacao === 'todas' || pro.certificacao === certificacao;
       const matchGar = garantia === 'todas' || pro.garantia === garantia;
-      return matchNome && matchUF && matchCidade && matchCat && matchExp && matchPag && matchDisp && matchCert && matchGar;
+      const tipo = normalizarTipoPersona(pro.tipoPersona);
+      const matchTipo = filtroTipoPersona === 'TODOS' || tipo === filtroTipoPersona;
+      return matchNome && matchUF && matchCidade && matchCat && matchExp && matchPag && matchDisp && matchCert && matchGar && matchTipo;
     })
-    .sort((a, b) => String(a.nome).localeCompare(String(b.nome)));
+    .sort((a, b) => {
+      if (ordenarPor === 'alfabetica') {
+        return String(a.nome).localeCompare(String(b.nome));
+      }
+      const notaA = Number(a.avaliacao) || 0;
+      const notaB = Number(b.avaliacao) || 0;
+      if (notaB !== notaA) return notaB - notaA;
+      return (Number(b.avaliacoesQtd) || 0) - (Number(a.avaliacoesQtd) || 0);
+    });
 
   const totalFiltrado = profissionaisFiltrados.length;
   const totalPaginas = Math.max(1, Math.ceil(totalFiltrado / porPagina));
@@ -95,8 +162,21 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
     <div className="profissionais-container">
       {(abaAtiva === 'buscar-pro' || !abaAtiva) && (
         <section className="painel-catalogo">
+          <div style={{ marginBottom: 20 }}>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 800, color: '#0f172a' }}>
+              Rede de Profissionais
+            </h1>
+            <p style={{ margin: '6px 0 0 0', color: '#64748b', fontSize: 15 }}>
+              Diretório informativo de profissionais afins à operação com drones
+            </p>
+          </div>
           <div className="filtro-painel-avancado">
             <div className="filtro-grupo">
+              <select value={filtroTipoPersona} onChange={mudarFiltro(setFiltroTipoPersona)} aria-label="Tipo de pessoa">
+                <option value="TODOS">Tipo de pessoa — todos</option>
+                <option value="fisica">Pessoa física</option>
+                <option value="juridica">Pessoa jurídica</option>
+              </select>
               <input
                 type="text"
                 placeholder="Nome do profissional..."
@@ -121,10 +201,9 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
             <div className="filtro-grupo">
               <select value={categoria} onChange={mudarFiltro(setCategoria)}>
                 <option value="todas">Todas as Áreas / Especialidades</option>
-                <option value="Piloto de Drone">Piloto de Drone</option>
-                <option value="Agrônomo">Agrônomo / Mapeamento</option>
-                <option value="Técnico em Manutenção">Técnico em Manutenção</option>
-                <option value="Fotógrafo / Videomaker">Fotógrafo / Videomaker</option>
+                {AREAS_ESPECIALIDADE.map((area) => (
+                  <option key={area} value={area}>{area}</option>
+                ))}
               </select>
 
               <select value={experiencia} onChange={mudarFiltro(setExperiencia)}>
@@ -165,12 +244,41 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
               </select>
             </div>
 
-            <button className="btn-limpar-filtros" onClick={limparFiltros}>
+            <button
+              type="button"
+              className="btn-limpar-filtros"
+              onClick={limparFiltros}
+              disabled={!hayFiltrosActivos}
+              style={{
+                color: hayFiltrosActivos ? '#C46B6B' : '#94a3b8',
+                background: 'none',
+                border: 'none',
+                fontWeight: 600,
+                cursor: hayFiltrosActivos ? 'pointer' : 'default'
+              }}
+            >
               Limpar Filtros
             </button>
           </div>
 
-          <div className="contador-resultados">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 8 }}>
+            <div className="contador-resultados" style={{ margin: 0 }}>
+              Exibindo <strong>{profissionaisPagina.length}</strong> de <strong>{totalFiltrado}</strong> profissional(ais)
+              {' '}— página {paginaSegura} de {totalPaginas}.
+            </div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700 }}>
+              Ordenar por:
+              <select
+                value={ordenarPor}
+                onChange={(e) => { setOrdenarPor(e.target.value); setPagina(1); }}
+                style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #cbd5e1', background: '#fff' }}
+              >
+                <option value="recomendadas">Mais recomendados</option>
+                <option value="alfabetica">Ordem alfabética</option>
+              </select>
+            </label>
+          </div>
+          <div className="contador-resultados" style={{ display: 'none' }}>
             Exibindo <strong>{profissionaisPagina.length}</strong> de <strong>{totalFiltrado}</strong> profissional(ais)
             {' '}— página {paginaSegura} de {totalPaginas}.
           </div>
@@ -179,11 +287,32 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
             <div className="sem-resultados">Nenhum profissional encontrado com os filtros aplicados.</div>
           ) : (
             <div className="grid-profissionais">
-              {profissionaisPagina.map((pro) => (
+              {profissionaisPagina.map((pro) => {
+                const tipo = normalizarTipoPersona(pro.tipoPersona);
+                return (
                 <div key={pro.id} className="card-profissional">
                   <div>
                     <span className="badge-especialidade">{pro.especialidade}</span>
-                    <h3>{pro.nome}</h3>
+                    <span style={{
+                      display: 'inline-block',
+                      marginLeft: 8,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 12,
+                      background: tipo === 'juridica' ? '#e0f2fe' : '#f1f5f9',
+                      color: tipo === 'juridica' ? '#0369a1' : '#475569'
+                    }}>
+                      {tipo === 'juridica' ? 'Pessoa jurídica' : 'Pessoa física'}
+                    </span>
+                    <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                      <span>{pro.nome}</span>
+                      {pro.avaliacao != null && (
+                        <span style={{ fontSize: 13, color: '#0077C8', fontWeight: 800, whiteSpace: 'nowrap' }}>
+                          ★ {Number(pro.avaliacao).toFixed(1)}
+                        </span>
+                      )}
+                    </h3>
                     <p>📍 {pro.cidade}{pro.estado ? ` - ${pro.estado}` : ''}</p>
                     <p>📄 {pro.registro}</p>
                     <p>⏱️ Exp: <strong>{pro.experiencia}</strong> | 📅 {pro.disponibilidade}</p>
@@ -192,7 +321,8 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
                     Entrar em Contato
                   </button>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
@@ -255,7 +385,7 @@ export default function Profissionais({ abaAtiva, setAbaAtiva }) {
                     <p>🏢 <strong>{vaga.empresa}</strong></p>
                     <p>📍 {vaga.local}</p>
                   </div>
-                  <button className="btn-vaga-contato">
+                  <button type="button" className="btn-vaga-contato">
                     Candidatar-se / Contato
                   </button>
                 </div>

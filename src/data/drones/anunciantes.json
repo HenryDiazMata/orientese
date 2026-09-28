@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "tipoPersona": "juridica",
+    "nome": "AeroPeças Brasil",
+    "segmento": "Peças e acessórios",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "resumo": "Linha de reposição para DJI e Autel. Dado fictício de diretório."
+  },
+  {
+    "id": 2,
+    "tipoPersona": "juridica",
+    "nome": "Campo Alto Seguros",
+    "segmento": "Seguro aeronáutico / RC",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "resumo": "Cobertura informativa para operadores. Dado fictício de diretório."
+  },
+  {
+    "id": 3,
+    "tipoPersona": "juridica",
+    "nome": "NuvemGeo Software",
+    "segmento": "Software / processamento",
+    "cidade": "Florianópolis",
+    "estado": "SC",
+    "resumo": "Processamento de imagens e NDVI. Dado fictício de diretório."
+  },
+  {
+    "id": 4,
+    "tipoPersona": "fisica",
+    "nome": "Helena Costa — consultoria",
+    "segmento": "Treinamento / consultoria",
+    "cidade": "Belo Horizonte",
+    "estado": "MG",
+    "resumo": "Mentoria de operação EVLOS. Dado fictício de diretório."
+  }
+]

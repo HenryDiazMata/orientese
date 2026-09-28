@@ -1,36 +1,47 @@
+// ==========================================
+// CONSERTOS.JSX
+// DIRECTORIO DE OFICINAS / CONSERTOS (ROL)
+// FORMULARIO = CadastroConserto.jsx — NO TOCAR
+// MOCKS = src/data/drones/consertos.json
+// TIPO PERSONA = FILTRO + SELLO EN CARD. NO ES ITEM DEL SIDEBAR
+// LIMPAR FILTROS = ABAJO, COLOR #C46B6B
+// NO REABRIR AUTH / SSO
+// DATOS FICTICIOS DE IA
+// ==========================================
+
 import React, { useState, useMemo } from 'react';
-import { 
-  Wrench, 
-  PlusCircle, 
-  XCircle, 
-  LogIn, 
-  LogOut, 
-  Search, 
-  Filter, 
-  RotateCcw, 
-  MapPin, 
-  Star, 
-  Award, 
-  DollarSign, 
-  Zap, 
-  Package, 
-  Building, 
-  Truck, 
-  Clock, 
-  ShieldCheck, 
-  MessageSquare, 
-  List, 
-  Map, 
-  Tag, 
-  CheckSquare, 
-  User, 
-  Lock 
+import {
+  Wrench,
+  PlusCircle,
+  XCircle,
+  LogIn,
+  Search,
+  Filter,
+  RotateCcw,
+  MapPin,
+  Star,
+  Award,
+  DollarSign,
+  Zap,
+  Package,
+  Building,
+  Building2,
+  User,
+  Truck,
+  Clock,
+  ShieldCheck,
+  MessageSquare,
+  List,
+  Map,
+  Tag,
+  Lock
 } from 'lucide-react';
 import CadastroConserto from "../../components/drones/formularios/CadastroConserto";
+import CONSERTOS_MOCK from '../../data/drones/consertos.json';
 
 const ESTADOS_BRASIL = [
-  'Todos os Estados', 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 
-  'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 
+  'Todos os Estados', 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
+  'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
   'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
 ];
 
@@ -48,71 +59,51 @@ const TIPOS_CONSERTO = [
 
 const TAGS_BUSCA_RAPIDA = ['Orçamento Grátis', 'Autorizada', 'Queda', 'Gimbal', 'Braço Quebrado', 'DJI Mini', 'São Paulo'];
 
-const CONSERTOS_MOCK = [
-  {
-    id: 1,
-    nomeEmpresa: 'UTI dos Drones - Consertos Rápidos',
-    responsavelTecnico: 'Marcos Vinícius',
-    whatsapp: '11977775555',
-    estado: 'SP',
-    cidade: 'São Paulo',
-    marcasAtendidas: 'Linha DJI Mavic, Mini, Air e Phantom',
-    especialidades: ['Troca de Braço / Estrutura Quebrada', 'Reparo / Troca de Gimbal e Câmera', 'Recuperação após Queda / Colisão'],
-    tempoMedioConserto: '24h a 48h',
-    garantiaDias: '90 dias',
-    oficinaAutorizada: true,
-    orcamentoGratuito: true,
-    temPecasEstoque: true,
-    atendeEnvioCorreios: true,
-    atendimentoPresencial: true,
-    servicoColetaLocal: false,
-    avaliacao: 5.0,
-    avaliacoesQtd: 34
-  },
-  {
-    id: 2,
-    nomeEmpresa: 'Express Drone Reparos',
-    responsavelTecnico: 'Lucas Mendes',
-    whatsapp: '19988884444',
-    estado: 'SP',
-    cidade: 'Campinas',
-    marcasAtendidas: 'DJI, Autel',
-    especialidades: ['Troca de Motores / ESCs', 'Reparo por Danos por Água / Umidade'],
-    tempoMedioConserto: '3 a 5 dias',
-    garantiaDias: '90 dias',
-    oficinaAutorizada: false,
-    orcamentoGratuito: true,
-    temPecasEstoque: false,
-    atendeEnvioCorreios: true,
-    atendimentoPresencial: false,
-    servicoColetaLocal: true,
-    avaliacao: 4.8,
-    avaliacoesQtd: 19
-  }
+const TIPOS_PERSONA = [
+  { value: 'TODOS', label: 'Todos os tipos' },
+  { value: 'fisica', label: 'Pessoa física' },
+  { value: 'juridica', label: 'Pessoa jurídica' }
 ];
 
+function normalizarTipoPersona(valor) {
+  const t = String(valor || '').toLowerCase().trim();
+  if (t === 'juridica' || t === 'jurídica' || t === 'pj') return 'juridica';
+  return 'fisica';
+}
+
 export default function ConsertosView() {
-  const [modo, setModo] = useState('lista'); // 'lista' | 'cadastro' | 'login'
+  const [modo, setModo] = useState('lista');
   const [vistaResultados, setVistaResultados] = useState('lista');
 
-  // Estado del formulario Login
   const [loginEmail, setLoginEmail] = useState('');
   const [loginSenha, setLoginSenha] = useState('');
 
-  // Filtros
   const [filtroConserto, setFiltroConserto] = useState('Todos os Consertos');
-  const [filtroEstado, setFiltroEstado] = useState('SP');
+  const [filtroEstado, setFiltroEstado] = useState('Todos os Estados');
   const [filtroTexto, setFiltroTexto] = useState('');
+  const [filtroTipoPersona, setFiltroTipoPersona] = useState('TODOS');
   const [somenteOrcamentoGratis, setSomenteOrcamentoGratis] = useState(false);
   const [somenteAutorizada, setSomenteAutorizada] = useState(false);
   const [somentePecasProntas, setSomentePecasProntas] = useState(false);
   const [aceitaEnvios, setAceitaEnvios] = useState(false);
   const [ordenarPor, setOrdenarPor] = useState('recomendadas');
 
+  const hayFiltrosActivos =
+    filtroConserto !== 'Todos os Consertos' ||
+    filtroEstado !== 'Todos os Estados' ||
+    filtroTexto.trim() !== '' ||
+    filtroTipoPersona !== 'TODOS' ||
+    somenteOrcamentoGratis ||
+    somenteAutorizada ||
+    somentePecasProntas ||
+    aceitaEnvios ||
+    ordenarPor !== 'recomendadas';
+
   const handleLimparFiltros = () => {
     setFiltroConserto('Todos os Consertos');
     setFiltroEstado('Todos os Estados');
     setFiltroTexto('');
+    setFiltroTipoPersona('TODOS');
     setSomenteOrcamentoGratis(false);
     setSomenteAutorizada(false);
     setSomentePecasProntas(false);
@@ -136,9 +127,12 @@ export default function ConsertosView() {
   };
 
   const consertosFiltrados = useMemo(() => {
-    return CONSERTOS_MOCK.filter(item => {
+    return CONSERTOS_MOCK.filter((item) => {
+      const tipo = normalizarTipoPersona(item.tipoPersona);
+      if (filtroTipoPersona !== 'TODOS' && tipo !== filtroTipoPersona) return false;
+
       if (filtroConserto !== 'Todos os Consertos') {
-        const tieneConserto = item.especialidades.some(esp => 
+        const tieneConserto = (item.especialidades || []).some((esp) =>
           esp.toLowerCase().includes(filtroConserto.toLowerCase())
         );
         if (!tieneConserto) return false;
@@ -150,11 +144,11 @@ export default function ConsertosView() {
 
       if (filtroTexto.trim() !== '') {
         const termo = filtroTexto.toLowerCase();
-        const coincideNome = item.nomeEmpresa.toLowerCase().includes(termo);
-        const coincideCidade = item.cidade.toLowerCase().includes(termo);
-        const coincideMarca = item.marcasAtendidas.toLowerCase().includes(termo);
-        
-        if (!coincideNome && !coincideCidade && !coincideMarca) return false;
+        const coincideNome = (item.nomeEmpresa || '').toLowerCase().includes(termo);
+        const coincideCidade = (item.cidade || '').toLowerCase().includes(termo);
+        const coincideMarca = (item.marcasAtendidas || '').toLowerCase().includes(termo);
+        const coincideRazao = (item.razaoSocial || '').toLowerCase().includes(termo);
+        if (!coincideNome && !coincideCidade && !coincideMarca && !coincideRazao) return false;
       }
 
       if (somenteOrcamentoGratis && !item.orcamentoGratuito) return false;
@@ -168,7 +162,7 @@ export default function ConsertosView() {
       if (ordenarPor === 'alfabetica') return a.nomeEmpresa.localeCompare(b.nomeEmpresa);
       return 0;
     });
-  }, [filtroConserto, filtroEstado, filtroTexto, somenteOrcamentoGratis, somenteAutorizada, somentePecasProntas, aceitaEnvios, ordenarPor]);
+  }, [filtroConserto, filtroEstado, filtroTexto, filtroTipoPersona, somenteOrcamentoGratis, somenteAutorizada, somentePecasProntas, aceitaEnvios, ordenarPor]);
 
   const selectStyle = {
     width: '100%',
@@ -188,12 +182,10 @@ export default function ConsertosView() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      
-      {/* CABECERA */}
-      <div style={{ 
-        display: 'flex', 
-        justify: 'space-between', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: '20px',
         flexWrap: 'wrap',
         gap: '15px'
@@ -210,6 +202,7 @@ export default function ConsertosView() {
 
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
+            type="button"
             onClick={() => setModo(modo === 'cadastro' ? 'lista' : 'cadastro')}
             style={{ padding: '10px 18px', fontSize: '14px', fontWeight: 'bold', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', backgroundColor: '#2563eb', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
@@ -218,6 +211,7 @@ export default function ConsertosView() {
           </button>
 
           <button
+            type="button"
             onClick={() => setModo(modo === 'login' ? 'lista' : 'login')}
             style={{ padding: '10px 18px', fontSize: '14px', fontWeight: 'bold', borderRadius: '6px', border: 'none', cursor: 'pointer', backgroundColor: '#14b8a6', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
@@ -227,16 +221,14 @@ export default function ConsertosView() {
         </div>
       </div>
 
-      {/* VISTA DE CADASTRO */}
       {modo === 'cadastro' && (
         <CadastroConserto onVoltar={() => setModo('lista')} />
       )}
 
-      {/* VISTA DE LOGIN / MEU PERFIL */}
       {modo === 'login' && (
         <div style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.05)',
-          border: '1px solid #4b5563',
+          backgroundColor: '#ffffff',
+          border: '1px solid #e2e8f0',
           borderRadius: '10px',
           padding: '25px',
           marginBottom: '30px',
@@ -305,6 +297,7 @@ export default function ConsertosView() {
           <div style={{ marginTop: '15px', textAlign: 'center', fontSize: '12px' }}>
             <span>Ainda não possui cadastro? </span>
             <button
+              type="button"
               onClick={() => setModo('cadastro')}
               style={{ background: 'none', border: 'none', color: '#2563eb', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}
             >
@@ -314,37 +307,35 @@ export default function ConsertosView() {
         </div>
       )}
 
-      {/* VISTA DE LISTA DE RESULTADOS */}
       {modo === 'lista' && (
         <div>
-          {/* BARRA DE FILTROS */}
           <div style={{
-            border: '1px solid #4b5563',
+            border: '1px solid #e2e8f0',
             borderRadius: '8px',
             padding: '20px',
             marginBottom: '25px',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            backgroundColor: '#ffffff',
             boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-              <h4 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Filter size={18} />
-                Filtrar por Tipo de Dano, Local e Facilidades
-              </h4>
-              <button
-                onClick={handleLimparFiltros}
-                style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
-              >
-                <RotateCcw size={14} />
-                Limpar Filtros
-              </button>
-            </div>
-            
+            <h4 style={{ margin: '0 0 15px 0', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Filter size={18} />
+              Filtrar por Tipo de Dano, Local e Facilidades
+            </h4>
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '15px' }}>
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '6px' }}>Tipo de pessoa</label>
+                <select value={filtroTipoPersona} onChange={(e) => setFiltroTipoPersona(e.target.value)} style={selectStyle}>
+                  {TIPOS_PERSONA.map((t) => (
+                    <option key={t.value} value={t.value} style={optionStyle}>{t.label}</option>
+                  ))}
+                </select>
+              </div>
+
               <div>
                 <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '6px' }}>1. Tipo de Conserto</label>
                 <select value={filtroConserto} onChange={(e) => setFiltroConserto(e.target.value)} style={selectStyle}>
-                  {TIPOS_CONSERTO.map(tipo => (
+                  {TIPOS_CONSERTO.map((tipo) => (
                     <option key={tipo} value={tipo} style={optionStyle}>{tipo}</option>
                   ))}
                 </select>
@@ -353,7 +344,7 @@ export default function ConsertosView() {
               <div>
                 <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginBottom: '6px' }}>2. Estado (UF)</label>
                 <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)} style={selectStyle}>
-                  {ESTADOS_BRASIL.map(uf => (
+                  {ESTADOS_BRASIL.map((uf) => (
                     <option key={uf} value={uf} style={optionStyle}>{uf}</option>
                   ))}
                 </select>
@@ -371,13 +362,13 @@ export default function ConsertosView() {
               </div>
             </div>
 
-            {/* TAGS BÚSQUEDA RÁPIDA */}
             <div style={{ marginTop: '14px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '12px', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Tag size={12} /> Busca rápida:
               </span>
-              {TAGS_BUSCA_RAPIDA.map(tag => (
+              {TAGS_BUSCA_RAPIDA.map((tag) => (
                 <button
+                  type="button"
                   key={tag}
                   onClick={() => handleAplicarTag(tag)}
                   style={{
@@ -395,8 +386,7 @@ export default function ConsertosView() {
               ))}
             </div>
 
-            {/* CHECKBOXES DE FILTRO */}
-            <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px dashed #6b7280', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px dashed #cbd5e1', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
               <label style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
                 <input type="checkbox" checked={somenteOrcamentoGratis} onChange={(e) => setSomenteOrcamentoGratis(e.target.checked)} />
                 <DollarSign size={14} color="#166534" /> Orçamento Gratuito
@@ -417,20 +407,43 @@ export default function ConsertosView() {
                 <Package size={14} color="#3730a3" /> Aceita envio por Correios / Sedex
               </label>
             </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
+              <button
+                type="button"
+                onClick={handleLimparFiltros}
+                disabled={!hayFiltrosActivos}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: hayFiltrosActivos ? '#C46B6B' : '#94a3b8',
+                  cursor: hayFiltrosActivos ? 'pointer' : 'default',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '6px 0'
+                }}
+              >
+                <RotateCcw size={14} />
+                Limpar Filtros
+              </button>
+            </div>
           </div>
 
-          {/* VISTA Y ORDENAMIENTO */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
-            <div style={{ display: 'flex', border: '1px solid #6b7280', borderRadius: '6px', padding: '2px', backgroundColor: 'rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '2px', backgroundColor: '#f8fafc' }}>
               <button
+                type="button"
                 onClick={() => setVistaResultados('lista')}
-                style={{ 
-                  padding: '6px 14px', 
-                  border: 'none', 
-                  borderRadius: '4px', 
-                  fontSize: '13px', 
-                  fontWeight: 'bold', 
-                  cursor: 'pointer', 
+                style={{
+                  padding: '6px 14px',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '13px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
                   backgroundColor: vistaResultados === 'lista' ? '#2563eb' : 'transparent',
                   color: vistaResultados === 'lista' ? '#ffffff' : 'inherit',
                   display: 'flex',
@@ -441,14 +454,15 @@ export default function ConsertosView() {
                 <List size={16} /> Lista ({consertosFiltrados.length})
               </button>
               <button
+                type="button"
                 onClick={() => setVistaResultados('mapa')}
-                style={{ 
-                  padding: '6px 14px', 
-                  border: 'none', 
-                  borderRadius: '4px', 
-                  fontSize: '13px', 
-                  fontWeight: 'bold', 
-                  cursor: 'pointer', 
+                style={{
+                  padding: '6px 14px',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '13px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
                   backgroundColor: vistaResultados === 'mapa' ? '#2563eb' : 'transparent',
                   color: vistaResultados === 'mapa' ? '#ffffff' : 'inherit',
                   display: 'flex',
@@ -469,33 +483,51 @@ export default function ConsertosView() {
             </div>
           </div>
 
-          {/* TARJETAS DE RESULTADOS */}
           {vistaResultados === 'lista' ? (
             consertosFiltrados.length > 0 ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-                {consertosFiltrados.map((item) => (
-                  <div 
+                {consertosFiltrados.map((item) => {
+                  const tipo = normalizarTipoPersona(item.tipoPersona);
+                  const esJuridica = tipo === 'juridica';
+                  return (
+                  <div
                     key={item.id}
                     style={{
-                      border: '1px solid #4b5563',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '10px',
                       padding: '20px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                      backgroundColor: '#ffffff',
                       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.08)',
                       display: 'flex',
                       flexDirection: 'column',
-                      justify: 'space-between'
+                      justifyContent: 'space-between'
                     }}
                   >
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                         <div>
                           <h3 style={{ margin: 0, fontSize: '18px', color: '#2563eb' }}>{item.nomeEmpresa}</h3>
-                          {item.oficinaAutorizada && (
-                            <span style={{ fontSize: '11px', backgroundColor: '#3b82f6', color: '#ffffff', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                              <Award size={12} /> Oficina Autorizada
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
+                            <span style={{
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              padding: '2px 8px',
+                              borderRadius: '12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              backgroundColor: esJuridica ? '#e0f2fe' : '#f1f5f9',
+                              color: esJuridica ? '#0369a1' : '#475569'
+                            }}>
+                              {esJuridica ? <Building2 size={12} /> : <User size={12} />}
+                              {esJuridica ? 'Pessoa jurídica' : 'Pessoa física'}
                             </span>
-                          )}
+                            {item.oficinaAutorizada && (
+                              <span style={{ fontSize: '11px', backgroundColor: '#3b82f6', color: '#ffffff', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                <Award size={12} /> Oficina Autorizada
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <span style={{ fontSize: '12px', backgroundColor: '#fef3c7', color: '#b45309', fontWeight: 'bold', padding: '2px 8px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                           <Star size={12} fill="#b45309" /> {item.avaliacao} ({item.avaliacoesQtd})
@@ -506,7 +538,6 @@ export default function ConsertosView() {
                         <MapPin size={14} /> {item.cidade} - {item.estado} | Resp: {item.responsavelTecnico}
                       </p>
 
-                      {/* BADGES DE PRAZO, GARANTIA E FACILIDADES */}
                       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '15px' }}>
                         {item.orcamentoGratuito && (
                           <span style={{ fontSize: '11px', backgroundColor: '#dcfce7', color: '#166534', padding: '3px 8px', borderRadius: '4px', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
@@ -555,7 +586,7 @@ export default function ConsertosView() {
                           Consertos Frequentes:
                         </span>
                         <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-                          {item.especialidades.map(esp => (
+                          {(item.especialidades || []).map((esp) => (
                             <span key={esp} style={{ fontSize: '11px', border: '1px solid #9ca3af', padding: '2px 7px', borderRadius: '4px' }}>
                               {esp}
                             </span>
@@ -565,7 +596,7 @@ export default function ConsertosView() {
                     </div>
 
                     <a
-                      href={`https://wa.me/55${item.whatsapp.replace(/\D/g, '')}?text=Olá!%20Encontrei%20sua%20oficina%20no%20Drones.Orientese%20e%20preciso%20de%20um%20orçamento.`}
+                      href={`https://wa.me/55${String(item.whatsapp || '').replace(/\D/g, '')}?text=Olá!%20Encontrei%20sua%20oficina%20no%20Drones.Orientese%20e%20preciso%20de%20um%20orçamento.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -587,7 +618,8 @@ export default function ConsertosView() {
                       Solicitar Orçamento via WhatsApp
                     </a>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '40px 20px', opacity: 0.8, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
@@ -601,10 +633,8 @@ export default function ConsertosView() {
               <h3>Mapa de Oficinas de Conserto</h3>
             </div>
           )}
-
         </div>
       )}
-
     </div>
   );
 }

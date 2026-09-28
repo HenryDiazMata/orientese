@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "titulo": "Piloto para Pulverização de Cana",
+    "empresa": "Usina Santa Maria",
+    "tipoPersona": "juridica",
+    "local": "Ribeirão Preto",
+    "estado": "SP",
+    "contrato": "Safra / Temporário",
+    "area": "Pulverização / Agrícola",
+    "descricao": "Operação de pulverização em canavial na safra. Dado fictício de diretório."
+  },
+  {
+    "id": 2,
+    "titulo": "Mapeamento Agrícola com Drones",
+    "empresa": "AgroGeo Topografia",
+    "tipoPersona": "juridica",
+    "local": "Uberlândia",
+    "estado": "MG",
+    "contrato": "PJ / Prestação de Serviço",
+    "area": "Mapeamento / Fotogrametria",
+    "descricao": "Levantamentos e ortomosaicos para propriedade rural. Dado fictício de diretório."
+  },
+  {
+    "id": 3,
+    "titulo": "Técnico de Manutenção DJI",
+    "empresa": "DroneFix Soluções",
+    "tipoPersona": "juridica",
+    "local": "Cascavel",
+    "estado": "PR",
+    "contrato": "CLT",
+    "area": "Técnico em Manutenção",
+    "descricao": "Bancada e campo para linha DJI. Dado fictício de diretório."
+  },
+  {
+    "id": 4,
+    "titulo": "Operador EVLOS — apoio de safra",
+    "empresa": "João Henrique Prado",
+    "tipoPersona": "fisica",
+    "local": "Campinas",
+    "estado": "SP",
+    "contrato": "Por diária",
+    "area": "Observador Visual (EVLOS)",
+    "descricao": "Vaga informal de apoio visual em missões. Dado fictício de diretório."
+  }
+]

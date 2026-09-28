@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "tipoPersona": "juridica",
+    "nomeEmpresa": "UTI dos Drones - Consertos Rápidos",
+    "razaoSocial": "UTI dos Drones Consertos Rápidos Ltda",
+    "responsavelTecnico": "Marcos Vinícius",
+    "whatsapp": "11977775555",
+    "estado": "SP",
+    "cidade": "São Paulo",
+    "marcasAtendidas": "Linha DJI Mavic, Mini, Air e Phantom",
+    "especialidades": [
+      "Troca de Braço / Estrutura Quebrada",
+      "Reparo / Troca de Gimbal e Câmera",
+      "Recuperação após Queda / Colisão"
+    ],
+    "tempoMedioConserto": "24h a 48h",
+    "garantiaDias": "90 dias",
+    "oficinaAutorizada": true,
+    "orcamentoGratuito": true,
+    "temPecasEstoque": true,
+    "atendeEnvioCorreios": true,
+    "atendimentoPresencial": true,
+    "servicoColetaLocal": false,
+    "avaliacao": 5.0,
+    "avaliacoesQtd": 34
+  },
+  {
+    "id": 2,
+    "tipoPersona": "juridica",
+    "nomeEmpresa": "Express Drone Reparos",
+    "razaoSocial": "Express Drone Reparos Ltda",
+    "responsavelTecnico": "Lucas Mendes",
+    "whatsapp": "19988884444",
+    "estado": "SP",
+    "cidade": "Campinas",
+    "marcasAtendidas": "DJI, Autel",
+    "especialidades": [
+      "Troca de Motores / ESCs",
+      "Reparo por Danos por Água / Umidade"
+    ],
+    "tempoMedioConserto": "3 a 5 dias",
+    "garantiaDias": "90 dias",
+    "oficinaAutorizada": false,
+    "orcamentoGratuito": true,
+    "temPecasEstoque": false,
+    "atendeEnvioCorreios": true,
+    "atendimentoPresencial": false,
+    "servicoColetaLocal": true,
+    "avaliacao": 4.8,
+    "avaliacoesQtd": 19
+  },
+  {
+    "id": 3,
+    "tipoPersona": "fisica",
+    "nomeEmpresa": "Oficina do Renato",
+    "razaoSocial": null,
+    "responsavelTecnico": "Renato Alves",
+    "whatsapp": "31977665544",
+    "estado": "MG",
+    "cidade": "Belo Horizonte",
+    "marcasAtendidas": "DJI Mini e Air",
+    "especialidades": [
+      "Troca de Shell / Carcaça",
+      "Calibração e Atualização de Firmware"
+    ],
+    "tempoMedioConserto": "5 a 7 dias",
+    "garantiaDias": "60 dias",
+    "oficinaAutorizada": false,
+    "orcamentoGratuito": true,
+    "temPecasEstoque": true,
+    "atendeEnvioCorreios": false,
+    "atendimentoPresencial": true,
+    "servicoColetaLocal": false,
+    "avaliacao": 4.6,
+    "avaliacoesQtd": 11
+  }
+]
