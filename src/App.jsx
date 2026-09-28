@@ -1,65 +1,118 @@
 // ==========================================
 // ARCHIVO COMPLETO: orientese/src/App.jsx
 // PORTAL CENTRAL Y ENRUTADOR DE SUBDOMINIOS
+// LOGIN ESCRIBE orientese_user + orientese.sso
+// LOGOUT BORRA AMBAS. NO TOCA FICHAS DRONES
+// AVISA A DRONES EN LA MISMA PESTANA
 // ==========================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './App.css';
 
-// ==========================================
-// IMPORTACIONES DE COMPONENTES DE LA PLATAFORMA
-// ==========================================
 import Header from './components/orientese_HeadFooter/Header';
 import Footer from './components/orientese_HeadFooter/Footer';
-import AuthPage from './components/AuthPage'; 
+import AuthPage from './components/AuthPage';
 import FundavalView from './views/FundavalView';
 import DronesView from './views/DronesView';
 
+const LS_ORIENTESE_USER = 'orientese_user';
+const LS_SSO = 'orientese.sso';
+const EVENTO_SSO = 'orientese-sso-cambio';
+const EVENTO_IR_VISTA = 'orientese-ir-vista';
+
+function armarSsoDesdeUser(userData) {
+  if (!userData) return null;
+  const nome = String(
+    userData.nome ||
+    userData.nombre ||
+    userData.fullName ||
+    userData.name ||
+    ''
+  ).trim();
+  const email = String(userData.email || '').toLowerCase().trim();
+  const paisConta = String(
+    userData.paisConta ||
+    userData.pais ||
+    userData.country ||
+    ''
+  ).trim().toUpperCase();
+  if (!nome && !email && !paisConta) return null;
+  return { nome, email, paisConta };
+}
+
+function avisarCambioSso() {
+  try {
+    window.dispatchEvent(new Event(EVENTO_SSO));
+  } catch {
+    // SIN EVENTO SI EL NAVEGADOR NO LO SOPORTA
+  }
+}
+
+function persistirSesionPortal(userData) {
+  if (!userData) {
+    localStorage.removeItem(LS_ORIENTESE_USER);
+    localStorage.removeItem(LS_SSO);
+    avisarCambioSso();
+    return;
+  }
+  localStorage.setItem(LS_ORIENTESE_USER, JSON.stringify(userData));
+  const sso = armarSsoDesdeUser(userData);
+  if (sso) {
+    localStorage.setItem(LS_SSO, JSON.stringify(sso));
+  } else {
+    localStorage.removeItem(LS_SSO);
+  }
+  avisarCambioSso();
+}
+
 function App() {
   const { t } = useTranslation('orientese');
-  
-  // ESTADO DE NAVEGACIÓN DE VISTAS ('home', 'auth', 'drones', 'fundaval', etc.)
+
   const [view, setView] = useState('home');
 
-  // ESTADO DE SESIÓN DE USUARIO GLOBAL (PORTAL PRINCIPAL)
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('orientese_user');
+      const savedUser = localStorage.getItem(LS_ORIENTESE_USER);
       return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
     }
   });
 
-  // FUNCIÓN PARA CERRAR SESIÓN GLOBAL
+  useEffect(() => {
+    const onIrVista = (ev) => {
+      const destino = ev && ev.detail;
+      if (destino === 'auth' || destino === 'home') {
+        setView(destino);
+      }
+    };
+    window.addEventListener(EVENTO_IR_VISTA, onIrVista);
+    return () => window.removeEventListener(EVENTO_IR_VISTA, onIrVista);
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem('orientese_user');
+    persistirSesionPortal(null);
     setUser(null);
     setView('home');
   };
 
-  // EVALÚA SI ESTAMOS EN SUBDOMINIOS QUE TIENEN NAVEGACIÓN PROPIA COMPLETA
   const esVistaFundaval = view.startsWith('fundaval');
   const esVistaDrones = view.startsWith('drones');
   const ocultarHeaderFooterGlobal = esVistaFundaval || esVistaDrones;
 
   return (
     <div className={`app-root ${esVistaFundaval ? 'fundaval-mode' : ''}`}>
-      
-      {/* HEADER GENERAL DE ORIENTESE (SE OCULTA EN FUNDAVAL Y DRONES) */}
+
       {!ocultarHeaderFooterGlobal && (
         <Header user={user} onLogout={handleLogout} setView={setView} />
       )}
 
-      {/* CONTENEDOR PRINCIPAL: USA MAIN-CONTENT-FULL CUANDO SE OCULTA EL HEADER GLOBAL */}
       <main className={ocultarHeaderFooterGlobal ? 'main-content-full' : 'main-content'}>
-        
-        {/* PORTADA PRINCIPAL / GRID DE TARJETAS DE SUBDOMINIOS */}
+
         {view === 'home' && (
           <section className="services-grid">
-            
-            {/* TARJETA 1: DRONES */}
+
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/drones/LogoDrones11.png" alt="Drones" className="card-image" />
@@ -73,7 +126,6 @@ function App() {
               </div>
             </div>
 
-            {/* TARJETA 2: FUNDAVAL */}
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/fundaval/FUNDAVAL_ALP_imagotipo_01.jpg" alt="Fundaval" className="card-image" />
@@ -87,7 +139,6 @@ function App() {
               </div>
             </div>
 
-            {/* TARJETA 3: OFERTAS */}
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/ofertas/logo_ofertas.gif" alt="Ofertas" className="card-image" />
@@ -101,7 +152,6 @@ function App() {
               </div>
             </div>
 
-            {/* TARJETA 4: MASONERÍA */}
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/masoneria/logo_masoneria.gif" alt="Masonería" className="card-image" />
@@ -115,7 +165,6 @@ function App() {
               </div>
             </div>
 
-            {/* TARJETA 5: AQUAVIÁRIOS */}
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/aquaviarios/logo_aquaviarios.gif" alt="Aquaviários" className="card-image" />
@@ -129,7 +178,6 @@ function App() {
               </div>
             </div>
 
-            {/* TARJETA 6: TURISMO */}
             <div className="service-card">
               <div className="card-image-container">
                 <img src="/logos/turismo/logo_turismo.gif" alt="Turismo" className="card-image" />
@@ -146,17 +194,14 @@ function App() {
           </section>
         )}
 
-        {/* SUBDOMINIO FUNDAVAL */}
         {view === 'fundaval' && (
           <FundavalView onNavigate={(destino) => setView(destino || 'home')} />
         )}
 
-        {/* SUBDOMINIO DRONES */}
         {view === 'drones' && (
           <DronesView onNavigate={(destino) => setView(destino || 'home')} />
         )}
 
-        {/* OTROS SUBDOMINIOS */}
         {view === 'ofertas' && (
           <div className="subdomain-view-container">
             <button onClick={() => setView('home')}>← Volver</button>
@@ -182,13 +227,21 @@ function App() {
           </div>
         )}
 
-        {/* AUTENTICACIÓN GLOBAL */}
+       {view === 'perfil' && (
+          <div className="subdomain-view-container">
+            <button type="button" onClick={() => setView('home')}>← Volver</button>
+            <h2>Mi perfil</h2>
+            <p>{user && (user.nombre || user.nome || user.email)}</p>
+            <p>{user && user.email}</p>
+          </div>
+        )}
+
         {view === 'auth' && (
-          <AuthPage 
+          <AuthPage
             onBackHome={() => setView('home')}
             onLoginSuccess={(userData) => {
               setUser(userData);
-              if (userData) localStorage.setItem('orientese_user', JSON.stringify(userData));
+              persistirSesionPortal(userData);
               setView('home');
             }}
           />
@@ -196,7 +249,6 @@ function App() {
 
       </main>
 
-      {/* FOOTER GENERAL DE ORIENTESE (SE OCULTA EN FUNDAVAL Y DRONES) */}
       {!ocultarHeaderFooterGlobal && <Footer />}
 
     </div>

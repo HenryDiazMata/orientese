@@ -1,7 +1,11 @@
 // ==========================================
 // ARCHIVO COMPLETO: src/components/drones_HeaderFooter/Header.jsx
 // MENU LATERAL + FRANJA SUPERIOR
-// SIN INTERRUPTOR LIGHT/DARK (EL SITE NO LO USA)
+// VENTANITA MI PERFIL: VER PERFIL / CERRAR SESION
+// SIN SESION: INICIAR SESION → PORTAL (NO LOGIN PROPIO)
+// CERRAR SESION SOLO SALE DE DRONES
+// SIN INTERRUPTOR LIGHT/DARK
+// COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -10,11 +14,18 @@ import i18nDrones from '../drones/i18n';
 import { useAuth } from '../../context/drones/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
+// ==========================================
+// LOGOS Y DESTINO DEL PORTAL
+// ==========================================
 const LOGO_DRONES = '/logos/drones/LogoDrones11.png';
 const LOGO_PORTAL = '/logos/orientese/logorientc2018Azul01.gif';
 const FAVICON_PORTAL = '/favicon/orientese/favicon.ico';
 const URL_PORTAL = 'https://orientese.com';
+const EVENTO_IR_VISTA = 'orientese-ir-vista';
 
+// ==========================================
+// ICONOS SVG DEL MENU
+// ==========================================
 const Icon = ({ name, className = '' }) => {
   const common = {
     className,
@@ -61,7 +72,10 @@ const Icon = ({ name, className = '' }) => {
   );
 };
 
-export const Header = ({ currentView, setCurrentView }) => {
+export const Header = ({ currentView, setCurrentView, onNavigate }) => {
+  // ==========================================
+  // I18N DRONES + AUTH DRONES
+  // ==========================================
   const { t } = useTranslation(undefined, { i18n: i18nDrones });
   const { isAuthenticated, user, logout } = useAuth();
 
@@ -70,6 +84,9 @@ export const Header = ({ currentView, setCurrentView }) => {
   const [perfilMenuOpen, setPerfilMenuOpen] = useState(false);
   const perfilRef = useRef(null);
 
+  // ==========================================
+  // MENU LATERAL RECOGIDO (LOCALSTORAGE)
+  // ==========================================
   const [collapsed, setCollapsed] = useState(() => {
     try {
       return localStorage.getItem('sidebarCollapsed') === '1';
@@ -78,6 +95,9 @@ export const Header = ({ currentView, setCurrentView }) => {
     }
   });
 
+  // ==========================================
+  // LISTAS DEL SUBMENU REGISTRADOS
+  // ==========================================
   const cadastradosItems = [
     { labelKey: 'nav.pilots', id: 'PILOTOS' },
     { labelKey: 'nav.helpers', id: 'AUXILIARES' },
@@ -91,6 +111,23 @@ export const Header = ({ currentView, setCurrentView }) => {
     setCadastradosOpen(false);
     setMobileOpen(false);
     setPerfilMenuOpen(false);
+  };
+
+  // ==========================================
+  // IR AL LOGIN DEL PORTAL (NO ABRE LOGIN DRONES)
+  // ==========================================
+  const handleIrLoginPortal = () => {
+    setPerfilMenuOpen(false);
+    setMobileOpen(false);
+    if (typeof onNavigate === 'function') {
+      onNavigate('auth');
+      return;
+    }
+    try {
+      window.dispatchEvent(new CustomEvent(EVENTO_IR_VISTA, { detail: 'auth' }));
+    } catch {
+      /* SI NO HAY APP ESCUCHANDO, NO ROMPE */
+    }
   };
 
   const toggleCollapsed = () => {
@@ -116,10 +153,17 @@ export const Header = ({ currentView, setCurrentView }) => {
   const isRenovarActive = currentView === 'RENOVAR';
   const isPerfilActive = currentView === 'MEU_PERFIL' || currentView === 'PERFIL';
 
+  // ==========================================
+  // NOMBRE SSO PARA LA FRANJA
+  // ==========================================
   const nombreUsuario =
-    user?.nomeCompleto || user?.nombre || user?.name || user?.email || '';
+    user?.nomeCompleto || user?.nombre || user?.name || user?.nome || user?.email || '';
   const fotoUsuario = user?.fotoUrl || user?.foto || user?.avatar || user?.imagem || '';
 
+  // ==========================================
+  // CERRAR SESION DRONES
+  // NO BORRA orientese.sso NI LA CUENTA PORTAL
+  // ==========================================
   const handleCerrarSesion = () => {
     logout();
     setPerfilMenuOpen(false);
@@ -164,7 +208,7 @@ export const Header = ({ currentView, setCurrentView }) => {
     }`;
 
   // ==========================================
-  // FRANJA DERECHA: SOLO IDIOMA + IDENTIDAD
+  // FRANJA DERECHA: IDIOMA + VENTANITA PERFIL
   // ==========================================
   const IdentityBlock = () => (
     <div className="drones-topbar-right">
@@ -172,13 +216,18 @@ export const Header = ({ currentView, setCurrentView }) => {
         <LanguageSwitcher />
       </div>
 
-      {!isAuthenticated ? (
-        <span className="drones-perfil-inactivo" title={t('nav.doLogin')}>
-          <Icon name="user" />
-          <span>MI Perfil</span>
-        </span>
-      ) : (
-        <div className="drones-perfil-wrap" ref={perfilRef}>
+      <div className="drones-perfil-wrap" ref={perfilRef}>
+        {!isAuthenticated ? (
+          <button
+            type="button"
+            className="drones-perfil-inactivo"
+            title={t('nav.doLogin', { defaultValue: 'Iniciar sesión' })}
+            onClick={() => setPerfilMenuOpen((prev) => !prev)}
+          >
+            <Icon name="user" />
+            <span>MI Perfil</span>
+          </button>
+        ) : (
           <button
             type="button"
             className={`drones-perfil-activo ${isPerfilActive ? 'is-active' : ''}`}
@@ -194,24 +243,36 @@ export const Header = ({ currentView, setCurrentView }) => {
             )}
             <span className="drones-perfil-nombre">{nombreUsuario}</span>
           </button>
+        )}
 
-          {perfilMenuOpen && (
-            <div className="drones-perfil-menu">
-              <button type="button" onClick={() => handleSelectView('PERFIL')}>
+        {perfilMenuOpen && (
+          <div className="drones-perfil-menu">
+            {isAuthenticated ? (
+              <>
+                <button type="button" onClick={() => handleSelectView('PERFIL')}>
+                  <Icon name="user" />
+                  <span>{t('nav.myProfile', { defaultValue: 'Ver perfil' })}</span>
+                </button>
+                <button type="button" onClick={handleCerrarSesion}>
+                  <Icon name="logout" />
+                  <span>{t('nav.logout', { defaultValue: 'Cerrar sesión' })}</span>
+                </button>
+              </>
+            ) : (
+              <button type="button" onClick={handleIrLoginPortal}>
                 <Icon name="user" />
-                <span>Meu perfil</span>
+                <span>{t('nav.doLogin', { defaultValue: 'Iniciar sesión' })}</span>
               </button>
-              <button type="button" onClick={handleCerrarSesion}>
-                <Icon name="logout" />
-                <span>Cerrar sesión</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 
+  // ==========================================
+  // MENU LATERAL
+  // ==========================================
   const NavContent = () => (
     <nav className="sidebar-nav">
       <button
@@ -358,6 +419,9 @@ export const Header = ({ currentView, setCurrentView }) => {
         {!collapsed && <span>{t('nav.used')}</span>}
       </button>
 
+      {/* ==========================================
+          ACCESO AL PORTAL ORIENTESE
+          ========================================== */}
       <div className="sidebar-portal-wrap">
         <a
           href={URL_PORTAL}
@@ -384,6 +448,9 @@ export const Header = ({ currentView, setCurrentView }) => {
 
   return (
     <>
+      {/* ==========================================
+          FRANJA SUPERIOR
+          ========================================== */}
       <header className="drones-topbar">
         <button
           type="button"
@@ -409,6 +476,9 @@ export const Header = ({ currentView, setCurrentView }) => {
 
       {mobileOpen && <div className="mobile-overlay" onClick={() => setMobileOpen(false)} />}
 
+      {/* ==========================================
+          DRAWER / SIDEBAR
+          ========================================== */}
       <aside
         className={['app-sidebar', mobileOpen ? 'is-open' : '', collapsed ? 'is-collapsed' : ''].join(
           ' '

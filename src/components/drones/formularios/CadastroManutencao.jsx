@@ -2,12 +2,10 @@
 // ARCHIVO: src/components/drones/formularios/CadastroManutencao.jsx
 // FICHA INFORMATIVA DE TECNICO DE MANTENIMIENTO — NO COBRA
 // UNA CUENTA PORTAL / UNA CLAVE DRONES SI NO EXISTE / VARIOS ROLES
-// PAIS EN DATOS PERSONALES (PROMOS Y RELANZAMIENTO)
-// EJE: PREVENTIVA / CORRECTIVA / CALIBRACION / REVISION — SIN 400 H DE PILOTO
-// UI SIN DARK — SIN data-theme — SIN STYLE INLINE
-// ESTILO: CadastroForm.css
+// PAIS EN DATOS PERSONALES (PROMOS)
+// UI SIN DARK — ESTILO: CadastroForm.css
 // VOLVER SUPERIOR IZQUIERDO + INFERIOR DERECHO → HUB CADASTRO
-// IMPORT i18n: src/components/drones/i18n
+// COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
 import React, { useMemo, useState } from 'react';
@@ -26,8 +24,7 @@ const ESTADOS_BRASIL = [
 ];
 
 // ==========================================
-// PAISES ALINEADOS AL CRITERIO DEL SIMULADOR
-// AQUI NO HAY PRECIOS; SOLO CODIGO Y MONEDA DE REFERENCIA
+// PAISES — CODIGO + MONEDA DE REFERENCIA (NO ES PRECIO)
 // ==========================================
 const PAISES = [
   { code: 'BR', labelKey: 'paisBR', moeda: 'BRL' },
@@ -50,9 +47,6 @@ const PAISES = [
   { code: 'OT', labelKey: 'paisOT', moeda: '' },
 ];
 
-// ==========================================
-// TIPOS DE TRABAJO — CARD PROPIA — DOS COLUMNAS
-// ==========================================
 const SERVICOS_MANUTENCAO = [
   'preventiva',
   'corretiva',
@@ -67,9 +61,6 @@ const SERVICOS_MANUTENCAO = [
   'campo',
 ];
 
-// ==========================================
-// EQUIPOS / MARCAS QUE ATIENDE — CARD PROPIA — DOS COLUMNAS
-// ==========================================
 const MARCAS_DRONE = [
   'dji',
   'autel',
@@ -94,6 +85,11 @@ const MODALIDADES = [
 
 const FORMAS_PAGO = ['pix', 'credito', 'debito', 'boleto'];
 
+// ==========================================
+// CLAVE: SIN ESPACIOS, COMILLAS NI BARRA INVERTIDA
+// ==========================================
+const REGEX_CARACTERES_INVALIDOS = /[ "'\\]/;
+
 export default function CadastroManutencao({
   tecnicoParaEditar = null,
   onSalvar,
@@ -101,27 +97,33 @@ export default function CadastroManutencao({
   setCurrentView,
 }) {
   const { t } = useTranslation('translation', { i18n: i18nDrones });
-  const { user } = useAuth();
+  const { user, registerUser } = useAuth();
   const isEditing = Boolean(tecnicoParaEditar);
 
   // ==========================================
   // SSO PORTAL: NOMBRE Y EMAIL SOLO LECTURA
   // ==========================================
   const nomeSso =
-    (user && (user.nomeCompleto || user.nome)) ||
+    (user && (user.nomeCompleto || user.nome || user.name)) ||
     (tecnicoParaEditar && tecnicoParaEditar.nomeCompleto) ||
     '';
   const emailSso =
     (user && user.email) ||
     (tecnicoParaEditar && tecnicoParaEditar.email) ||
     '';
+  const usuarioPortal =
+    (user && (user.usuario || user.username || user.userName)) ||
+    (tecnicoParaEditar && tecnicoParaEditar.usuario) ||
+    '';
 
   // ==========================================
-  // PRELLENO PAIS: PORTAL → SESION SIMULADOR → BR
+  // PRELLENO PAIS: PORTAL → SIMULADOR → BR
   // ==========================================
   const paisInicial = (() => {
     if (tecnicoParaEditar && tecnicoParaEditar.pais) return tecnicoParaEditar.pais;
-    if (user && (user.pais || user.country)) return user.pais || user.country;
+    if (user && (user.pais || user.paisConta || user.country)) {
+      return user.pais || user.paisConta || user.country;
+    }
     try {
       const sim = window.localStorage.getItem('drones.simulador.pais');
       if (sim) return sim;
@@ -131,10 +133,15 @@ export default function CadastroManutencao({
     return 'BR';
   })();
 
+  // ==========================================
+  // CLAVE DRONES SEGUN AUTHCONTEXT
+  // ==========================================
   const yaTieneClaveDrones = Boolean(
-    (user && (user.dronesKey || user.claveDrones || user.temClaveDrones)) ||
+    (user && (user.hasDronesPassword || user.senhaDrones || user.senha)) ||
       (tecnicoParaEditar && tecnicoParaEditar.claveDrones)
   );
+  const pedirClave = !isEditing && !yaTieneClaveDrones;
+  const usuarioFijo = Boolean(usuarioPortal);
 
   const [formData, setFormData] = useState(
     tecnicoParaEditar || {
@@ -173,7 +180,10 @@ export default function CadastroManutencao({
       aceptaPropuestasEmail: true,
       contactoComercialAmplio: true,
       observacoesParticulares: '',
-      crearClaveDrones: !yaTieneClaveDrones,
+      crearClaveDrones: pedirClave,
+      usuario: usuarioPortal,
+      senha: '',
+      confirmarSenha: '',
     }
   );
 
@@ -182,6 +192,8 @@ export default function CadastroManutencao({
   );
   const [cadastroResultado, setCadastroResultado] = useState(null);
   const [erroForm, setErroForm] = useState('');
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
 
   const esBrasil = formData.pais === 'BR';
 
@@ -223,8 +235,7 @@ export default function CadastroManutencao({
   };
 
   // ==========================================
-  // CODIGO LOCAL DE IDENTIFICACION — NO ES COBRO
-  // PREFIJO M = MANTENIMIENTO
+  // CODIGO LOCAL — PREFIJO M = MANTENIMIENTO
   // ==========================================
   const generarCodigoCadastro = (dataNasc) => {
     const tipo = 'M';
@@ -240,10 +251,6 @@ export default function CadastroManutencao({
     return `${tipo}-${nascFormateada}-${dia}${mes}${ano}-1`;
   };
 
-  // ==========================================
-  // VOLVER AL HUB REGISTRO / CADASTRO — NO AL INICIO DEL SITE
-  // EL HUB CIERRA LA FICHA CON onCancelar → setTipoId(null)
-  // ==========================================
   const handleVolver = () => {
     if (typeof onCancelar === 'function') {
       onCancelar();
@@ -260,10 +267,32 @@ export default function CadastroManutencao({
       setErroForm(t('cadastroManutencao.erroServicos'));
       return;
     }
+
+    const usuarioFinal = (usuarioPortal || formData.usuario || '').trim();
+    if (pedirClave && !usuarioFinal) {
+      setErroForm(t('cadastroUsuario.usuarioOblig', { defaultValue: 'Indique un nombre de usuario.' }));
+      return;
+    }
+    if (pedirClave) {
+      if ((formData.senha || '').length < 8) {
+        setErroForm(t('cadastroUsuario.senhaCurta', { defaultValue: 'La contraseña debe tener al menos 8 caracteres.' }));
+        return;
+      }
+      if (REGEX_CARACTERES_INVALIDOS.test(formData.senha)) {
+        setErroForm(t('cadastroUsuario.senhaInvalida', { defaultValue: 'La contraseña no puede tener espacios, comillas ni barra invertida.' }));
+        return;
+      }
+      if (formData.senha !== formData.confirmarSenha) {
+        setErroForm(t('cadastroUsuario.senhaDistinta', { defaultValue: 'Las contraseñas no coinciden.' }));
+        return;
+      }
+    }
+
     setErroForm('');
 
     const registroCompleto = {
       ...formData,
+      usuario: usuarioFinal,
       nomeCompleto: nomeSso || formData.nomeCompleto,
       email: emailSso || formData.email,
       nomeProfissional: formData.nomeProfissional || nomeSso || formData.nomeCompleto,
@@ -274,8 +303,17 @@ export default function CadastroManutencao({
       tipo: 'manutencao',
       listaDestino: 'manutencao',
       fotoUrl: fotoPreview || formData.fotoUrl || null,
-      crearClaveDrones: yaTieneClaveDrones ? false : Boolean(formData.crearClaveDrones),
+      crearClaveDrones: pedirClave,
+      hasDronesPassword: pedirClave || yaTieneClaveDrones,
     };
+
+    if (!isEditing && pedirClave) {
+      const result = registerUser(registroCompleto);
+      if (!result.success) {
+        setErroForm(result.message);
+        return;
+      }
+    }
 
     setCadastroResultado(registroCompleto);
     if (onSalvar) onSalvar(registroCompleto);
@@ -285,16 +323,8 @@ export default function CadastroManutencao({
 
   return (
     <div className="cadastro-container">
-      {/* ==========================================
-          VOLVER — SUPERIOR IZQUIERDO
-          MISMA CLASE QUE EL INFERIOR
-          ========================================== */}
       <div className="cadastro-header-nav">
-        <button
-          type="button"
-          className="btn-volver-inicio"
-          onClick={handleVolver}
-        >
+        <button type="button" className="btn-volver-inicio" onClick={handleVolver}>
           {t('cadastroUsuario.volver')}
         </button>
       </div>
@@ -308,9 +338,6 @@ export default function CadastroManutencao({
         <p>{t('cadastroManutencao.subtitulo')}</p>
       </div>
 
-      {/* ==========================================
-          VERACIDAD + LEYENDA INFORMATIVA
-          ========================================== */}
       <div className="aviso-box">
         <strong>{t('cadastroManutencao.veracidadTitulo')}</strong>
         <p>{t('cadastroManutencao.veracidadTexto')}</p>
@@ -321,7 +348,9 @@ export default function CadastroManutencao({
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* 1. DATOS PERSONALES + PAIS + SSO */}
+        {/* ==========================================
+            1. DATOS PERSONALES + SSO + PAIS
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque1')}</h3>
           <div className="form-grid">
@@ -369,21 +398,12 @@ export default function CadastroManutencao({
               <input type="file" accept="image/*" onChange={handleFotoChange} />
               {fotoPreview && <img src={fotoPreview} alt="" className="preview-photo" />}
             </div>
-            {!yaTieneClaveDrones && (
-              <label className="checkbox-item full-width">
-                <input
-                  type="checkbox"
-                  name="crearClaveDrones"
-                  checked={formData.crearClaveDrones}
-                  onChange={handleChange}
-                />
-                {t('cadastroManutencao.crearClave')}
-              </label>
-            )}
           </div>
         </section>
 
-        {/* 2. CONTACTO Y DIRECCION */}
+        {/* ==========================================
+            2. CONTACTO Y DIRECCION
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque2')}</h3>
           <div className="form-grid">
@@ -467,7 +487,9 @@ export default function CadastroManutencao({
           </div>
         </section>
 
-        {/* 3. TIPOS DE TRABAJO — CARD PROPIA */}
+        {/* ==========================================
+            3. TIPOS DE TRABAJO
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque3')}</h3>
           <p className="help-text">{t('cadastroManutencao.servicosAyuda')}</p>
@@ -485,7 +507,9 @@ export default function CadastroManutencao({
           </div>
         </section>
 
-        {/* 4. EQUIPOS QUE ATIENDE — CARD PROPIA */}
+        {/* ==========================================
+            4. EQUIPOS QUE ATIENDE
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque4')}</h3>
           <p className="help-text">{t('cadastroManutencao.marcasAyuda')}</p>
@@ -503,7 +527,9 @@ export default function CadastroManutencao({
           </div>
         </section>
 
-        {/* 5. CERTIFICACIONES Y EXPERIENCIA — SIN 400 H */}
+        {/* ==========================================
+            5. CERTIFICACIONES Y EXPERIENCIA
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque5')}</h3>
           <p className="help-text">{t('cadastroManutencao.expAyuda')}</p>
@@ -541,7 +567,9 @@ export default function CadastroManutencao({
           </div>
         </section>
 
-        {/* 6. CONDICIONES DE ATENCION + MODALIDADES */}
+        {/* ==========================================
+            6. CONDICIONES DE ATENCION
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque6')}</h3>
           <p className="help-text">{t('cadastroManutencao.modalidadesAyuda')}</p>
@@ -598,7 +626,9 @@ export default function CadastroManutencao({
           </div>
         </section>
 
-        {/* 7. REGION UF — SOLO BRASIL */}
+        {/* ==========================================
+            7. REGION UF — SOLO BRASIL
+            ========================================== */}
         {esBrasil && (
           <section className="form-section">
             <h3>{t('cadastroManutencao.bloque7')}</h3>
@@ -617,7 +647,9 @@ export default function CadastroManutencao({
           </section>
         )}
 
-        {/* 8. COMERCIAL — SIN PRECIOS */}
+        {/* ==========================================
+            8. COMERCIAL — SIN PRECIOS
+            ========================================== */}
         <section className="form-section">
           <h3>{t('cadastroManutencao.bloque8')}</h3>
           <p className="help-text">{t('cadastroManutencao.panelNota')}</p>
@@ -688,10 +720,82 @@ export default function CadastroManutencao({
           </div>
         </section>
 
+        {/* ==========================================
+            PIE: USUARIO + CLAVE DRONES
+            CLAVE SOLO SI TODAVIA NO EXISTE
+            ========================================== */}
+        <section className="form-section">
+          <h3>
+            {t('cadastroUsuario.bloque6', {
+              defaultValue: 'Usuario y contraseña del subdominio drones',
+            })}
+          </h3>
+          <div className="form-group full-width">
+            <label>
+              {t('cadastroUsuario.usuario', { defaultValue: 'Nombre de usuario' })} *
+            </label>
+            <input
+              type="text"
+              name="usuario"
+              value={usuarioPortal || formData.usuario}
+              onChange={handleChange}
+              required={pedirClave}
+              readOnly={usuarioFijo}
+            />
+          </div>
+          {pedirClave && (
+            <div className="form-grid">
+              <div className="form-group">
+                <label>{t('cadastroUsuario.senha', { defaultValue: 'Contraseña' })} *</label>
+                <div className="password-wrap">
+                  <input
+                    type={mostrarSenha ? 'text' : 'password'}
+                    name="senha"
+                    value={formData.senha}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                  >
+                    {mostrarSenha
+                      ? t('cadastroUsuario.ocultar', { defaultValue: 'Ocultar' })
+                      : t('cadastroUsuario.mostrar', { defaultValue: 'Mostrar' })}
+                  </button>
+                </div>
+              </div>
+              <div className="form-group">
+                <label>
+                  {t('cadastroUsuario.confirmar', { defaultValue: 'Confirmar contraseña' })} *
+                </label>
+                <div className="password-wrap">
+                  <input
+                    type={mostrarConfirmarSenha ? 'text' : 'password'}
+                    name="confirmarSenha"
+                    value={formData.confirmarSenha}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                  >
+                    {mostrarConfirmarSenha
+                      ? t('cadastroUsuario.ocultar', { defaultValue: 'Ocultar' })
+                      : t('cadastroUsuario.mostrar', { defaultValue: 'Mostrar' })}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
         <p className="help-text">{t('cadastroManutencao.leyendaFinal')}</p>
         {erroForm && <p className="erro">{erroForm}</p>}
 
-        {/* CTA ANCHO + VOLVER ABAJO A LA DERECHA */}
         <div className="cadastro-acciones-final">
           <button type="submit" className="btn-submit">
             {isEditing
