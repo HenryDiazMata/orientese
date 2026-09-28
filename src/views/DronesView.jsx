@@ -71,7 +71,7 @@ function DronesContent({ onNavigate }) {
         return <Activar setCurrentView={setCurrentView} />;
 
       case 'RENOVAR':
-        return <Renovar />;
+        return <Renovar setCurrentView={setCurrentView} />;
 
       case 'CADASTRO':
         return <Cadastro setCurrentView={setCurrentView} />;
