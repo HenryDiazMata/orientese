@@ -15,10 +15,10 @@ import i18nDrones from '../../components/drones/i18n';
 // TEXTOS = t('inicio.frasePago') / t('inicio.fraseInformativo')
 // ==========================================
 const FRASE_PAGO_FALLBACK =
-  'El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.';
+  'Los PLANES PLUS, PRO o ÉLITE se pagan completos al ACTIVAR el que a bien haya escogido, a más tardar el 31 de diciembre de 2026. A partir del 1 de enero de 2027 se paga totalmente al momento de ACTIVARLO. Crearse una cuenta en REGISTRARSE con algún tipo de usuario no implica tomar un PLAN. INICIANTE no es plan: se paga al REGISTRARSE. Las cuotas de una tarjeta internacional las fija su banco, no drones.orientese.com.';
 
 const FRASE_INFORMATIVO_FALLBACK =
-  'drones.orientese.com ofrece solo un servicio informativo. No vende drones ni piezas ni presta servicios. Cualquier anuncio publicado es de exclusiva responsabilidad del usuario.';
+  'Este site drones.orientese.com ofrece solo un servicio informativo. No vende drones ni piezas ni accesorios. Solo damos un servicio informativo. Cualquier anuncio publicado es de exclusiva responsabilidad del usuario.';
 
 // ==========================================
 // LOGO = HEADER. FAVICON = VIÑETAS
