@@ -5,7 +5,8 @@
   },
   "inicio": {
     "h1": "INÍCIO",
- "frasePago": "Os PLANOS PLUS, PRO ou ÉLITE pagam-se por inteiro ao ATIVAR o que tiver escolhido, no mais tardar em 31 de dezembro de 2026. A partir de 1 de janeiro de 2027 paga-se totalmente no momento de ATIVÁ-LO. Criar uma conta em CADASTRAR-SE com algum tipo de usuário não implica tomar um PLANO. INICIANTE não é plano: paga-se ao CADASTRAR-SE. As parcelas de um cartão internacional são definidas pelo banco, não pela drones.orientese.com.",
+    "frasePago": "Os PLANOS PLUS, PRO ou ÉLITE pagam-se por inteiro ao ATIVAR o que tiver escolhido, no mais tardar em 31 de dezembro de 2026. A partir de 1 de janeiro de 2027 paga-se totalmente no momento de ATIVÁ-LO. Criar uma conta em CADASTRAR-SE com algum tipo de usuário não implica tomar um PLANO. INICIANTE não é plano: paga-se ao CADASTRAR-SE. As parcelas de um cartão internacional são definidas pelo banco, não pela drones.orientese.com.",
+    "fraseInformativo": "Este site drones.orientese.com oferece só um serviço informativo. Não vende drones nem peças nem acessórios. Só damos um serviço informativo. Qualquer anúncio publicado é de exclusiva responsabilidade do usuário.",
     "slide1Titulo": "ATIVANDO O SISTEMA",
     "slide1Sub": "PROMOÇÃO PRÉ-LANÇAMENTO",
     "slide2P1": "Fazendeiros, cooperativas, construtoras, empresas, escolas, pilotos, auxiliares, técnicos, engenheiros e todos os relacionados ao mundo dos drones, convidamos cordialmente a cadastrar-se e usar este novo site informativo, criado para servi-los de forma útil e agradável.",
@@ -32,8 +33,7 @@
     "btnActivar": "ATIVAR",
     "btnPlanes": "PLANOS",
     "btnBienvenida": "BOAS-VINDAS",
-    "espacioAnunciantes": "Espaço para ANUNCIANTES / PATROCINADORES",
-    "fraseInformativo": "drones.orientese.com oferece só um serviço informativo. Não vende drones nem peças nem presta serviços. Qualquer anúncio publicado é de exclusiva responsabilidade do usuário."
+    "espacioAnunciantes": "Espaço para ANUNCIANTES / PATROCINADORES"
   },
   "nav": {
     "home": "INÍCIO",
