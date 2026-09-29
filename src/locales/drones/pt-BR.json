@@ -5,7 +5,7 @@
   },
   "inicio": {
     "h1": "INÍCIO",
-    "frasePago": "O plano é pago por inteiro no cadastro. Se o cartão internacional admitir parcelas, as condições são do banco, não da drones.orientese.com.",
+ "frasePago": "Os PLANOS PLUS, PRO ou ÉLITE pagam-se por inteiro ao ATIVAR o que tiver escolhido, no mais tardar em 31 de dezembro de 2026. A partir de 1 de janeiro de 2027 paga-se totalmente no momento de ATIVÁ-LO. Criar uma conta em CADASTRAR-SE com algum tipo de usuário não implica tomar um PLANO. INICIANTE não é plano: paga-se ao CADASTRAR-SE. As parcelas de um cartão internacional são definidas pelo banco, não pela drones.orientese.com.",
     "slide1Titulo": "ATIVANDO O SISTEMA",
     "slide1Sub": "PROMOÇÃO PRÉ-LANÇAMENTO",
     "slide2P1": "Fazendeiros, cooperativas, construtoras, empresas, escolas, pilotos, auxiliares, técnicos, engenheiros e todos os relacionados ao mundo dos drones, convidamos cordialmente a cadastrar-se e usar este novo site informativo, criado para servi-los de forma útil e agradável.",
@@ -28,11 +28,12 @@
     "next": "Tela seguinte",
     "punto": "Ir à tela {{n}}",
     "btnCadastro": "CADASTRO",
-        "btnProbar": "EXPERIMENTAR O SITE",
+    "btnProbar": "EXPERIMENTAR O SITE",
     "btnActivar": "ATIVAR",
     "btnPlanes": "PLANOS",
     "btnBienvenida": "BOAS-VINDAS",
-    "espacioAnunciantes": "Espaço para ANUNCIANTES / PATROCINADORES"
+    "espacioAnunciantes": "Espaço para ANUNCIANTES / PATROCINADORES",
+    "fraseInformativo": "drones.orientese.com oferece só um serviço informativo. Não vende drones nem peças nem presta serviços. Qualquer anúncio publicado é de exclusiva responsabilidade do usuário."
   },
   "nav": {
     "home": "INÍCIO",
@@ -40,7 +41,7 @@
     "planes": "PLANOS",
     "activate": "ATIVAR",
     "renew": "RENOVAR",
-    "used": "USADOS",
+    "used": "VENDAS",
     "quote": "ORÇAMENTOS",
     "register": "CADASTRO",
     "registered": "CADASTRADOS",
@@ -58,9 +59,10 @@
     "doLogin": "Fazer login",
     "toggleTheme": "Alternar entre modo claro e escuro",
     "dark": "🌙 Dark",
-    "light": "☀️ Light"
+    "light": "☀️ Light",
+    "ventas": "VENDAS"
   },
-  "footer": {
+ "footer": {
     "contactTitle": "Contato & Endereço",
     "addressLabel": "Endereço",
     "brazil": "Brasil",
@@ -79,7 +81,10 @@
     "community": "Normas da Comunidade",
     "faq": "Perguntas Frequentes (FAQ)",
     "copy": "© 2026 drones.orientese.com - Todos os direitos reservados.",
-    "credits": "Desenvolvido por Henry Díaz com assistência das IA Gemini e Grok | Créditos de Autoria"
+    "credits": "Desenvolvido por Henry Díaz com assistência das IA Gemini e Grok | Créditos de Autoria",
+    "ventas": "Vendas",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram"
   },
   "services": {
     "title": "Nossos serviços",
@@ -236,5 +241,28 @@
       "FR": "França",
       "OTRO": "Outro país"
     }
+  },
+  "ventas": {
+    "titulo": "EN VENTA",
+    "subtitulo": "novos e usados",
+    "puente": "Quer visibilidade da marca no hub, não um equipamento?",
+    "puenteCta": "Criar anúncio ou patrocínio",
+    "buscar": "Buscar modelo, cidade…",
+    "todasCat": "Todas as categorias",
+    "todaCond": "Novo e usado",
+    "recentes": "Mais recentes",
+    "menor": "Menor preço",
+    "maior": "Maior preço",
+    "cta": "Cadastrar item",
+    "helpVisitante": "Visitante pode ver o tabuleiro. Para publicar um item, entre com a conta do hub.",
+    "vazio": "Nenhum item no momento.",
+    "voltar": "Voltar ao tabuleiro",
+    "contato": "Contato direto",
+    "semFoto": "Sem foto",
+    "disclaimer": "Orientese não intermedia a transação. Combine preço, envio e pagamento só com quem anuncia o item.",
+    "formTitulo": "Cadastrar item",
+    "formSub": "Liste um drone, peça ou acessório. O hub não intermedia a venda. O contato é direto.",
+    "avisoMarca": "Não é anúncio de marca",
+    "publicar": "PUBLICAR ITEM"
   }
 }

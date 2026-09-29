@@ -1,9 +1,12 @@
 // ==========================================
-// CADASTROANUNCIANTE.JSX
-// FICHA INFORMATIVA DE ANUNCIANTE / PATROCINADOR
+// ARCHIVO COMPLETO:
+// src/components/drones/formularios/CadastroAnunciante.jsx
+// FICHA: CREAR ANUNCIO O PATROCINIO
 // NO COBRA. VALOR = REFERENCIA BETA
 // UI CLARA — CadastroForm.css
-// MAX 6 HUECOS POR PAGINA = REGLA DE PUBLICACION, NO DEL FORM
+// MAX 6 ESPACIOS PUBLICITARIOS POR PAGINA
+// MAX 6 PAGINAS DESTINO POR AVISO
+// PATROCINIO = DESTAQUE (ORDEN 1-2 + BORDE), NO EXCLUSIVIDAD
 // ==========================================
 
 import React, { useMemo, useState } from 'react';
@@ -14,8 +17,13 @@ import {
   ESTADOS_BRASIL,
   PASOS_DURACION_DIAS,
   PRECIO_REF,
+  LEYENDA_PRECIO,
+  MAX_ESPACIOS_POR_PAGINA,
+  MAX_PATROCINADORES_POR_PAGINA,
   calcularValorReferencia,
   etiquetaDuracion,
+  etiquetaEspacio,
+  formatUSD,
 } from './anunciantesPaginas';
 
 export default function CadastroAnunciante({ onSalvar, onCancelar }) {
@@ -23,7 +31,6 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
     modalidade: 'anunciante',
     tipoPersona: 'juridica',
     nome: '',
-    segmento: '',
     pais: 'BR',
     estado: 'SP',
     cidade: '',
@@ -35,30 +42,39 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
     resumo: '',
     paginas: ['anunciantes'],
     dias: 30,
+    espacioPreferido: 0,
     logoPreview: null,
   });
   const [erro, setErro] = useState('');
 
   const esBrasil = formData.pais === 'BR';
+  const esPJ = formData.tipoPersona === 'juridica';
+  const pagsCount = (formData.paginas || []).length;
 
   const valorRef = useMemo(
     () =>
       calcularValorReferencia({
         modalidade: formData.modalidade,
-        paginasCount: (formData.paginas || []).length,
+        paginasCount: pagsCount,
         dias: formData.dias,
       }),
-    [formData.modalidade, formData.paginas, formData.dias]
+    [formData.modalidade, pagsCount, formData.dias]
   );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'dias' || name === 'espacioPreferido' ? Number(value) : value,
+    }));
   };
 
   const togglePagina = (id) => {
     setFormData((prev) => {
       const tiene = (prev.paginas || []).includes(id);
+      if (!tiene && (prev.paginas || []).length >= MAX_ESPACIOS_POR_PAGINA) {
+        return prev;
+      }
       const paginas = tiene
         ? prev.paginas.filter((p) => p !== id)
         : [...prev.paginas, id];
@@ -78,11 +94,15 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.nome.trim() || !formData.cidade.trim() || !formData.email.trim()) {
-      setErro('Preencha nome, cidade e e-mail.');
+      setErro('Preencha nome / razão social, cidade e e-mail.');
       return;
     }
     if ((formData.paginas || []).length === 0) {
       setErro('Escolha ao menos uma página para o aviso.');
+      return;
+    }
+    if ((formData.paginas || []).length > MAX_ESPACIOS_POR_PAGINA) {
+      setErro(`No máximo ${MAX_ESPACIOS_POR_PAGINA} páginas por aviso.`);
       return;
     }
     if (!formData.whatsapp.trim() && !formData.telefone.trim()) {
@@ -93,8 +113,10 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
     const agora = Date.now();
     const registro = {
       ...formData,
+      segmento: '',
       id: agora,
-      valorReferenciaBRL: valorRef,
+      valorReferenciaUSD: valorRef.usd,
+      valorReferenciaBRL: valorRef.brl,
       moedaReferencia: PRECIO_REF.moneda,
       dataInicio: new Date(agora).toISOString(),
       dataFim: new Date(agora + Number(formData.dias) * 86400000).toISOString(),
@@ -115,18 +137,38 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
       )}
 
       <div className="cadastro-header">
-        <h2>Publicar anúncio ou patrocínio</h2>
+        <h2>Criar anúncio ou patrocínio</h2>
         <p>
-          Vitrine informativa. O valor abaixo é só referência de beta — este hub não cobra agora.
+          Vitrine informativa. O valor é referência de beta — este hub não cobra agora.
+          Contato direto com a marca. Sem intermediação.
         </p>
       </div>
 
       <div className="aviso-box">
-        <strong>6 vagas por página</strong>
+        <strong>{MAX_ESPACIOS_POR_PAGINA} espaços publicitários por página</strong>
         <p>
-          Cada página do portal reserva no máximo {6} espaços. A ordem e a vigência saem deste
-          formulário (datas de início e fim).
+          Ordem de leitura: 3 colunas × 2 filas em tela larga. Patrocínio tem prioridade
+          nos espaços 1 e 2 (máx. {MAX_PATROCINADORES_POR_PAGINA} por página) e badge visual.
+          Se o número preferido estiver ocupado, vai para o próximo livre.
         </p>
+      </div>
+
+      {/* BARRA DE VALOR EN VIVO */}
+      <div className="aviso-box" style={{ background: '#E8F6FC', borderColor: '#1A8FD0' }}>
+        <strong>
+          {formData.modalidade === 'patrocinador' ? 'Patrocínio' : 'Anúncio'}
+          {' · '}
+          {etiquetaDuracion(formData.dias)}
+          {' · '}
+          {pagsCount} {pagsCount === 1 ? 'página' : 'páginas'}
+        </strong>
+        <p style={{ margin: '6px 0 0 0', fontSize: '1.25rem', fontWeight: 800, color: '#1A8FD0' }}>
+          {formatUSD(valorRef.usd)}{' '}
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#475569' }}>
+            (≈ R$ {valorRef.brl} no câmbio ref. · não cobrado)
+          </span>
+        </p>
+        <p className="help-text" style={{ marginTop: 6 }}>{LEYENDA_PRECIO}</p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -136,8 +178,8 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
             <div className="form-group">
               <label>Quero *</label>
               <select name="modalidade" value={formData.modalidade} onChange={handleChange}>
-                <option value="anunciante">Anunciar (card padrão)</option>
-                <option value="patrocinador">Patrocinar (destaque)</option>
+                <option value="anunciante">Anúncio (card padrão)</option>
+                <option value="patrocinador">Patrocínio (destaque, espaços 1–2)</option>
               </select>
             </div>
             <div className="form-group">
@@ -154,21 +196,11 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
           <h3>2. Identificação</h3>
           <div className="form-grid">
             <div className="form-group">
-              <label>{formData.tipoPersona === 'juridica' ? 'Razão / nome comercial *' : 'Nome *'}</label>
+              <label>{esPJ ? 'Razão social *' : 'Nome *'}</label>
               <input type="text" name="nome" value={formData.nome} onChange={handleChange} required />
             </div>
-            <div className="form-group">
-              <label>Segmento</label>
-              <input
-                type="text"
-                name="segmento"
-                value={formData.segmento}
-                onChange={handleChange}
-                placeholder="Peças, seguro, software, treino..."
-              />
-            </div>
             <div className="form-group full-width">
-              <label>Logo / imagem da empresa</label>
+              <label>Logo / imagem da marca</label>
               <input type="file" accept="image/*" onChange={handleLogo} />
               {formData.logoPreview && (
                 <img src={formData.logoPreview} alt="" className="preview-photo" />
@@ -181,7 +213,7 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
                 rows="3"
                 value={formData.resumo}
                 onChange={handleChange}
-                placeholder="Produtos ou serviços, sem preços obrigatórios."
+                placeholder="Produtos ou serviços. Sem preços obrigatórios."
               />
             </div>
           </div>
@@ -244,25 +276,45 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
         </section>
 
         <section className="form-section">
-          <h3>5. Onde publicar (máx. 6 por página no ar)</h3>
-          <p className="help-text">Marque as telas do hub. Sujeito a vaga no período escolhido.</p>
+          <h3>5. Onde publicar (máx. {MAX_ESPACIOS_POR_PAGINA} páginas)</h3>
+          <p className="help-text">
+            Diretórios e telas do hub. O aviso sai na vitrine e em cada página marcada.
+            {pagsCount}/{MAX_ESPACIOS_POR_PAGINA} selecionadas.
+          </p>
           <div className="checkbox-group checkbox-group-2col">
-            {PAGINAS_VITRINA.map((p) => (
-              <label key={p.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={(formData.paginas || []).includes(p.id)}
-                  onChange={() => togglePagina(p.id)}
-                />
-                {p.label}
-              </label>
-            ))}
+            {PAGINAS_VITRINA.map((p) => {
+              const marcada = (formData.paginas || []).includes(p.id);
+              const bloqueada = !marcada && pagsCount >= MAX_ESPACIOS_POR_PAGINA;
+              return (
+                <label key={p.id} className="checkbox-item">
+                  <input
+                    type="checkbox"
+                    checked={marcada}
+                    disabled={bloqueada}
+                    onChange={() => togglePagina(p.id)}
+                  />
+                  {p.label}
+                </label>
+              );
+            })}
           </div>
         </section>
 
         <section className="form-section">
-          <h3>6. Tempo e valor de referência</h3>
+          <h3>6. Espaço preferido, prazo e preço vigente</h3>
+          <p className="help-text">
+            Ordem de leitura; em tela larga: 3 colunas × 2 filas. Não é posição fixa de impressão.
+          </p>
           <div className="form-grid">
+            <div className="form-group">
+              <label>Espaço publicitário preferido</label>
+              <select name="espacioPreferido" value={formData.espacioPreferido} onChange={handleChange}>
+                <option value={0}>Próximo livre (recomendado)</option>
+                {[1, 2, 3, 4, 5, 6].map((n) => (
+                  <option key={n} value={n}>{etiquetaEspacio(n)}</option>
+                ))}
+              </select>
+            </div>
             <div className="form-group">
               <label>Duração *</label>
               <select name="dias" value={formData.dias} onChange={handleChange}>
@@ -273,20 +325,48 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
             </div>
             <div className="form-group">
               <label>Valor de referência (não cobrado)</label>
-              <input type="text" readOnly value={`R$ ${valorRef}`} />
+              <input type="text" readOnly value={`${formatUSD(valorRef.usd)}  ·  ≈ R$ ${valorRef.brl}`} />
             </div>
           </div>
-          <p className="help-text">
-            Base 30 dias / 1 página: anunciante R$ {PRECIO_REF.anunciante.base30d} · patrocinador R$ {PRECIO_REF.patrocinador.base30d}.
-            Página extra: R$ {PRECIO_REF.anunciante.paginaExtra} / R$ {PRECIO_REF.patrocinador.paginaExtra}.
-            Passos de tempo: 15 · 30 · 90 · 180 · 365 dias. Checkout fica para outro momento.
-          </p>
+
+          {/* TABLA PRECIOS VIGENTES */}
+          <div style={{ overflowX: 'auto', marginTop: 12 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <caption style={{ textAlign: 'left', fontWeight: 800, marginBottom: 8, color: '#0f172a' }}>
+                PREÇOS VIGENTES — ESPAÇOS PUBLICITÁRIOS (USD)
+              </caption>
+              <thead>
+                <tr style={{ background: '#BFE8F7', textAlign: 'left' }}>
+                  <th style={thTd}>Tipo</th>
+                  <th style={thTd}>30 dias / 1 página</th>
+                  <th style={thTd}>Página extra</th>
+                  <th style={thTd}>Prazos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={thTd}>Anunciante</td>
+                  <td style={thTd}>{formatUSD(PRECIO_REF.anunciante.base30d)}</td>
+                  <td style={thTd}>+ {formatUSD(PRECIO_REF.anunciante.paginaExtra)}</td>
+                  <td style={thTd} rowSpan={2}>30 · 90 · 180 · 365 dias (pró-rata sobre 30)</td>
+                </tr>
+                <tr>
+                  <td style={thTd}>Patrocinador</td>
+                  <td style={thTd}>{formatUSD(PRECIO_REF.patrocinador.base30d)}</td>
+                  <td style={thTd}>+ {formatUSD(PRECIO_REF.patrocinador.paginaExtra)}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p className="help-text" style={{ marginTop: 8 }}>{LEYENDA_PRECIO}</p>
+          </div>
         </section>
 
         {erro && <p className="erro">{erro}</p>}
 
         <div className="cadastro-acciones-final">
-          <button type="submit" className="btn-submit">Publicar na vitrine (beta)</button>
+          <button type="submit" className="btn-submit">
+            CRIAR ANÚNCIO OU PATROCÍNIO
+          </button>
           {typeof onCancelar === 'function' && (
             <button type="button" className="btn-volver-inicio" onClick={onCancelar}>
               Cancelar
@@ -297,3 +377,9 @@ export default function CadastroAnunciante({ onSalvar, onCancelar }) {
     </div>
   );
 }
+
+const thTd = {
+  border: '1px solid #cbd5e1',
+  padding: '8px 10px',
+  verticalAlign: 'top',
+};

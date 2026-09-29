@@ -3,6 +3,8 @@
 // ORQUESTADOR DEL SUBDOMINIO DRONES
 // INICIO = HERO | BIENVENIDA = INSTITUCIONAL
 // ACTIVAR / RENOVAR / PLANES = VISTAS PROPIAS
+// VENTAS = TABLERO EN VENTA (NOVOS E USADOS)
+// DRONES = PAGINA INFORMATIVA (SE DEJA COMO ESTA)
 // ==========================================
 
 import React, { useState, useEffect } from 'react';
@@ -29,6 +31,7 @@ import Auxiliares from './drones/auxiliares.jsx';
 import Cadastro from './drones/cadastro/cadastro.jsx';
 import Consertos from './drones/consertos.jsx';
 import Drones from './drones/drones.jsx';
+import Ventas from './drones/ventas.jsx';
 import Manutencao from './drones/manutencao.jsx';
 import Perfil from './drones/Perfil.jsx';
 import Pilotos from './drones/pilotos.jsx';
@@ -94,6 +97,10 @@ function DronesContent({ onNavigate }) {
 
       case 'ANUNCIANTES':
         return <Anunciantes />;
+
+      case 'VENTAS':
+      case 'USADOS':
+        return <Ventas setCurrentView={setCurrentView} />;
 
       case 'DRONES':
         return <Drones />;

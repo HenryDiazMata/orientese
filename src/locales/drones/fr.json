@@ -5,7 +5,7 @@
   },
   "inicio": {
     "h1": "ACCUEIL",
-    "frasePago": "Le plan est payé intégralement à l'inscription. Si votre carte internationale accepte les mensualités, les conditions sont fixées par votre banque, pas par drones.orientese.com.",
+"frasePago": "Les PLANS PLUS, PRO ou ÉLITE se paient intégralement à l'ACTIVATION de celui que vous avez choisi, au plus tard le 31 décembre 2026. À partir du 1er janvier 2027, le paiement est total au moment de l'ACTIVER. Créer un compte dans INSCRIPTION avec un type d'utilisateur n'implique pas de prendre un PLAN. DÉBUTANT n'est pas un plan : il se paie à l'INSCRIPTION. Les mensualités d'une carte internationale sont fixées par votre banque, pas par drones.orientese.com.",
     "slide1Titulo": "ACTIVATION DU SYSTÈME",
     "slide1Sub": "PROMOTION PRÉ-LANCEMENT",
     "slide2P1": "Exploitants agricoles, coopératives, entreprises de construction, sociétés, écoles, pilotes, assistants, techniciens, ingénieurs et toutes les personnes liées au monde des drones : nous vous invitons cordialement à vous inscrire et à utiliser ce nouveau site informatif, créé pour vous servir de façon utile et agréable.",
@@ -28,7 +28,7 @@
     "next": "Écran suivant",
     "punto": "Aller à l'écran {{n}}",
     "btnCadastro": "INSCRIPTION",
-        "btnProbar": "ESSAYER LE SITE",
+    "btnProbar": "ESSAYER LE SITE",
     "btnActivar": "ACTIVER",
     "btnPlanes": "PLANS",
     "btnBienvenida": "BIENVENUE",
@@ -40,7 +40,7 @@
     "planes": "PLANS",
     "activate": "ACTIVER",
     "renew": "RENOUVELER",
-    "used": "OCCASION",
+    "used": "VENTES",
     "quote": "DEVIS",
     "register": "INSCRIPTION",
     "registered": "ANNUAIRE",
@@ -58,9 +58,10 @@
     "doLogin": "Se connecter",
     "toggleTheme": "Basculer clair / sombre",
     "dark": "🌙 Dark",
-    "light": "☀️ Light"
+    "light": "☀️ Light",
+    "ventas": "VENTES"
   },
-  "footer": {
+ "footer": {
     "contactTitle": "Contact et adresse",
     "addressLabel": "Adresse",
     "brazil": "Brésil",
@@ -79,7 +80,10 @@
     "community": "Règles de la communauté",
     "faq": "Questions fréquentes (FAQ)",
     "copy": "© 2026 drones.orientese.com - Tous droits réservés.",
-    "credits": "Développé par Henry Díaz avec l'assistance des IA Gemini et Grok | Crédits d'auteur"
+    "credits": "Développé par Henry Díaz avec l'assistance des IA Gemini et Grok | Crédits d'auteur",
+    "ventas": "Ventes",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram"
   },
   "services": {
     "title": "Nos services",
@@ -236,5 +240,28 @@
       "FR": "France",
       "OTRO": "Autre pays"
     }
+  },
+  "ventas": {
+    "titulo": "EN VENTE",
+    "subtitulo": "neuf et occasion",
+    "puente": "Vous voulez de la visibilité de marque, pas un équipement ?",
+    "puenteCta": "Créer une annonce ou un parrainage",
+    "buscar": "Rechercher modèle, ville…",
+    "todasCat": "Toutes les catégories",
+    "todaCond": "Neuf et occasion",
+    "recentes": "Plus récents",
+    "menor": "Prix le plus bas",
+    "maior": "Prix le plus haut",
+    "cta": "Déposer un article",
+    "helpVisitante": "Le visiteur peut voir le tableau. Connectez-vous pour publier un article.",
+    "vazio": "Aucun article pour le moment.",
+    "voltar": "Retour au tableau",
+    "contato": "Contact direct",
+    "semFoto": "Pas de photo",
+    "disclaimer": "Orientese n’intermédiaire pas la transaction. Prix, envoi et paiement uniquement avec le vendeur.",
+    "formTitulo": "Déposer un article",
+    "formSub": "Listez un drone, une pièce ou un accessoire. Le hub n’intermédiaire pas la vente.",
+    "avisoMarca": "Ceci n’est pas une annonce de marque",
+    "publicar": "PUBLIER L’ARTICLE"
   }
 }

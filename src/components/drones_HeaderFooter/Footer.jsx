@@ -1,7 +1,8 @@
 // ==========================================
 // ARCHIVO COMPLETO: src/components/drones_HeaderFooter/Footer.jsx
 // PIE SOLO DEL SUBDOMINIO DRONES
-// TANDA 2: MISMOS IDS QUE Header (BIENVENIDA, ACTIVAR, RENOVAR, PLANES, USADOS)
+// VENTAS (NO USADOS / NO DRONES INFORMATIVO)
+// COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
 import React from 'react';
@@ -57,10 +58,10 @@ export default function Footer({ setCurrentView }) {
 
             <div className="footer-social">
               <a href="#" className="footer-wa">
-                <MessageSquare size={16} /> WhatsApp
+                <MessageSquare size={16} /> {t('footer.whatsapp', { defaultValue: 'WhatsApp' })}
               </a>
               <a href="#" className="footer-tg">
-                <Send size={14} /> Telegram
+                <Send size={14} /> {t('footer.telegram', { defaultValue: 'Telegram' })}
               </a>
             </div>
           </div>
@@ -110,8 +111,8 @@ export default function Footer({ setCurrentView }) {
               <button onClick={() => handleNavigation('ANUNCIANTES')} className="footer-link">
                 {t('footer.ads')}
               </button>
-              <button onClick={() => handleNavigation('DRONES')} className="footer-link">
-                {t('nav.used')}
+              <button onClick={() => handleNavigation('VENTAS')} className="footer-link">
+                {t('nav.ventas', { defaultValue: 'VENTAS' })}
               </button>
             </div>
           </div>

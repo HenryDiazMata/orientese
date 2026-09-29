@@ -5,7 +5,7 @@
   },
   "inicio": {
     "h1": "HOME",
-    "frasePago": "The plan is paid in full at sign-up. If your international card allows installments, the terms are set by your bank, not by drones.orientese.com.",
+    "frasePago": "PLANS PLUS, PRO or ÉLITE are paid in full when you ACTIVATE the one you chose, no later than 31 December 2026. From 1 January 2027 payment is made in full at the moment you ACTIVATE it. Creating an account under SIGN UP with any user type does not mean taking a PLAN. STARTER is not a plan: it is paid when you SIGN UP. Installments on an international card are set by your bank, not by drones.orientese.com.",
     "slide1Titulo": "ACTIVATING THE SYSTEM",
     "slide1Sub": "PRE-LAUNCH PROMOTION",
     "slide2P1": "Farmers, cooperatives, construction firms, companies, schools, pilots, assistants, technicians, engineers and everyone connected to the drone world: we warmly invite you to sign up and use this new informational site, created to serve you in a useful and pleasant way.",
@@ -28,7 +28,7 @@
     "next": "Next slide",
     "punto": "Go to slide {{n}}",
     "btnCadastro": "SIGN UP",
-        "btnProbar": "TRY THE SITE",
+    "btnProbar": "TRY THE SITE",
     "btnActivar": "ACTIVATE",
     "btnPlanes": "PLANS",
     "btnBienvenida": "WELCOME",
@@ -40,7 +40,7 @@
     "planes": "PLANS",
     "activate": "ACTIVATE",
     "renew": "RENEW",
-    "used": "USED",
+    "used": "FOR SALE",
     "quote": "QUOTES",
     "register": "SIGN UP",
     "registered": "DIRECTORY",
@@ -58,9 +58,10 @@
     "doLogin": "Log in",
     "toggleTheme": "Toggle light and dark mode",
     "dark": "🌙 Dark",
-    "light": "☀️ Light"
+    "light": "☀️ Light",
+    "ventas": "FOR SALE"
   },
-  "footer": {
+ "footer": {
     "contactTitle": "Contact & address",
     "addressLabel": "Address",
     "brazil": "Brazil",
@@ -79,7 +80,10 @@
     "community": "Community guidelines",
     "faq": "Frequently asked questions (FAQ)",
     "copy": "© 2026 drones.orientese.com - All rights reserved.",
-    "credits": "Developed by Henry Díaz with assistance from Gemini and Grok AI | Authorship credits"
+    "credits": "Developed by Henry Díaz with assistance from Gemini and Grok AI | Authorship credits",
+    "ventas": "For sale",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram"
   },
   "services": {
     "title": "Our services",
@@ -236,5 +240,28 @@
       "FR": "France",
       "OTRO": "Other country"
     }
+  },
+  "ventas": {
+    "titulo": "FOR SALE",
+    "subtitulo": "new and used",
+    "puente": "Want brand visibility on the hub, not a piece of equipment?",
+    "puenteCta": "Create an ad or sponsorship",
+    "buscar": "Search model, city…",
+    "todasCat": "All categories",
+    "todaCond": "New and used",
+    "recentes": "Most recent",
+    "menor": "Lowest price",
+    "maior": "Highest price",
+    "cta": "List an item",
+    "helpVisitante": "Visitors can browse the board. Sign in to publish an item.",
+    "vazio": "No items right now.",
+    "voltar": "Back to the board",
+    "contato": "Direct contact",
+    "semFoto": "No photo",
+    "disclaimer": "Orientese does not broker the sale. Agree price, shipping and payment only with the seller.",
+    "formTitulo": "List an item",
+    "formSub": "List a drone, part or accessory. The hub does not broker the sale. Contact is direct.",
+    "avisoMarca": "This is not a brand ad",
+    "publicar": "PUBLISH ITEM"
   }
 }

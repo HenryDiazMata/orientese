@@ -1,38 +1,53 @@
 [
   {
     "id": 1,
+    "modalidade": "patrocinador",
     "tipoPersona": "juridica",
     "nome": "AeroPeças Brasil",
-    "segmento": "Peças e acessórios",
     "cidade": "São Paulo",
     "estado": "SP",
-    "resumo": "Linha de reposição para DJI e Autel. Dado fictício de diretório."
+    "pais": "BR",
+    "resumo": "Linha de reposição para DJI e Autel. Dado fictício de vitrine.",
+    "paginas": ["anunciantes", "pilotos"],
+    "espacio": 1,
+    "website": "https://example.com",
+    "email": "contato@example.com"
   },
   {
     "id": 2,
+    "modalidade": "anunciante",
     "tipoPersona": "juridica",
     "nome": "Campo Alto Seguros",
-    "segmento": "Seguro aeronáutico / RC",
     "cidade": "Curitiba",
     "estado": "PR",
-    "resumo": "Cobertura informativa para operadores. Dado fictício de diretório."
+    "pais": "BR",
+    "resumo": "Cobertura informativa para operadores. Dado fictício de vitrine.",
+    "paginas": ["anunciantes"],
+    "espacio": 3,
+    "email": "contato@example.com"
   },
   {
     "id": 3,
+    "modalidade": "anunciante",
     "tipoPersona": "juridica",
     "nome": "NuvemGeo Software",
-    "segmento": "Software / processamento",
     "cidade": "Florianópolis",
     "estado": "SC",
-    "resumo": "Processamento de imagens e NDVI. Dado fictício de diretório."
+    "pais": "BR",
+    "resumo": "Processamento de imagens e NDVI. Dado fictício de vitrine.",
+    "paginas": ["anunciantes", "profissionais"],
+    "espacio": 4
   },
   {
     "id": 4,
+    "modalidade": "anunciante",
     "tipoPersona": "fisica",
     "nome": "Helena Costa — consultoria",
-    "segmento": "Treinamento / consultoria",
     "cidade": "Belo Horizonte",
     "estado": "MG",
-    "resumo": "Mentoria de operação EVLOS. Dado fictício de diretório."
+    "pais": "BR",
+    "resumo": "Mentoria de operação EVLOS. Dado fictício de vitrine.",
+    "paginas": ["anunciantes"],
+    "espacio": 5
   }
 ]

@@ -409,14 +409,14 @@ export const Header = ({ currentView, setCurrentView, onNavigate }) => {
         {!collapsed && <span>{t('nav.sponsors')}</span>}
       </button>
 
-      <button
+ <button
         type="button"
-        onClick={() => handleSelectView('DRONES')}
-        className={itemClass(currentView === 'DRONES')}
-        title={t('nav.used')}
+        onClick={() => handleSelectView('VENTAS')}
+        className={itemClass(currentView === 'VENTAS' || currentView === 'USADOS')}
+        title={t('nav.used', { defaultValue: 'EN VENTA' })}
       >
         <Icon name="drone" />
-        {!collapsed && <span>{t('nav.used')}</span>}
+        {!collapsed && <span>{t('nav.ventas', { defaultValue: 'VENTAS' })}</span>}
       </button>
 
       {/* ==========================================

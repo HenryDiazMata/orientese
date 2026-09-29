@@ -7,14 +7,17 @@
 // ==========================================
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import i18nDrones from '../../components/drones/i18n';
 
 // ==========================================
 // LEYENDAS FIJAS. NO INVENTAR PRECIOS AQUI.
+// TEXTOS = t('inicio.frasePago') / t('inicio.fraseInformativo')
 // ==========================================
-const FRASE_PAGO =
+const FRASE_PAGO_FALLBACK =
   'El plan se paga íntegro al cadastrarse. Si su tarjeta internacional admite cuotas, las condiciones las fija su banco, no drones.orientese.com.';
 
-const FRASE_INFORMATIVO =
+const FRASE_INFORMATIVO_FALLBACK =
   'drones.orientese.com ofrece solo un servicio informativo. No vende drones ni piezas ni presta servicios. Cualquier anuncio publicado es de exclusiva responsabilidad del usuario.';
 
 // ==========================================
@@ -146,8 +149,11 @@ function Viñeta({ children }) {
 }
 
 export default function Renovar({ setCurrentView }) {
+  const { t } = useTranslation(undefined, { i18n: i18nDrones });
+
   // ==========================================
   // NECESITA setCurrentView DESDE DronesView
+  // DESTINOS: CADASTRO + PLANES (NO CAMBIAR)
   // ==========================================
   const ir = (id) => {
     if (setCurrentView) {
@@ -169,17 +175,23 @@ export default function Renovar({ setCurrentView }) {
         {/* ==========================================
             2) TITULO A LA IZQUIERDA, ENCIMA DEL CARD
             ========================================== */}
-        <h1 style={titulo}>RENOVAR</h1>
+        <h1 style={titulo}>{t('renovar.h1', { defaultValue: 'RENOVAR' })}</h1>
 
         {/* ==========================================
             3) CARD: DOS LEYENDAS CON FAVICON
             ========================================== */}
         <section style={box}>
           <ul style={lista}>
-            <Viñeta>{FRASE_PAGO}</Viñeta>
+            <Viñeta>
+              {t('inicio.frasePago', { defaultValue: FRASE_PAGO_FALLBACK })}
+            </Viñeta>
             <li style={{ ...item, marginBottom: 0 }}>
               <img src={FAVICON_DRONES} alt="" style={ico} />
-              <span>{FRASE_INFORMATIVO}</span>
+              <span>
+                {t('inicio.fraseInformativo', {
+                  defaultValue: FRASE_INFORMATIVO_FALLBACK,
+                })}
+              </span>
             </li>
           </ul>
         </section>
@@ -197,10 +209,12 @@ export default function Renovar({ setCurrentView }) {
           }}
         >
           <button type="button" style={btn} onClick={() => ir('CADASTRO')}>
-            REGISTRARSE COMO USUARIO
+            {t('renovar.ctaRegistro', {
+              defaultValue: 'REGISTRARSE COMO USUARIO',
+            })}
           </button>
           <button type="button" style={btn} onClick={() => ir('PLANES')}>
-            PLANES
+            {t('renovar.ctaPlanes', { defaultValue: 'PLANES' })}
           </button>
         </div>
       </div>
