@@ -22,7 +22,7 @@ import i18nDrones from '../../components/drones/i18n';
 // FAVICON PUBLICO DE DRONES (VIÑETAS)
 // SI NO SE VE: CAMBIAR PATH O PASAR A GUIONES
 // ==========================================
-const FAVICON_DRONES = '/favicon/drones/favicom.png';
+const FAVICON_DRONES = '/favicon/drones/favicon.png';
 
 // ==========================================
 // PALETA DRONES. SIN DARK

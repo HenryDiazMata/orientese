@@ -24,7 +24,7 @@ const FRASE_INFORMATIVO_FALLBACK =
 // LOGO = HEADER. FAVICON = VIÑETAS
 // ==========================================
 const LOGO_DRONES = '/logos/drones/LogoDrones11.png';
-const FAVICON_DRONES = '/favicon/drones/favicom.png';
+const FAVICON_DRONES = '/favicon/drones/favicon.png';
 
 // ==========================================
 // TAMAÑO Y ALINEACION DEL LOGO — EDITAR AQUI
