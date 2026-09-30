@@ -1,22 +1,21 @@
 // ==========================================
-// ARCHIVO COMPLETO:
-// src/views/drones/anunciantes.jsx
-// VITRINA ANUNCIANTES / PATROCINADORES
-// FORMULARIO = CadastroAnunciante.jsx
-// MOCKS = anunciantes.json
-// BETA LOCAL = localStorage
-// SEM CHECKOUT / SEM PASARELA
-// GRILLA: 3 COLS ESCRITORIO → 2 TABLET → 1 TELEFONO
+// ARCHIVO: src/views/drones/anunciantes.jsx
+// Vitrina Anunciantes / Patrocinadores
+// Formulario = CadastroAnunciante.jsx
+// Mocks = anunciantes.json
+// Beta = localStorage drones.anunciantes.beta
+// Textos: t('anunciantes.*')
+// Logo: object-fit contain
 // ==========================================
 
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ANUNCIANTES_MOCK from '../../data/drones/anunciantes.json';
 import CadastroAnunciante from '../../components/drones/formularios/CadastroAnunciante';
 import {
   ESTADOS_BRASIL,
   PAISES_VITRINA,
   PRECIO_REF,
-  LEYENDA_PRECIO,
   formatUSD,
   MAX_ESPACIOS_POR_PAGINA,
   MAX_PATROCINADORES_POR_PAGINA,
@@ -25,9 +24,21 @@ import {
 
 const STORAGE_KEY = 'drones.anunciantes.beta';
 
+const logoVitrina = {
+  width: '100%',
+  maxWidth: 96,
+  height: 96,
+  objectFit: 'contain',
+  objectPosition: 'center',
+  background: '#f8fafc',
+  borderRadius: 8,
+  marginBottom: 10,
+  display: 'block',
+};
+
 function normalizarTipoPersona(valor) {
-  const t = String(valor || '').toLowerCase().trim();
-  if (t === 'juridica' || t === 'jurídica' || t === 'pj') return 'juridica';
+  const raw = String(valor || '').toLowerCase().trim();
+  if (raw === 'juridica' || raw === 'jurídica' || raw === 'pj') return 'juridica';
   return 'fisica';
 }
 
@@ -44,10 +55,9 @@ function gravarLocais(lista) {
   try {
     const soLocais = (lista || []).filter((i) => i.origem === 'local');
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(soLocais));
-  } catch (e) { /* SIN STORAGE */ }
+  } catch (e) { /* sin storage */ }
 }
 
-// ASIGNA ESPACIO 1-6 POR PAGINA. PATROCINIO PRIORIZA 1-2
 function asignarEspacios(registro, existentes) {
   const paginas = registro.paginas && registro.paginas.length
     ? registro.paginas
@@ -90,6 +100,7 @@ function asignarEspacios(registro, existentes) {
 }
 
 export default function Anunciantes() {
+  const { t } = useTranslation();
   const [modo, setModo] = useState('lista');
   const [itens, setItens] = useState(() => [
     ...lerLocais(),
@@ -149,7 +160,6 @@ export default function Anunciantes() {
       return matchTexto && matchPais && matchUF && matchTipo && matchMod;
     });
 
-    // PATROCINADORES PRIMERO, LUEGO POR ESPACIO
     return filtrada.slice().sort((a, b) => {
       const pa = a.modalidade === 'patrocinador' ? 0 : 1;
       const pb = b.modalidade === 'patrocinador' ? 0 : 1;
@@ -169,7 +179,6 @@ export default function Anunciantes() {
 
   return (
     <div style={{ padding: '28px 20px', maxWidth: 1240, margin: '0 auto' }}>
-      {/* HERO COMERCIAL */}
       <div style={{
         background: '#BFE8F7',
         borderRadius: 16,
@@ -177,47 +186,54 @@ export default function Anunciantes() {
         marginBottom: 24,
       }}>
         <h1 style={{ margin: 0, fontSize: '1.85rem', fontWeight: 800, color: '#0f172a' }}>
-          Sua marca em drones.orientese.com
+          {t('anunciantes.heroTitulo')}
         </h1>
         <p style={{ margin: '8px 0 16px 0', color: '#334155', fontSize: 16, maxWidth: 720 }}>
-          Espaços publicitários no hub informativo. Contato direto. Sem intermediação de negócio.
-          Até {MAX_ESPACIOS_POR_PAGINA} espaços por página.
+          {t('anunciantes.heroSub', { max: MAX_ESPACIOS_POR_PAGINA })}
         </p>
         <button type="button" onClick={() => setModo('cadastro')} style={btnCta}>
-          CRIAR ANÚNCIO OU PATROCÍNIO
+          {t('anunciantes.cta')}
         </button>
       </div>
 
-      {/* UN SOLO CARD CONTENEDOR — VERDE BILLETE 100 */}
       <div style={cardContenedorBillete}>
         <div style={gridTres}>
           <div style={cardBenef}>
-            <strong>6 espaços por página</strong>
-            <p style={pMuted}>Inventário limitado. Ordem de leitura 3×2 no desktop.</p>
+            <strong>{t('anunciantes.cardEspaciosTitulo', { max: MAX_ESPACIOS_POR_PAGINA })}</strong>
+            <p style={pMuted}>{t('anunciantes.cardEspaciosTexto')}</p>
           </div>
           <div style={cardBenef}>
-            <strong>Vigência que você escolhe</strong>
-            <p style={pMuted}>30, 90, 180 ou 365 dias. Pró-rata sobre 30.</p>
+            <strong>{t('anunciantes.cardVigenciaTitulo')}</strong>
+            <p style={pMuted}>{t('anunciantes.cardVigenciaTexto')}</p>
           </div>
           <div style={cardBenef}>
-            <strong>Contato direto</strong>
-            <p style={pMuted}>Logo, site, e-mail, telefone, WhatsApp e Telegram.</p>
+            <strong>{t('anunciantes.cardContactoTitulo')}</strong>
+            <p style={pMuted}>{t('anunciantes.cardContactoTexto')}</p>
           </div>
           <div style={cardBenef}>
-            <strong>Anúncio</strong>
-            <p style={pMuted}>Card padrão. {formatUSD(PRECIO_REF.anunciante.base30d)} / 30 dias / 1 página. Extra + {formatUSD(PRECIO_REF.anunciante.paginaExtra)}.</p>
+            <strong>{t('anunciantes.cardAnuncioTitulo')}</strong>
+            <p style={pMuted}>
+              {t('anunciantes.cardAnuncioTexto', {
+                base: formatUSD(PRECIO_REF.anunciante.base30d),
+                extra: formatUSD(PRECIO_REF.anunciante.paginaExtra),
+              })}
+            </p>
           </div>
           <div style={{ ...cardBenef, border: '2px solid #22C55E' }}>
-            <strong>Patrocínio</strong>
+            <strong>{t('anunciantes.cardPatrocinioTitulo')}</strong>
             <p style={pMuted}>
-              Mesmo card, destaque (borda verde + badge). Prioridade espaços 1–2.
-              Máx. {MAX_PATROCINADORES_POR_PAGINA} por página. {formatUSD(PRECIO_REF.patrocinador.base30d)} / 30 dias / 1 página. Extra + {formatUSD(PRECIO_REF.patrocinador.paginaExtra)}.
+              {t('anunciantes.cardPatrocinioTexto', {
+                maxPatro: MAX_PATROCINADORES_POR_PAGINA,
+                base: formatUSD(PRECIO_REF.patrocinador.base30d),
+                extra: formatUSD(PRECIO_REF.patrocinador.paginaExtra),
+              })}
             </p>
           </div>
           <div style={cardBenef}>
-            <strong>PREÇOS VIGENTES — ESPAÇOS PUBLICITÁRIOS</strong>
+            <strong>{t('anunciantes.cardPreciosTitulo')}</strong>
             <p style={pMuted}>
-              Prazos 30 · 90 · 180 · 365. {LEYENDA_PRECIO}
+              {t('anunciantes.cardPreciosTexto')}{' '}
+              {t('anunciantes.leyendaPrecio')}
             </p>
           </div>
         </div>
@@ -233,14 +249,14 @@ export default function Anunciantes() {
       }}>
         <div>
           <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>
-            Anunciantes / Patrocinadores
+            {t('anunciantes.listaTitulo')}
           </h2>
           <p style={{ margin: '6px 0 0 0', color: '#64748b', fontSize: 14 }}>
-            Publicação nesta vitrine e nas páginas marcadas no cadastro.
+            {t('anunciantes.listaSub')}
           </p>
         </div>
         <button type="button" onClick={() => setModo('cadastro')} style={btnCta}>
-          CRIAR ANÚNCIO OU PATROCÍNIO
+          {t('anunciantes.cta')}
         </button>
       </div>
 
@@ -253,30 +269,30 @@ export default function Anunciantes() {
       }}>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
           <select value={filtroMod} onChange={(e) => setFiltroMod(e.target.value)} style={sel}>
-            <option value="TODOS">Anunciantes e patrocinadores</option>
-            <option value="anunciante">Só anunciantes</option>
-            <option value="patrocinador">Só patrocinadores</option>
+            <option value="TODOS">{t('anunciantes.filtroModTodos')}</option>
+            <option value="anunciante">{t('anunciantes.filtroModAnunciante')}</option>
+            <option value="patrocinador">{t('anunciantes.filtroModPatrocinador')}</option>
           </select>
           <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)} style={sel}>
-            <option value="TODOS">Tipo de pessoa</option>
-            <option value="fisica">Pessoa física</option>
-            <option value="juridica">Pessoa jurídica</option>
+            <option value="TODOS">{t('anunciantes.filtroTipoTodos')}</option>
+            <option value="fisica">{t('anunciantes.personaFisica')}</option>
+            <option value="juridica">{t('anunciantes.personaJuridica')}</option>
           </select>
           <select value={filtroPais} onChange={(e) => setFiltroPais(e.target.value)} style={sel}>
-            <option value="TODOS">Todos os países</option>
+            <option value="TODOS">{t('anunciantes.filtroPaisTodos')}</option>
             {PAISES_VITRINA.map((p) => (
               <option key={p.code} value={p.code}>{p.label}</option>
             ))}
           </select>
           <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)} style={sel}>
-            <option value="TODOS">UF (se Brasil)</option>
+            <option value="TODOS">{t('anunciantes.filtroUf')}</option>
             {ESTADOS_BRASIL.map((uf) => (
               <option key={uf} value={uf}>{uf}</option>
             ))}
           </select>
           <input
             type="text"
-            placeholder="Nome ou cidade..."
+            placeholder={t('anunciantes.buscaPlaceholder')}
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
             style={{ flex: '1 1 200px', padding: '10px 12px', borderRadius: 8, border: '1px solid #cbd5e1' }}
@@ -296,14 +312,14 @@ export default function Anunciantes() {
               fontSize: 13,
             }}
           >
-            Limpar Filtros
+            {t('anunciantes.limpiarFiltros')}
           </button>
         </div>
       </div>
 
       {lista.length === 0 ? (
         <p style={{ textAlign: 'center', color: '#64748b', padding: 48 }}>
-          Nenhum aviso com os filtros atuais.
+          {t('anunciantes.vacio')}
         </p>
       ) : (
         <div style={{
@@ -330,62 +346,54 @@ export default function Anunciantes() {
               >
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
                   <span style={chip(esPatro)}>
-                    {esPatro ? 'PATROCINADOR' : 'Anunciante'}
+                    {esPatro ? t('anunciantes.badgePatrocinador') : t('anunciantes.badgeAnunciante')}
                   </span>
                   <span style={chip(false)}>
-                    {tipo === 'juridica' ? 'Pessoa jurídica' : 'Pessoa física'}
+                    {tipo === 'juridica' ? t('anunciantes.personaJuridica') : t('anunciantes.personaFisica')}
                   </span>
                   {item.espacio ? (
-                    <span style={chip(false)}>Espaço {item.espacio}</span>
+                    <span style={chip(false)}>{t('anunciantes.espacio', { n: item.espacio })}</span>
                   ) : null}
                   {item.origem === 'local' && (
-                    <span style={chip(true)}>Beta — neste navegador</span>
+                    <span style={chip(true)}>{t('anunciantes.badgeBeta')}</span>
                   )}
                 </div>
-                {item.logoPreview && (
-                  <img
-                    src={item.logoPreview}
-                    alt=""
-                    style={{
-                      width: esPatro ? 72 : 56,
-                      height: esPatro ? 72 : 56,
-                      objectFit: 'cover',
-                      borderRadius: 8,
-                      marginBottom: 10,
-                    }}
-                  />
-                )}
+                {item.logoPreview ? (
+                  <img src={item.logoPreview} alt="" style={logoVitrina} />
+                ) : null}
                 <h3 style={{ margin: '0 0 6px 0', fontSize: '1.15rem' }}>{item.nome}</h3>
-                {item.segmento && (
+                {item.segmento ? (
                   <p style={{ margin: '0 0 4px 0', fontSize: 13, color: '#1A8FD0', fontWeight: 600 }}>{item.segmento}</p>
-                )}
+                ) : null}
                 <p style={{ margin: '0 0 8px 0', fontSize: 13, color: '#64748b' }}>
                   {item.cidade}{item.pais === 'BR' && item.estado ? ` — ${item.estado}` : ''} · {item.pais || 'BR'}
                 </p>
-                {item.resumo && (
+                {item.resumo ? (
                   <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#64748b', lineHeight: 1.45 }}>{item.resumo}</p>
-                )}
-                {pagLabels.length > 0 && (
+                ) : null}
+                {pagLabels.length > 0 ? (
                   <p style={{ margin: '0 0 10px 0', fontSize: 12, color: '#94a3b8' }}>
-                    Páginas: {pagLabels.join(', ')}
+                    {t('anunciantes.paginas')}: {pagLabels.join(', ')}
                   </p>
-                )}
+                ) : null}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, fontSize: 13 }}>
-                  {wa && (
+                  {wa ? (
                     <a href={`https://wa.me/55${wa}`} target="_blank" rel="noopener noreferrer" style={{ color: '#16a34a', fontWeight: 700, textDecoration: 'none' }}>WhatsApp</a>
-                  )}
-                  {item.telegram && (
+                  ) : null}
+                  {item.telegram ? (
                     <a href={`https://t.me/${String(item.telegram).replace('@', '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#0284c7', fontWeight: 600, textDecoration: 'none' }}>Telegram</a>
-                  )}
-                  {item.email && (
+                  ) : null}
+                  {item.email ? (
                     <a href={`mailto:${item.email}`} style={{ color: '#475569', textDecoration: 'none' }}>E-mail</a>
-                  )}
-                  {item.telefone && (
+                  ) : null}
+                  {item.telefone ? (
                     <a href={`tel:${item.telefone}`} style={{ color: '#475569', textDecoration: 'none' }}>Tel</a>
-                  )}
-                  {item.website && (
-                    <a href={item.website} target="_blank" rel="noopener noreferrer" style={{ color: '#1A8FD0', textDecoration: 'none' }}>Site</a>
-                  )}
+                  ) : null}
+                  {item.website ? (
+                    <a href={item.website} target="_blank" rel="noopener noreferrer" style={{ color: '#1A8FD0', textDecoration: 'none' }}>
+                      {t('anunciantes.sitio')}
+                    </a>
+                  ) : null}
                 </div>
               </div>
             );
