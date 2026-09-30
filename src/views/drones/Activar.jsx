@@ -40,7 +40,7 @@ const wrap = {
   background: `linear-gradient(180deg, ${CIEL} 0%, ${CIEL_CLARO} 42%, ${CIEL_MAS_CLARO} 100%)`,
   padding: '1.25rem 1.5rem 2rem',
   color: '#123',
-  minHeight: '100%',
+  minHeight: 'auto',
 };
 
 // ==========================================

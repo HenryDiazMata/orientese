@@ -293,8 +293,10 @@ html.dark {
 }
 
 .drones-page {
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
+  height: auto;
+  overflow: visible;
 }
 
 .btn-menu {
