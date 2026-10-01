@@ -27,6 +27,7 @@ export const STORAGE_VENTAS = 'drones.ventas.itens.v1';
 
 // ==========================================
 // ITENS DE EJEMPLO (BETA LOCAL)
+// UNA FICHA DE MUESTRA. SIN PRECIO NI CONTACTO
 // ==========================================
 export const VENTAS_INICIALES = [
   {
@@ -50,64 +51,8 @@ export const VENTAS_INICIALES = [
     createdAt: '2026-10-01T12:00:00.000Z',
     selo: 'MOSTRA'
   },
-  {
-    id: 1002,
-    titulo: 'DJI Agras T40 — seminovo',
-    categoria: 'drone',
-    condicao: 'usado',
-    preco: 185000,
-    moeda: 'BRL',
-    pais: 'BR',
-    estado: 'MT',
-    cidade: 'Sorriso',
-    descricao: 'Pulverização. Revisado. Horas e notas na conversa com o vendedor.',
-    fotos: [],
-    email: 'agro.t40@example.com',
-    telefone: '6533330002',
-    whatsapp: '65999990002',
-    origem: 'mock',
-    status: 'publicado',
-    createdAt: '2026-08-20T12:00:00.000Z',
-  },
-  {
-    id: 1003,
-    titulo: 'Hélice 9455S par (phantom)',
-    categoria: 'peca',
-    condicao: 'novo',
-    preco: 89,
-    moeda: 'BRL',
-    pais: 'BR',
-    estado: 'PR',
-    cidade: 'Curitiba',
-    descricao: 'Par novo, lacrado. Envio combinado com o comprador.',
-    fotos: [],
-    email: 'pecas.curitiba@example.com',
-    telefone: '',
-    whatsapp: '41999990003',
-    origem: 'mock',
-    status: 'publicado',
-    createdAt: '2026-09-10T12:00:00.000Z',
-  },
-  {
-    id: 1004,
-    titulo: 'Controle RC-N2 + cabo',
-    categoria: 'acessorio',
-    condicao: 'novo',
-    preco: 650,
-    moeda: 'BRL',
-    pais: 'BR',
-    estado: 'RJ',
-    cidade: 'Niterói',
-    descricao: 'Acessório novo. Nota e garantia do vendedor particular.',
-    fotos: [],
-    email: 'acessorios.rj@example.com',
-    telefone: '2122220004',
-    whatsapp: '21999990004',
-    origem: 'mock',
-    status: 'publicado',
-    createdAt: '2026-09-15T12:00:00.000Z',
-  },
 ];
+
 
 export function formatPrecoBRL(valor) {
   const n = Number(valor);
