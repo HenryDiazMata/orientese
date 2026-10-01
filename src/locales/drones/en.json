@@ -315,15 +315,18 @@
     "leyendaIncompleto": "Some texts may be incomplete in other languages.",
     "leyendaTradutor": "For other languages, use your browser translator. It translates visible page text (including forms and listings). It does not replace the official Portuguese, Spanish and English versions."
   },
-  "somos": {
+ "somos": {
     "h1": "About us",
-    "p1": "drones.orientese.com is an informational hub for unmanned aircraft, inside orientese.com.",
+    "p1": "drones.orientese.com is an informational hub for uncrewed aircraft, inside orientese.com.",
     "p2": "It does not sell products or services. It does not broker deals. It does not charge commission.",
-    "p3": "It is operated by Henry Díaz, São Paulo. Contact: contacto@drones.orientese.com",
-    "p4": "Formation of an LLC (possible name HD PRODUCTION LLC, Wyoming) comes later. Today the operator is Henry Díaz.",
+    "p3": "Operated by Henry Díaz, São Paulo. Contact:",
     "p5": "BETA until 31/12/2026: you may sign up, try PLANS, publish notices, jobs and FOR SALE items, and see the payment flow. There is no charge in this period. The live plan starts on 01/01/2027.",
     "p6": "Creating an account does not mean taking PLUS, PRO or ÉLITE. STARTER is not a plan.",
-    "p7": "Any published notice is the responsibility of the person who published it."
+    "p7": "Any published notice is the responsibility of the person who published it.",
+    "p8": "We are a family team whose aim is to create useful, pleasant informational spaces.",
+    "p9": "The orientese.com portal is the tree from which the branches covering different topics grow.",
+    "p10": "This drones branch aims to be a reference and a preferred space. We hope constant use makes that so.",
+    "p11": "The QUOTES simulator is only a reference SIMULATOR: it helps estimate what a listed service may cost. It is based on figures found on the Internet. Clients and providers can use it as an order of magnitude. Those figures rise or fall with the provider, urgency and other factors in the simulator. Use it responsibly."
   },
   "terminos": {
     "h1": "Terms of use",
@@ -373,7 +376,7 @@
     "q7": "Are QUOTES an official price?",
     "a7": "No. It is a reference simulator.",
     "q8": "How do I contact the operator?",
-    "a8": "Email contacto@drones.orientese.com — WhatsApp and Telegram +55 11 98194-1201 — Operated by Henry Díaz, São Paulo."
+    "a8": "Email contacto@drones.orientese.com — WhatsApp +55 11 98194-1201 — Operated by Henry Díaz, São Paulo."
   }
 
 }

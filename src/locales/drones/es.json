@@ -446,11 +446,14 @@
     "h1": "Quiénes somos",
     "p1": "drones.orientese.com es un hub informativo del sector de aeronaves no tripuladas, dentro de orientese.com.",
     "p2": "No vende productos ni servicios. No intermedia negocios. No cobra comisión.",
-    "p3": "Opera Henry Díaz, São Paulo. Contacto: contacto@drones.orientese.com",
-    "p4": "La constitución de una LLC (posible nombre HD PRODUCTION LLC, Wyoming) será después. Hoy el operador es Henry Díaz.",
-    "p5": "BETA hasta el 31/12/2026: puede registrarse, probar PLANES, publicar avisos, vacantes e ítems EN VENTA, y ver el flujo de pago. No hay cobro en este período. El plan vigente empieza el 01/01/2027.",
+    "p3": "Opera Henry Díaz, São Paulo. Contacto:",
+    "p5": "BETA hasta el 31/12/2026: puede registrarse, probar PLANES, publicar avisos, vacantes e ítems EN VENTA, y ver el flujo de pago. No hay cobro en este período. El plan vigente comienza el 01/01/2027.",
     "p6": "Crear cuenta no implica tomar PLUS, PRO o ÉLITE. INICIANTE no es plan.",
-    "p7": "Cualquier aviso publicado es responsabilidad de quien lo publicó."
+    "p7": "Cualquier aviso publicado es responsabilidad de quien lo publicó.",
+    "p8": "Somos un equipo familiar con el objetivo de crear espacios informativos útiles y agradables.",
+    "p9": "El portal orientese.com es el árbol del que brotan las ramas que cubrirán distintos temas.",
+    "p10": "Este de drones quiere ser un espacio de referencia y preferencia. Esperamos que así sea por su uso constante.",
+    "p11": "El simulador de ORÇA"
   },
   "terminos": {
     "h1": "Términos de uso",
@@ -500,6 +503,6 @@
     "q7": "¿ORÇAMENTOS es un precio oficial?",
     "a7": "No. Es simulador de referencia.",
     "q8": "¿Cómo hablo con el operador?",
-    "a8": "E-mail contacto@drones.orientese.com — WhatsApp y Telegram +55 11 98194-1201 — Opera Henry Díaz, São Paulo."
+    "a8": "E-mail contacto@drones.orientese.com — WhatsApp +55 11 98194-1201 — Opera Henry Díaz, São Paulo."
   }
 }

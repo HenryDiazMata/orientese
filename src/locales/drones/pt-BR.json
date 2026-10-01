@@ -373,11 +373,14 @@
     "h1": "Quem somos",
     "p1": "drones.orientese.com é um hub informativo do setor de aeronaves não tripuladas, dentro de orientese.com.",
     "p2": "Não vende produtos nem serviços. Não intermedia negócios. Não cobra comissão.",
-    "p3": "Opera Henry Díaz, São Paulo. Contacto: contacto@drones.orientese.com",
-    "p4": "A constituição de uma LLC (possível nome HD PRODUCTION LLC, Wyoming) virá depois. Hoje o operador é Henry Díaz.",
+    "p3": "Opera Henry Díaz, São Paulo. Contacto:",
     "p5": "BETA até 31/12/2026: pode cadastrar-se, testar PLANOS, publicar avisos, vagas e itens EN VENTA, e ver o fluxo de pagamento. Não há cobrança neste período. O plano vigente começa em 01/01/2027.",
     "p6": "Criar conta não implica tomar PLUS, PRO ou ÉLITE. INICIANTE não é plano.",
-    "p7": "Qualquer aviso publicado é de responsabilidade de quem o publicou."
+    "p7": "Qualquer aviso publicado é de responsabilidade de quem o publicou.",
+    "p8": "Somos uma equipe familiar com o objetivo de criar espaços informativos úteis e agradáveis.",
+    "p9": "O portal orientese.com é a árvore de onde brotam os ramos que cobrirão diferentes temas.",
+    "p10": "Este de drones quer ser um espaço de referência e preferência. Esperamos que isso aconteça pelo uso constante.",
+    "p11": "O simulador de ORÇAMENTOS é só um SIMULADOR de referência: ajuda a estimar quanto pode custar um serviço contemplado. Baseia-se em valores encontrados na Internet. Contratantes e contratados podem usá-lo como ordem de grandeza. Esses valores sobem ou descem conforme quem presta o serviço, a urgência e outros fatores do próprio simulador. Use-o com responsabilidade."
   },
   "terminos": {
     "h1": "Termos de uso",
@@ -427,6 +430,6 @@
     "q7": "ORÇAMENTOS é um preço oficial?",
     "a7": "Não. É simulador de referência.",
     "q8": "Como falo com o operador?",
-    "a8": "E-mail contacto@drones.orientese.com — WhatsApp e Telegram +55 11 98194-1201 — Opera Henry Díaz, São Paulo."
+    "a8": "E-mail contacto@drones.orientese.com — WhatsApp +55 11 98194-1201 — Opera Henry Díaz, São Paulo."
   }
 }
