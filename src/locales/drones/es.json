@@ -434,5 +434,41 @@
     "erroPaginas": "Elija al menos una página para el aviso.",
     "erroMaxPaginas": "Máximo {{max}} páginas por aviso.",
     "erroContacto": "Indique teléfono o WhatsApp para contacto."
+  },
+   "beta": {
+    "franja": "Sitio en BETA hasta el 31/12/2026. No hay cobro en este período. drones.orientese.com solo informa; no vende, no intermedia y no cobra comisión. Los anuncios de prueba caducan el 31/12/2026. Cualquier aviso es responsabilidad de quien lo publicó."
+  },
+  "idioma": {
+    "leyendaIncompleto": "Algunos textos pueden estar incompletos en otros idiomas.",
+    "leyendaTradutor": "Para otros idiomas, use el traductor de su navegador. Traduce el texto visible de la página (incluidos formularios y avisos). No sustituye las versiones oficiales en portugués, español e inglés."
+  },
+  "somos": {
+    "h1": "Quiénes somos",
+    "p1": "drones.orientese.com es un hub informativo del sector de aeronaves no tripuladas, dentro de orientese.com.",
+    "p2": "No vende productos ni servicios. No intermedia negocios. No cobra comisión.",
+    "p3": "Opera Henry Díaz, São Paulo. Contacto: contacto@drones.orientese.com",
+    "p4": "La constitución de una LLC (posible nombre HD PRODUCTION LLC, Wyoming) será después. Hoy el operador es Henry Díaz.",
+    "p5": "BETA hasta el 31/12/2026: puede registrarse, probar PLANES, publicar avisos, vacantes e ítems EN VENTA, y ver el flujo de pago. No hay cobro en este período. El plan vigente empieza el 01/01/2027.",
+    "p6": "Crear cuenta no implica tomar PLUS, PRO o ÉLITE. INICIANTE no es plan.",
+    "p7": "Cualquier aviso publicado es responsabilidad de quien lo publicó."
+  },
+  "terminos": {
+    "h1": "Términos de uso",
+    "aviso": "Este texto es informativo. No es dictamen jurídico.",
+    "p1": "El sitio es un hub informativo. No vende. No intermedia. No cobra comisión.",
+    "p2": "Los avisos (vacantes, EN VENTA, anunciantes, directorios) son de quien los publicó.",
+    "p3": "BETA hasta el 31/12/2026: no hay cobro. Los anuncios de prueba caducan el 31/12/2026. Puede usar el hub y ver el formulario de pago; el cobro real solo entra cuando la pasarela esté activa.",
+    "p4": "Crear cuenta no implica contratar PLUS, PRO o ÉLITE. INICIANTE no es plan.",
+    "p5": "A partir del 01/01/2027 el plan activado se rige por las condiciones entonces vigentes. Aquí no se inventan precios ni cuotas; las cuotas de una tarjeta internacional las fija el banco.",
+    "p6": "Contacto: contacto@drones.orientese.com. Operador actual: Henry Díaz, São Paulo."
+  },
+  "privacidad": {
+    "h1": "Política de privacidad",
+    "aviso": "Este texto es informativo. No es dictamen jurídico.",
+    "p1": "Los datos de CADASTRO sirven para operar el hub: cuenta, ficha, avisos e idioma.",
+    "p2": "No vendemos esos datos.",
+    "p3": "En BETA el cobro está apagado. Puede ver el flujo de pago; no se procesa cobro hasta que la pasarela esté activa.",
+    "p4": "Solicitudes sobre sus datos: contacto@drones.orientese.com",
+    "p5": "El contenido de un aviso es responsabilidad de quien lo publicó, no del hub."
   }
 }
