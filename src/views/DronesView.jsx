@@ -38,6 +38,12 @@ import Perfil from './drones/Perfil.jsx';
 import Pilotos from './drones/pilotos.jsx';
 import Profissionais from './drones/profissionais.jsx';
 import Somos from './drones/somos.jsx';
+import Terminos from './drones/terminos.jsx';
+import Privacidad from './drones/privacidad.jsx';
+import Comunidad from './drones/comunidad.jsx';
+import Faq from './drones/faq.jsx';
+import Terminos from './drones/terminos.jsx';
+import Privacidad from './drones/privacidad.jsx';
 import Vagas from './drones/vagas.jsx';
 
 const PAGINA_POR_VISTA = {
@@ -119,6 +125,28 @@ function DronesContent({ onNavigate }) {
       case 'SOMOS':
       case 'QUEM_SOMOS':
         return <Somos />;
+      case 'TERMINOS':
+      case 'TERMOS':
+      case 'TERMS':
+        return <Terminos />;
+      case 'PRIVACIDAD':
+      case 'PRIVACIDADE':
+      case 'PRIVACY':
+        return <Privacidad />;
+      case 'COMUNIDAD':
+      case 'COMUNIDADE':
+        return <Comunidad />;
+      case 'FAQ':
+        return <Faq />;
+        return <Somos />;
+      case 'TERMINOS':
+      case 'TERMOS':
+      case 'TERMS':
+        return <Terminos />;
+      case 'PRIVACIDAD':
+      case 'PRIVACIDADE':
+      case 'PRIVACY':
+        return <Privacidad />;
       case 'ORÇAMENTOS':
       case 'ORCAMENTOS':
         return <SimuladorDuplo />;

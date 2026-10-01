@@ -470,5 +470,36 @@
     "p3": "En BETA el cobro está apagado. Puede ver el flujo de pago; no se procesa cobro hasta que la pasarela esté activa.",
     "p4": "Solicitudes sobre sus datos: contacto@drones.orientese.com",
     "p5": "El contenido de un aviso es responsabilidad de quien lo publicó, no del hub."
+  },
+    "comunidad": {
+    "h1": "Normas de la comunidad",
+    "aviso": "Este texto es informativo. No es dictamen jurídico.",
+    "p1": "Este hub es informativo. No vende, no intermedia y no cobra comisión.",
+    "p2": "Cada aviso (vacantes, EN VENTA, directorios, anunciantes) es de quien lo publicó.",
+    "p3": "Publique solo lo que sea verdadero y suyo: servicio, equipo, vacante o marca.",
+    "p4": "No publique contenido ilegal, ofensivo, engañoso ni datos de terceros sin autorización.",
+    "p5": "El visitante puede consultar. El miembro publica según el tipo de cuenta y el PLAN. Crear cuenta no implica tomar PLUS, PRO o ÉLITE. INICIANTE no es plan.",
+    "p6": "En BETA (hasta el 31/12/2026) puede probar el hub y publicar avisos de prueba. Esos avisos caducan el 31/12/2026. No hay cobro en este período.",
+    "p7": "El contacto entre las partes es directo. El hub no entra en el negocio.",
+    "p8": "Denuncias y pedidos: contacto@drones.orientese.com"
+  },
+  "faq": {
+    "h1": "Preguntas frecuentes",
+    "q1": "¿El sitio vende drones o piezas?",
+    "a1": "No. Solo informa. No vende, no intermedia y no cobra comisión.",
+    "q2": "¿Puedo usar el hub en BETA?",
+    "a2": "Sí. Hasta el 31/12/2026 puede registrarse, probar PLANES, publicar avisos, vacantes e ítems EN VENTA, y ver el flujo de pago. No hay cobro en este período.",
+    "q3": "¿Por qué se ve el formulario de pago pero no cobra?",
+    "a3": "Para ver cómo se activa un PLAN. La pasarela aún no cobra. Cobro y factura entran después. Las cuotas de una tarjeta internacional las fija el banco, no este sitio.",
+    "q4": "¿Crear cuenta es tomar un PLAN?",
+    "a4": "No. CADASTRO no implica PLUS, PRO o ÉLITE. INICIANTE no es plan.",
+    "q5": "¿Los avisos de prueba quedan para siempre?",
+    "a5": "No. Caducan el 31/12/2026. Quien publica es responsable del aviso.",
+    "q6": "¿Por qué faltan idiomas en el menú?",
+    "a6": "Las versiones oficiales ahora son portugués, español e inglés. Otros idiomas vuelven cuando estén completos. Puede usar el traductor del navegador; no sustituye las versiones oficiales.",
+    "q7": "¿ORÇAMENTOS es un precio oficial?",
+    "a7": "No. Es simulador de referencia.",
+    "q8": "¿Cómo hablo con el operador?",
+    "a8": "E-mail contacto@drones.orientese.com — WhatsApp y Telegram +55 11 98194-1201 — Opera Henry Díaz, São Paulo."
   }
 }

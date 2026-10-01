@@ -53,14 +53,24 @@ export default function Footer({ setCurrentView }) {
 
             <p className="footer-line footer-mail">
               <Mail size={14} color="#38bdf8" />
-              <a href="mailto:contato@drones.orientese.com">contato@drones.orientese.com</a>
+              <a href="mailto:contacto@drones.orientese.com">contacto@drones.orientese.com</a>
             </p>
 
-            <div className="footer-social">
-              <a href="#" className="footer-wa">
+    <div className="footer-social">
+              <a
+                href="https://wa.me/5511981941201"
+                className="footer-wa"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <MessageSquare size={16} /> {t('footer.whatsapp', { defaultValue: 'WhatsApp' })}
               </a>
-              <a href="#" className="footer-tg">
+              <a
+                href="https://t.me/+5511981941201"
+                className="footer-tg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Send size={14} /> {t('footer.telegram', { defaultValue: 'Telegram' })}
               </a>
             </div>
@@ -123,26 +133,26 @@ export default function Footer({ setCurrentView }) {
               <button type="button" className="footer-link" onClick={() => handleNavigation('SOMOS')}>
                 <Users size={14} /> {t('footer.about')}
               </button>
-              <a href="#">
+             <button type="button" className="footer-link" onClick={() => handleNavigation('TERMINOS')}>
                 <Lock size={14} /> {t('footer.terms')}
-              </a>
-              <a href="#">
+              </button>
+              <button type="button" className="footer-link" onClick={() => handleNavigation('PRIVACIDAD')}>
                 <ShieldCheck size={14} /> {t('footer.privacy')}
-              </a>
-              <a href="#">
+              </button>
+              <button type="button" className="footer-link" onClick={() => handleNavigation('COMUNIDAD')}>
                 <Users size={14} /> {t('footer.community')}
-              </a>
-              <a href="#">
+              </button>
+              <button type="button" className="footer-link" onClick={() => handleNavigation('FAQ')}>
                 <HelpCircle size={14} /> {t('footer.faq')}
-              </a>
-            </div>
-
+              </button>
             <a href={URL_PORTAL} className="footer-portal" title="orientese.com">
               <img src={LOGO_PORTAL} alt="orientese.com" />
             </a>
           </div>
         </div>
-
+        <p className="footer-line" style={{ margin: '1rem 0 0.5rem', maxWidth: '52rem' }}>
+          {t('beta.franja')}
+        </p>
         <div className="footer-bottom">
           <div>{t('footer.copy')}</div>
           <div>{t('footer.credits')}</div>

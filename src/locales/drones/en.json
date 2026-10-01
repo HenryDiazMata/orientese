@@ -343,5 +343,37 @@
     "p3": "In BETA, charging is off. You may see the payment flow; no charge is processed until the gateway is live.",
     "p4": "Requests about your data: contacto@drones.orientese.com",
     "p5": "The content of a notice is the responsibility of the person who published it, not of the hub."
+  },
+   "comunidad": {
+    "h1": "Community guidelines",
+    "aviso": "This text is informational. It is not legal advice.",
+    "p1": "This hub is informational. It does not sell, broker or charge commission.",
+    "p2": "Each notice (jobs, FOR SALE, directories, advertisers) belongs to the person who published it.",
+    "p3": "Publish only what is true and yours: a service, equipment, job or brand.",
+    "p4": "Do not publish illegal, offensive or misleading content, or third-party data without permission.",
+    "p5": "A visitor may browse. A member publishes according to account type and PLAN. Creating an account does not mean taking PLUS, PRO or ÉLITE. STARTER is not a plan.",
+    "p6": "In BETA (until 31/12/2026) you may try the hub and publish test notices. Those notices expire on 31/12/2026. There is no charge in this period.",
+    "p7": "Contact between the parties is direct. The hub does not enter the deal.",
+    "p8": "Reports and requests: contacto@drones.orientese.com"
+  },
+  "faq": {
+    "h1": "Frequently asked questions",
+    "q1": "Does the site sell drones or parts?",
+    "a1": "No. It only informs. It does not sell, broker or charge commission.",
+    "q2": "Can I use the hub in BETA?",
+    "a2": "Yes. Until 31/12/2026 you may sign up, try PLANS, publish notices, jobs and FOR SALE items, and see the payment flow. There is no charge in this period.",
+    "q3": "Why is the payment form visible if it does not charge?",
+    "a3": "So you can see how a PLAN is activated. The gateway does not charge yet. Charging and invoices come later. Installments on an international card are set by the bank, not by this site.",
+    "q4": "Is creating an account the same as taking a PLAN?",
+    "a4": "No. Sign-up does not mean PLUS, PRO or ÉLITE. STARTER is not a plan.",
+    "q5": "Do test notices stay forever?",
+    "a5": "No. They expire on 31/12/2026. The publisher is responsible for the notice.",
+    "q6": "Why are some languages missing from the menu?",
+    "a6": "Official versions are now Portuguese, Spanish and English. Other languages return when complete. You may use the browser translator on visible text; that does not replace the official versions.",
+    "q7": "Are QUOTES an official price?",
+    "a7": "No. It is a reference simulator.",
+    "q8": "How do I contact the operator?",
+    "a8": "Email contacto@drones.orientese.com — WhatsApp and Telegram +55 11 98194-1201 — Operated by Henry Díaz, São Paulo."
   }
+
 }
