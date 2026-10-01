@@ -4,6 +4,7 @@
 // DATOS = src/data/drones/pilotos.json
 // TIPO PERSONA = FILTRO Y SELLO. NO ES ITEM DEL SIDEBAR
 // NO TOCAR CadastroPiloto. NO INVENTAR PRECIOS
+// FICHA MOSTRA: SIN WHATSAPP, SIN TELEGRAM, SIN ANAC, SIN NOTA
 // COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
@@ -293,7 +294,7 @@ export default function Pilotos() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Ex: João Silva, Campinas..."
+                  placeholder="Ex: cidade, serviço..."
                   value={filtroTexto}
                   onChange={(e) => setFiltroTexto(e.target.value)}
                   style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: '#fff', color: '#0f172a' }}
@@ -326,6 +327,7 @@ export default function Pilotos() {
 
           {/* ==========================================
               CARDS. SELLO TIPO PERSONA JUNTO AL NOMBRE
+              MOSTRA NO MUESTRA ANAC, NOTA NI WHATSAPP
               ========================================== */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
             {pilotosFiltrados.map((piloto) => (
@@ -342,17 +344,17 @@ export default function Pilotos() {
                 }}
               >
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', gap: '8px' }}>
                     <h3 style={{ margin: 0, fontSize: '18px', color: textMain, fontWeight: '700' }}>{piloto.nome}</h3>
                     <span style={{
                       fontSize: '12px',
-                      backgroundColor: piloto.disponivel ? '#dcfce7' : '#fef3c7',
-                      color: piloto.disponivel ? '#15803d' : '#d97706',
+                      backgroundColor: piloto.mostra ? '#F4E7B8' : (piloto.disponivel ? '#dcfce7' : '#fef3c7'),
+                      color: piloto.mostra ? '#6B5420' : (piloto.disponivel ? '#15803d' : '#d97706'),
                       fontWeight: '600',
                       padding: '4px 10px',
                       borderRadius: '20px'
                     }}>
-                      {piloto.statusTexto}
+                      {piloto.mostra ? 'MOSTRA' : piloto.statusTexto}
                     </span>
                   </div>
 
@@ -391,49 +393,57 @@ export default function Pilotos() {
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px', color: textMain, marginBottom: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <ShieldCheck size={16} color="#0077C8" /> ANAC: <strong>{piloto.registroAnac}</strong>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <CheckCircle2 size={16} color="#0077C8" /> ANATEL: <strong>{piloto.anatelOk}</strong>
-                    </div>
+                    {piloto.registroAnac ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <ShieldCheck size={16} color="#0077C8" /> ANAC: <strong>{piloto.registroAnac}</strong>
+                      </div>
+                    ) : null}
+                    {piloto.anatelOk ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <CheckCircle2 size={16} color="#0077C8" /> ANATEL: <strong>{piloto.anatelOk}</strong>
+                      </div>
+                    ) : null}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <Clock size={16} color="#94a3b8" /> Horas de Voo: <strong>{piloto.horasVoo}</strong>
                     </div>
                   </div>
 
-                  <div style={{
-                    backgroundColor: isDark ? '#0f172a' : '#f8fafc',
-                    border: `1px solid ${borderColor}`,
-                    borderRadius: '10px',
-                    padding: '12px',
-                    marginBottom: '16px'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                      <span style={{ fontSize: '13px', fontWeight: '700', color: textMain, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Star size={16} color="#f59e0b" fill="#f59e0b" />
-                        Avaliação do Cliente
-                      </span>
-                      <span style={{ fontSize: '16px', fontWeight: '800', color: '#0077C8' }}>
-                        {Number(piloto.avaliacaoMedia).toFixed(1)}
-                      </span>
-                    </div>
+                  {piloto.avaliacaoMedia != null && piloto.indicacoes ? (
+                    <div style={{
+                      backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+                      border: `1px solid ${borderColor}`,
+                      borderRadius: '10px',
+                      padding: '12px',
+                      marginBottom: '16px'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '13px', fontWeight: '700', color: textMain, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Star size={16} color="#f59e0b" fill="#f59e0b" />
+                          Avaliação do Cliente
+                        </span>
+                        <span style={{ fontSize: '16px', fontWeight: '800', color: '#0077C8' }}>
+                          {Number(piloto.avaliacaoMedia).toFixed(1)}
+                        </span>
+                      </div>
 
-                    <div style={{ fontSize: '12px', color: textMuted, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Contratações realizadas:</span>
-                        <strong style={{ color: textMain }}>{piloto.contratacoes}</strong>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Indicações (Sim / Não):</span>
-                        <strong style={{ color: textMain }}>{piloto.indicacoes.sim} / {piloto.indicacoes.nao}</strong>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                        <span>Pontuação Geral:</span>
-                        <strong style={{ color: '#0077C8' }}>{piloto.pontuacaoGeral} pts</strong>
+                      <div style={{ fontSize: '12px', color: textMuted, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Contratações realizadas:</span>
+                          <strong style={{ color: textMain }}>{piloto.contratacoes}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Indicações (Sim / Não):</span>
+                          <strong style={{ color: textMain }}>{piloto.indicacoes.sim} / {piloto.indicacoes.nao}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
+                          <span>Pontuação Geral:</span>
+                          <strong style={{ color: '#0077C8' }}>{piloto.pontuacaoGeral} pts</strong>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <p style={{ margin: '0 0 16px', fontSize: '13px', color: textMuted }}>AQUI O CONTACTO</p>
+                  )}
                 </div>
 
                 <div style={{
@@ -446,28 +456,36 @@ export default function Pilotos() {
                   gap: '8px',
                   flexWrap: 'wrap'
                 }}>
-                  <a
-                    href={`https://wa.me/55${piloto.whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#16a34a', fontWeight: '700', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
-                  >
-                    <MessageSquare size={15} /> WhatsApp
-                  </a>
-                  <a
-                    href={`https://t.me/${piloto.telegram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#0284c7', fontWeight: '600', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
-                  >
-                    <Send size={14} /> Telegram
-                  </a>
-                  <a
-                    href={`mailto:${piloto.email}`}
-                    style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#475569', fontWeight: '600', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
-                  >
-                    <Mail size={15} /> Email
-                  </a>
+                  {piloto.whatsapp ? (
+                    <a
+                      href={`https://wa.me/55${piloto.whatsapp}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#16a34a', fontWeight: '700', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
+                    >
+                      <MessageSquare size={15} /> WhatsApp
+                    </a>
+                  ) : null}
+                  {piloto.telegram ? (
+                    <a
+                      href={`https://t.me/${piloto.telegram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#0284c7', fontWeight: '600', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
+                    >
+                      <Send size={14} /> Telegram
+                    </a>
+                  ) : null}
+                  {piloto.email ? (
+                    <a
+                      href={`mailto:${piloto.email}`}
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#475569', fontWeight: '600', fontSize: '13px', textDecoration: 'none', backgroundColor: '#fff', padding: '6px 10px', borderRadius: '6px' }}
+                    >
+                      <Mail size={15} /> Email
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: '13px', color: textMuted }}>AQUI O CONTACTO</span>
+                  )}
                 </div>
               </div>
             ))}
