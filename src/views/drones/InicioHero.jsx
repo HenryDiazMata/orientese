@@ -117,6 +117,26 @@ export default function InicioHero({ setCurrentView }) {
         boxSizing: 'border-box',
       }}
     >
+      {/* ==========================================
+          FRANJA BETA. TEXTO = beta.franja EN JSON
+          EDITA AQUI: COLOR, BORDE, ALINEACION, MARGEN
+          ========================================== */}
+      <p
+        style={{
+          margin: '0 0 1rem',
+          padding: '0.7rem 0.9rem',
+          border: `1px solid ${AZUL}`,
+          borderRadius: 10,
+          background: '#EAF7FC',
+          color: TEXTO,
+          textAlign: 'left',
+          lineHeight: 1.5,
+          fontSize: '0.95rem',
+        }}
+      >
+        {t('beta.franja')}
+      </p>
+
       <section className="drones-carrusel" style={{ position: 'relative' }}>
 
         {slide === 0 && (
