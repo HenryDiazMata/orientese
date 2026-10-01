@@ -409,13 +409,21 @@ export default function Auxiliares({ openFormOnMount = false, onFormOpened }) {
               <p style={{ fontSize: 13, color: textMuted, lineHeight: 1.45, margin: '0 0 14px 0' }}>{aux.apresentacao}</p>
             )}
 
-            <div style={{ marginTop: 'auto', borderTop: `1px solid ${border}`, paddingTop: 12, display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-              <a href={`https://wa.me/55${(aux.whatsapp || '').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#16a34a', fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
-                <Phone size={15} /> WhatsApp
-              </a>
-              <a href={`mailto:${aux.email}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: textMuted, fontSize: 13, textDecoration: 'none' }}>
-                <Mail size={15} /> E-mail
-              </a>
+       <div style={{ marginTop: 'auto', borderTop: `1px solid ${border}`, paddingTop: 12, display: 'flex', justifyContent: 'space-between', gap: 10 }}>
+              {(aux.whatsapp || '').replace(/\D/g, '') ? (
+                <a href={`https://wa.me/55${(aux.whatsapp || '').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#16a34a', fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+                  <Phone size={15} /> WhatsApp
+                </a>
+              ) : (
+                <span style={{ fontSize: 13, color: textMuted }}>AQUI O CONTACTO</span>
+              )}
+              {aux.email && aux.email.includes('@') ? (
+                <a href={`mailto:${aux.email}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: textMuted, fontSize: 13, textDecoration: 'none' }}>
+                  <Mail size={15} /> E-mail
+                </a>
+              ) : (
+                <span style={{ fontSize: 13, color: textMuted }}>AQUI O CONTACTO</span>
+              )}
             </div>
           </div>
           );
