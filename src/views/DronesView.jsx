@@ -42,8 +42,6 @@ import Terminos from './drones/terminos.jsx';
 import Privacidad from './drones/privacidad.jsx';
 import Comunidad from './drones/comunidad.jsx';
 import Faq from './drones/faq.jsx';
-import Terminos from './drones/terminos.jsx';
-import Privacidad from './drones/privacidad.jsx';
 import Vagas from './drones/vagas.jsx';
 
 const PAGINA_POR_VISTA = {
@@ -122,7 +120,7 @@ function DronesContent({ onNavigate }) {
       case 'MEU_PERFIL':
       case 'PERFIL':
         return <Perfil setCurrentView={setCurrentView} />;
-      case 'SOMOS':
+case 'SOMOS':
       case 'QUEM_SOMOS':
         return <Somos />;
       case 'TERMINOS':
@@ -138,15 +136,6 @@ function DronesContent({ onNavigate }) {
         return <Comunidad />;
       case 'FAQ':
         return <Faq />;
-        return <Somos />;
-      case 'TERMINOS':
-      case 'TERMOS':
-      case 'TERMS':
-        return <Terminos />;
-      case 'PRIVACIDAD':
-      case 'PRIVACIDADE':
-      case 'PRIVACY':
-        return <Privacidad />;
       case 'ORÇAMENTOS':
       case 'ORCAMENTOS':
         return <SimuladorDuplo />;
@@ -158,7 +147,6 @@ function DronesContent({ onNavigate }) {
         return <InicioHero setCurrentView={setCurrentView} />;
     }
   };
-
   const paginaId = PAGINA_POR_VISTA[currentView] || null;
   const mostrarEspacio = Boolean(paginaId) && currentView !== 'ANUNCIANTES';
 
