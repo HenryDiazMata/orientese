@@ -368,24 +368,28 @@ export default function Manutencao({
                   </div>
 
                   <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "12px", marginTop: "10px" }}>
-                    <a
-                      href={`https://wa.me/55${String(item.contatoWhatsApp || "").replace(/\D/g, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-whatsapp"
-                      style={{
-                        display: "block",
-                        textAlign: "center",
-                        backgroundColor: "#16a34a",
-                        color: "#ffffff",
-                        padding: "8px 12px",
-                        borderRadius: "6px",
-                        textDecoration: "none",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Enviar Orçamento pelo WhatsApp
-                    </a>
+                    {String(item.contatoWhatsApp || "").replace(/\D/g, "") ? (
+                      <a
+                        href={`https://wa.me/55${String(item.contatoWhatsApp || "").replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-whatsapp"
+                        style={{
+                          display: "block",
+                          textAlign: "center",
+                          backgroundColor: "#16a34a",
+                          color: "#ffffff",
+                          padding: "8px 12px",
+                          borderRadius: "6px",
+                          textDecoration: "none",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        Enviar Orçamento pelo WhatsApp
+                      </a>
+                    ) : (
+                      <span style={{ display: "block", textAlign: "center", fontSize: "13px", color: "#64748b" }}>AQUI O CONTACTO</span>
+                    )}
                   </div>
                 </div>
                 );

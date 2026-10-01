@@ -595,28 +595,32 @@ export default function ConsertosView() {
                       </div>
                     </div>
 
-                    <a
-                      href={`https://wa.me/55${String(item.whatsapp || '').replace(/\D/g, '')}?text=Olá!%20Encontrei%20sua%20oficina%20no%20Drones.Orientese%20e%20preciso%20de%20um%20orçamento.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        backgroundColor: '#25d366',
-                        color: '#ffffff',
-                        padding: '10px',
-                        borderRadius: '6px',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        textDecoration: 'none',
-                        marginTop: '10px'
-                      }}
-                    >
-                      <MessageSquare size={18} />
-                      Solicitar Orçamento via WhatsApp
-                    </a>
+                    {String(item.whatsapp || '').replace(/\D/g, '') ? (
+                      <a
+                        href={`https://wa.me/55${String(item.whatsapp || '').replace(/\D/g, '')}?text=Olá!%20Encontrei%20sua%20oficina%20no%20Drones.Orientese%20e%20preciso%20de%20um%20orçamento.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          backgroundColor: '#25d366',
+                          color: '#ffffff',
+                          padding: '10px',
+                          borderRadius: '6px',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                          textDecoration: 'none',
+                          marginTop: '10px'
+                        }}
+                      >
+                        <MessageSquare size={18} />
+                        Solicitar Orçamento via WhatsApp
+                      </a>
+                    ) : (
+                      <span style={{ display: 'block', textAlign: 'center', fontSize: '13px', color: '#64748b', marginTop: '10px' }}>AQUI O CONTACTO</span>
+                    )}
                   </div>
                   );
                 })}
