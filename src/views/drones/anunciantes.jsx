@@ -210,30 +210,16 @@ export default function Anunciantes() {
             <strong>{t('anunciantes.cardContactoTitulo')}</strong>
             <p style={pMuted}>{t('anunciantes.cardContactoTexto')}</p>
           </div>
-          <div style={cardBenef}>
+       <div style={cardBenef}>
             <strong>{t('anunciantes.cardAnuncioTitulo')}</strong>
-            <p style={pMuted}>
-              {t('anunciantes.cardAnuncioTexto', {
-                base: formatUSD(PRECIO_REF.anunciante.base30d),
-                extra: formatUSD(PRECIO_REF.anunciante.paginaExtra),
-              })}
-            </p>
+            <p style={pMuted}>{t('anunciantes.cardAnuncioTexto')}</p>
           </div>
           <div style={{ ...cardBenef, border: '2px solid #22C55E' }}>
             <strong>{t('anunciantes.cardPatrocinioTitulo')}</strong>
             <p style={pMuted}>
               {t('anunciantes.cardPatrocinioTexto', {
                 maxPatro: MAX_PATROCINADORES_POR_PAGINA,
-                base: formatUSD(PRECIO_REF.patrocinador.base30d),
-                extra: formatUSD(PRECIO_REF.patrocinador.paginaExtra),
               })}
-            </p>
-          </div>
-          <div style={cardBenef}>
-            <strong>{t('anunciantes.cardPreciosTitulo')}</strong>
-            <p style={pMuted}>
-              {t('anunciantes.cardPreciosTexto')}{' '}
-              {t('anunciantes.leyendaPrecio')}
             </p>
           </div>
         </div>
