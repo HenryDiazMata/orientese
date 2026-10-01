@@ -1,0 +1,34 @@
+{
+  "activar": {
+    "h1": "ACTIVATE",
+    "leadAntes": "You registered during the free registration and plan usage promotion. Now ",
+    "palabraActiva": "ACTIVATE",
+    "leadDespues": ".",
+    "palabraActivar": "ACTIVATE",
+    "v": {
+      "beta": "Site in BETA until 12/31/2026. No charges apply during this period. drones.orientese.com only informs; it does not sell, intermediate, or charge commissions.",
+      "simulador": "Budget simulator test with limited quantities during this BETA phase. Simulator usage quantities for already activated plans: Visitor 8, Beginner 30+2, Plus 40+5, Pro 50+10, Elite 60+15.",
+      "hasta31Antes": "By ",
+      "hasta31Despues": " at the latest on December 31, 2026, you can keep or change your plan at no additional cost.",
+      "pagoEtapa": "The payment and invoice system via Stripe will be activated in December. Invoicing in the first half of January 2027.",
+      "fechaUtcAntes": "By ",
+      "fechaUtcDespues": " at the latest on Dec 31, 2026 UTC (or requested by email to contacto@drones.orientese.com by Jan 15, 2027):",
+      "vigencia365": "The plan remains operational for 365 days starting from 01/01/2027.",
+      "extras": "Simulator extras apply only starting from that validity period.",
+      "descuento1800": "The discount is the one corresponding to the stage at the time of payment, securing the quota of the first 1800 worldwide, when registering as a user in your chosen modality: pilot, assistant, technician, professional, legal entity, or individual.",
+      "promo30": "Launch promotions starting on January 1, 2027 last for 30 linear days or until the first 1800 worldwide are exhausted.",
+      "tarifaAno": "Upon completing the first year, renewals keep the rate with which the PLAN started; on the second renewal, the previous year's rate is used.",
+      "cambioPlan": "If you change your PLAN at that renewal, you pay no difference: only the cost of the PLAN you are taking.",
+      "porEtapas": "The launch promotion is structured in STAGES and is for the first 1800 registered and activated users of each PLAN.",
+      "plusProElite": "The first 1800 registered and activated users of the PLUS PLAN, PRO PLAN, and ELITE PLAN worldwide. BEGINNER PLAN users do not enter these stages.",
+      "octDic": "Those who registered from October to December 2026 are securing the quota of those first 1800 in the first stage, even if by January 1, 2027 that STAGE 1 quota has already been exceeded.",
+      "etapa1": "STAGES have their respective discounts. STAGE 1: 10% on the PLUS PLAN, 15% on the PRO PLAN, and 20% on the ELITE PLAN. It starts on January 1, 2027 and ends 30 days later or when the first 1800 worldwide are exhausted.",
+      "etapa2y3": "Next, STAGE 2 begins and, once the first 1800 quota of each plan or the 30 days are exhausted, STAGE 3 begins.",
+      "reservaPaises": "If within the 30-day period of a STAGE a plan does not exhaust the 1800, the next STAGE comes into effect. We reserve the right to renew a stage in one or more countries.",
+      "cierreAntes": "",
+      "cierreDespues": " your PLAN before December 31, 2026 and take advantage of these discounts. Activated, enjoyed."
+    },
+    "ctaPlan": "ACTIVATE MY PLAN",
+    "ctaSubir": "ACTIVATE AND UPGRADE PLAN"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "activar": {
+    "h1": "ACTIVAR",
+    "leadAntes": "Te registraste durante la promoción de gratuidad de registro y uso de planes. Ahora ",
+    "palabraActiva": "ACTIVA",
+    "leadDespues": ".",
+    "palabraActivar": "ACTIVAR",
+    "v": {
+      "beta": "Sitio en BETA hasta el 31/12/2026. No hay cobros en este período. drones.orientese.com solo informa; no vende, no intermedia y no cobra comisión.",
+      "simulador": "Prueba del simulador de presupuestos con cantidades limitadas durante esta fase BETA. Cantidades de uso del simulador para los planes ya activados: Visitante 8, Iniciante 30+2, Plus 40+5, Pro 50+10, Élite 60+15.",
+      "hasta31Antes": "Al ",
+      "hasta31Despues": " a más tardar el 31 de diciembre de 2026, puedes mantener o cambiar de plan sin costo adicional.",
+      "pagoEtapa": "El sistema de pago y emisión de facturas mediante Stripe se activará en diciembre. Factura en la 1ª quincena de enero de 2027.",
+      "fechaUtcAntes": "Al ",
+      "fechaUtcDespues": " a más tardar el 31 dic 2026 UTC (o pedido por correo a contacto@drones.orientese.com hasta el 15 ene 2027):",
+      "vigencia365": "El plan queda operativo 365 días a partir del 01/01/2027.",
+      "extras": "Los extras del simulador solo se aplican a partir de dicha vigencia.",
+      "descuento1800": "El descuento es el de la etapa al momento de pagar, que asegura la cuota de los primeros 1800 a nivel mundial, al registrarse como usuario en la modalidad que elijas: piloto, auxiliar, técnico, profesional, persona jurídica o física.",
+      "promo30": "Las promociones de lanzamiento que inician el 1 de enero de 2027 duran 30 días lineales o hasta agotar los primeros 1800 mundiales.",
+      "tarifaAno": "Al completar el primer año, las renovaciones conservan la tarifa con la que inició el PLAN; en la segunda renovación se usa la del año anterior.",
+      "cambioPlan": "Si cambias de PLAN en dicha renovación no pagas diferencia: solo el costo del PLAN que estés tomando.",
+      "porEtapas": "La promoción de lanzamiento es por ETAPAS y para los primeros 1800 registrados y activados de cada uno de los PLANES.",
+      "plusProElite": "Los primeros 1800 registrados y activados del PLAN PLUS, del PLAN PRO y del PLAN ÉLITE a nivel mundial. Los del PLAN INICIANTE no entran en estas etapas.",
+      "octDic": "Quien se registró de octubre a diciembre de 2026 está asegurando la cuota de esos primeros 1800 en la primera etapa, incluso si el 1 de enero de 2027 dicha cuota de la ETAPA 1 ya ha sido superada.",
+      "etapa1": "Las ETAPAS tienen sus descuentos. La ETAPA 1: 10% en el PLAN PLUS, 15% en el PLAN PRO y 20% en el PLAN ÉLITE. Inicia el 1 de enero de 2027 y termina 30 días después o al agotar los primeros 1800 mundiales.",
+      "etapa2y3": "A continuación inicia la ETAPA 2 y, agotada la cuota de los primeros 1800 de cada plan o los 30 días, inicia la ETAPA 3.",
+      "reservaPaises": "Si en el plazo de 30 días de una ETAPA un plan no agotó los 1800, la ETAPA siguiente entra en vigencia. Nos reservamos el derecho de renovar una etapa en uno o más países.",
+      "cierreAntes": "",
+      "cierreDespues": " tu PLAN antes del 31 de diciembre de 2026 y aprovecha estos descuentos. Activaste, aprovechaste."
+    },
+    "ctaPlan": "ACTIVAR MI PLAN",
+    "ctaSubir": "ACTIVAR Y SUBIR DE PLAN"
+  }
+}
