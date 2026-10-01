@@ -1,10 +1,10 @@
 // ==========================================
 // ARCHIVO COMPLETO: src/components/drones_HeaderFooter/Footer.jsx
 // PIE SOLO DEL SUBDOMINIO DRONES
-// WHATSAPP SI. TELEGRAM NO (SE REVISA DESPUES).
+// WHATSAPP SI. TELEGRAM NO.
 // LEGALES: SOMOS / TERMINOS / PRIVACIDAD / COMUNIDAD / FAQ
-// FRANJA BETA ENCIMA DEL COPYRIGHT
-// CAMBIAR WHATSAPP: href wa.me ABAJO
+// FRANJA BETA AQUAMARINE. SIN LEYENDAS DE IDIOMA.
+// CAMBIAR WHATSAPP: href wa.me
 // COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
@@ -150,7 +150,19 @@ export default function Footer({ setCurrentView }) {
           </div>
         </div>
 
-        <p className="footer-line" style={{ margin: '1rem 0 0.5rem', maxWidth: '52rem' }}>
+        <p
+          className="footer-line"
+          style={{
+            margin: '1rem 0 0.75rem',
+            maxWidth: '52rem',
+            padding: '0.65rem 0.85rem',
+            background: '#7FFFD4',
+            color: '#0b3b3b',
+            borderRadius: 8,
+            lineHeight: 1.5,
+            fontWeight: 600,
+          }}
+        >
           {t('beta.franja')}
         </p>
 
