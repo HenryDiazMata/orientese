@@ -1,9 +1,7 @@
 // ==========================================
-// ARCHIVO COMPLETO: src/views/drones/somos.jsx
-// SOMOS = HUB INFORMATIVO. NO ECOSISTEMA. NO MENSALIDADE.
-// OPERA HENRY DIAZ, SAO PAULO. LLC DESPUES.
-// CONTACTO SOLO E-MAIL. SIN WHATSAPP / REDES.
-// I18N: somos.*  IDIOMA AIRE = pt-BR
+// ARCHIVO COMPLETO: src/views/drones/terminos.jsx
+// TERMINOS CORTOS. NO ES DICTAMEN JURIDICO.
+// I18N: terminos.*
 // COMENTARIOS EN CASTELLANO Y MAYUSCULAS
 // ==========================================
 
@@ -36,32 +34,21 @@ const box = {
   padding: '1rem 1.15rem',
 };
 
-const mail = {
-  color: AZUL,
-  fontWeight: 700,
-  textDecoration: 'underline',
-};
-
-export default function Somos() {
+export default function Terminos() {
   const { t } = useTranslation(undefined, { i18n: i18nDrones });
 
   return (
     <div style={wrap}>
       <div style={col}>
-        <h1 style={{ color: AZUL, marginTop: 0 }}>{t('somos.h1')}</h1>
+        <h1 style={{ color: AZUL, marginTop: 0 }}>{t('terminos.h1')}</h1>
         <section style={box}>
-          <p>{t('somos.p1')}</p>
-          <p>{t('somos.p2')}</p>
-          <p>
-            {t('somos.p3')}{' '}
-            <a href="mailto:contacto@drones.orientese.com" style={mail}>
-              contacto@drones.orientese.com
-            </a>
-          </p>
-          <p>{t('somos.p4')}</p>
-          <p>{t('somos.p5')}</p>
-          <p>{t('somos.p6')}</p>
-          <p style={{ marginBottom: 0 }}>{t('somos.p7')}</p>
+          <p style={{ fontWeight: 700 }}>{t('terminos.aviso')}</p>
+          <p>{t('terminos.p1')}</p>
+          <p>{t('terminos.p2')}</p>
+          <p>{t('terminos.p3')}</p>
+          <p>{t('terminos.p4')}</p>
+          <p>{t('terminos.p5')}</p>
+          <p style={{ marginBottom: 0 }}>{t('terminos.p6')}</p>
         </section>
       </div>
     </div>
