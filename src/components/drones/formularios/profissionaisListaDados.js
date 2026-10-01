@@ -30,11 +30,17 @@ export const MOCK_PROFISSIONAIS = (PROFISSIONAIS_JSON || []).map((item) => ({
 
 // ==========================================
 // VAGAS MOCK (MURAL; CADASTROVAGAS AUN NO CONECTADO)
+// UNA FICHA DE MUESTRA. SIN EMPRESA NI PERSONA FALSAS
 // ==========================================
 export const MOCK_VAGAS = [
-  { id: 1, titulo: 'Piloto para Pulverização de Cana', empresa: 'Usina Santa Maria', local: 'Ribeirão Preto - SP', contrato: 'Safra / Temporário' },
-  { id: 2, titulo: 'Mapeamento Agrícola com Drones', empresa: 'AgroGeo Topografia', local: 'Uberlândia - MG', contrato: 'PJ / Prestação de Serviço' },
-  { id: 3, titulo: 'Técnico de Manutenção DJI', empresa: 'DroneFix Soluções', local: 'Cascavel - PR', contrato: 'CLT' }
+  {
+    id: 'mostra-vaga',
+    titulo: 'AQUI A VAGA',
+    empresa: 'NOME DA EMPRESA',
+    local: 'cidade - UF',
+    contrato: 'AQUI O CONTRATO',
+    mostra: true
+  }
 ];
 
 // ==========================================
