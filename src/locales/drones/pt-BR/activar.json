@@ -1,0 +1,34 @@
+{
+  "activar": {
+    "h1": "ATIVAR",
+    "leadAntes": "Você cadastrou-se durante a promoção de gratuidade de cadastro e uso de planos. Agora ",
+    "palabraActiva": "ATIVA",
+    "leadDespues": ".",
+    "palabraActivar": "ATIVAR",
+    "v": {
+      "beta": "Promoção BETA outubro–dezembro 2026 sem custo.",
+      "simulador": "Teste do simulador de orçamentos com quantidades limitadas durante esta promoção. Quantidades de uso do simulador para os planos já ativados: Visitante 8, Iniciante 30+2, Plus 40+5, Pro 50+10, Élite 60+15.",
+      "hasta31Antes": "Ao ",
+      "hasta31Despues": " no mais tardar em 31 de dezembro de 2026, pode manter ou mudar de plano sem custo adicional.",
+      "pagoEtapa": "Paga só o preço da etapa vigente do plano que estiver escolhendo e usa sem diferença de preço, porque é o início.",
+      "fechaUtcAntes": "Ao ",
+      "fechaUtcDespues": " no mais tardar em 31 dez 2026 UTC (ou pedido por e-mail a contacto@drones.orientese.com até 15 jan 2027):",
+      "vigencia365": "O plano fica operativo 365 dias a partir de 1 jan 2027.",
+      "extras": "Os extras do simulador só se aplicam a partir dessa vigência.",
+      "descuento1800": "O desconto é o da etapa no momento de pagar, que assegura a cota dos primeiros 1800 a nível mundial, ao cadastrar-se como usuário na modalidade que escolher: piloto, auxiliar, técnico, profissional, pessoa jurídica ou física.",
+      "promo30": "As promoções de lançamento que iniciam em 1 de janeiro de 2027 duram 30 dias lineares ou até esgotar os primeiros 1800 mundiais.",
+      "tarifaAno": "Ao completar o primeiro ano, as renovações conservam a tarifa com a qual iniciou o PLANO; na segunda renovação usa a do ano anterior.",
+      "cambioPlan": "Se mudar de PLANO nessa renovação não paga diferença: só o custo do PLANO que estiver tomando.",
+      "porEtapas": "A promoção de lançamento é por ETAPAS e para os primeiros 1800 cadastrados e ativados de cada um dos PLANOS.",
+      "plusProElite": "Os primeiros 1800 cadastrados e ativados do PLANO PLUS, do PLANO PRO e do PLANO ÉLITE a nível mundial. Os do PLANO INICIANTE não entram nestas etapas.",
+      "octDic": "Quem se cadastrou de outubro a dezembro de 2026 está a assegurar a cota desses primeiros 1800 na primeira etapa, mesmo que em 1 de janeiro de 2027 essa cota da ETAPA 1 já tenha sido superada.",
+      "etapa1": "As ETAPAS têm os seus descontos. A ETAPA 1: 10% no PLANO PLUS, 15% no PLANO PRO e 20% no PLANO ÉLITE. Inicia em 1 de janeiro de 2027 e termina 30 dias depois ou ao esgotar os primeiros 1800 mundiais.",
+      "etapa2y3": "Em seguida inicia a ETAPA 2 e, esgotada a cota dos primeiros 1800 de cada plano ou os 30 dias, inicia a ETAPA 3.",
+      "reservaPaises": "Se no prazo de 30 dias de uma ETAPA um plano não esgotou os 1800, a ETAPA seguinte entra em vigor. Reservamo-nos o direito de renovar uma etapa num ou mais países.",
+      "cierreAntes": "",
+      "cierreDespues": " o seu PLANO antes de 31 de dezembro de 2026 e aproveite esses descontos. Ativou, aproveitou."
+    },
+    "ctaPlan": "ATIVAR O MEU PLANO",
+    "ctaSubir": "ATIVAR E SUBIR DE PLANO"
+  }
+}
